@@ -37,22 +37,22 @@
  * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  */
-#ifndef ANT_BPWR_PAGES_H__
-#define ANT_BPWR_PAGES_H__
+#ifndef ANT_SHIFT_PAGES_H__
+#define ANT_SHIFT_PAGES_H__
 
 /** @file
  *
- * @defgroup ant_sdk_profiles_bpwr_pages Bicycle Power profile pages
+ * @defgroup ant_sdk_profiles_shift_pages Bicycle Power profile pages
  * @{
- * @ingroup ant_bpwr
- * @brief This module implements functions for the BPWR data pages.
+ * @ingroup ant_shift
+ * @brief This module implements functions for the SHIFT data pages.
  */
 
-#include "ant_bpwr_page_1.h"        // Calibration message main data page.
-#include "ant_bpwr_page_16.h"       // Standard power-only page.
-#include "ant_bpwr_page_17.h"       // Wheel Torque main data page.
-#include "ant_bpwr_page_18.h"       // Crank Torque main data page.
-#include "ant_bpwr_common_data.h"   // Instantaneous cadence data.
+#include "ant_shift_page_1.h"        // Calibration message main data page.
+#include "ant_shift_page_16.h"       // Standard power-only page.
+#include "ant_shift_page_17.h"       // Wheel Torque main data page.
+#include "ant_shift_page_18.h"       // Crank Torque main data page.
+#include "ant_shift_common_data.h"   // Instantaneous cadence data.
 #include "ant_common_page_80.h"     // Manufacturer's information data page.
 #include "ant_common_page_81.h"     // Product information data page.
 
@@ -65,5 +65,5 @@ extern "C" {
 }
 #endif
 
-#endif // ANT_BPWR_PAGES_H__
+#endif // ANT_SHIFT_PAGES_H__
 /** @} */

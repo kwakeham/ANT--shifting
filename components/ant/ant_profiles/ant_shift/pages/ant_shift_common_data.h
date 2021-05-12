@@ -37,14 +37,14 @@
  * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  */
-#ifndef ANT_BPWR_COMMON_DATA_H__
-#define ANT_BPWR_COMMON_DATA_H__
+#ifndef ANT_SHIFT_COMMON_DATA_H__
+#define ANT_SHIFT_COMMON_DATA_H__
 
 /** @file
  *
- * @defgroup ant_sdk_profiles_bpwr_common_data_page Stride Based Speed and Distance Monitor profile common data
+ * @defgroup ant_sdk_profiles_shift_common_data_page Stride Based Speed and Distance Monitor profile common data
  * @{
- * @ingroup ant_sdk_profiles_bpwr_pages
+ * @ingroup ant_sdk_profiles_shift_pages
  */
 
 #include <stdint.h>
@@ -53,19 +53,19 @@
 extern "C" {
 #endif
 
-/**@brief Data structure for BPWR common data.
+/**@brief Data structure for SHIFT common data.
  *
  * @details This structure stores data that is not associated with a particular page.
  */
 typedef struct
 {
     uint8_t  instantaneous_cadence; ///< Crank cadence (rpm, 0 - 254, 255-> invalid).
-} ant_bpwr_common_data_t;
+} ant_shift_common_data_t;
 
 /**@brief Initialize common data.
  */
-#define DEFAULT_ANT_BPWR_COMMON_DATA()  \
-    (ant_bpwr_common_data_t)            \
+#define DEFAULT_ANT_SHIFT_COMMON_DATA()  \
+    (ant_shift_common_data_t)            \
     {                                   \
         .instantaneous_cadence  = 0,    \
     }
@@ -77,8 +77,8 @@ typedef struct
  * @param[in]  p_common_data    Pointer to the common data.
  * @param[out] p_page_buffer    Pointer to the data buffer.
  */
-void ant_bpwr_cadence_encode(uint8_t                     * p_page_buffer,
-                            ant_bpwr_common_data_t const * p_common_data);
+void ant_shift_cadence_encode(uint8_t                     * p_page_buffer,
+                            ant_shift_common_data_t const * p_common_data);
 
 /**@brief Function for decoding speed.
  *
@@ -87,13 +87,13 @@ void ant_bpwr_cadence_encode(uint8_t                     * p_page_buffer,
  * @param[in]  p_page_buffer    Pointer to the data buffer.
  * @param[out] p_common_data    Pointer to the common data.
  */
-void ant_bpwr_cadence_decode(uint8_t const         * p_page_buffer,
-                            ant_bpwr_common_data_t * p_common_data);
+void ant_shift_cadence_decode(uint8_t const         * p_page_buffer,
+                            ant_shift_common_data_t * p_common_data);
 
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif // ANT_BPWR_COMMON_DATA_H__
+#endif // ANT_SHIFT_COMMON_DATA_H__
 /** @} */

@@ -38,18 +38,18 @@
  *
  */
 #include "sdk_common.h"
-#if NRF_MODULE_ENABLED(ANT_BPWR)
+#if NRF_MODULE_ENABLED(ANT_SHIFT)
 
 #include <string.h>
-#include "ant_bpwr_page_1.h"
+#include "ant_shift_page_1.h"
 
-#define NRF_LOG_MODULE_NAME ant_bpwr_page_1
-#if ANT_BPWR_PAGE_1_LOG_ENABLED
-#define NRF_LOG_LEVEL       ANT_BPWR_PAGE_1_LOG_LEVEL
-#define NRF_LOG_INFO_COLOR  ANT_BPWR_PAGE_1_INFO_COLOR
-#else // ANT_BPWR_PAGE_1_LOG_ENABLED
+#define NRF_LOG_MODULE_NAME ant_shift_page_1
+#if ANT_SHIFT_PAGE_1_LOG_ENABLED
+#define NRF_LOG_LEVEL       ANT_SHIFT_PAGE_1_LOG_LEVEL
+#define NRF_LOG_INFO_COLOR  ANT_SHIFT_PAGE_1_INFO_COLOR
+#else // ANT_SHIFT_PAGE_1_LOG_ENABLED
 #define NRF_LOG_LEVEL       0
-#endif // ANT_BPWR_PAGE_1_LOG_ENABLED
+#endif // ANT_SHIFT_PAGE_1_LOG_ENABLED
 #include "nrf_log.h"
 NRF_LOG_MODULE_REGISTER();
 
@@ -86,56 +86,56 @@ typedef struct
             uint8_t manufac_spec[6]; ///< Manufacture Specyfic Data.
         } custom_calib;
     } data;
-} ant_bpwr_page1_data_layout_t;
+} ant_shift_page1_data_layout_t;
 
 
-static void page1_data_log(ant_bpwr_page1_data_t const * p_page_data)
+static void page1_data_log(ant_shift_page1_data_t const * p_page_data)
 {
     NRF_LOG_INFO("Calibration id:                      %u", p_page_data->calibration_id);
 
     switch (p_page_data->calibration_id)
     {
-        case ANT_BPWR_CALIB_ID_MANUAL:
+        case ANT_SHIFT_CALIB_ID_MANUAL:
             // No implementation needed
             break;
 
-        case ANT_BPWR_CALIB_ID_MANUAL_SUCCESS:
+        case ANT_SHIFT_CALIB_ID_MANUAL_SUCCESS:
         /* fall through */
-        case ANT_BPWR_CALIB_ID_FAILED:
+        case ANT_SHIFT_CALIB_ID_FAILED:
             NRF_LOG_INFO("General calibration data:            %u",
                          p_page_data->data.general_calib);
         /* fall through */
-        case ANT_BPWR_CALIB_ID_AUTO:
+        case ANT_SHIFT_CALIB_ID_AUTO:
         /* fall through */
-        case ANT_BPWR_CALIB_ID_AUTO_SUPPORT:
+        case ANT_SHIFT_CALIB_ID_AUTO_SUPPORT:
 
             switch (p_page_data->auto_zero_status)
             {
-                case ANT_BPWR_AUTO_ZERO_NOT_SUPPORTED:
+                case ANT_SHIFT_AUTO_ZERO_NOT_SUPPORTED:
                     NRF_LOG_INFO("Auto zero not supported\r\n\n");
                     break;
 
-                case ANT_BPWR_AUTO_ZERO_OFF:
+                case ANT_SHIFT_AUTO_ZERO_OFF:
                     NRF_LOG_INFO("Auto zero off\r\n\n");
                     break;
 
-                case ANT_BPWR_AUTO_ZERO_ON:
+                case ANT_SHIFT_AUTO_ZERO_ON:
                     NRF_LOG_INFO("Auto zero on\r\n\n");
                     break;
             }
             break;
 
-        case ANT_BPWR_CALIB_ID_CTF:
+        case ANT_SHIFT_CALIB_ID_CTF:
             NRF_LOG_INFO("Not supported\r\n\n");
             break;
 
-        case ANT_BPWR_CALIB_ID_CUSTOM_REQ:
+        case ANT_SHIFT_CALIB_ID_CUSTOM_REQ:
         /* fall through */
-        case ANT_BPWR_CALIB_ID_CUSTOM_REQ_SUCCESS:
+        case ANT_SHIFT_CALIB_ID_CUSTOM_REQ_SUCCESS:
         /* fall through */
-        case ANT_BPWR_CALIB_ID_CUSTOM_UPDATE:
+        case ANT_SHIFT_CALIB_ID_CUSTOM_UPDATE:
         /* fall through */
-        case ANT_BPWR_CALIB_ID_CUSTOM_UPDATE_SUCCESS:
+        case ANT_SHIFT_CALIB_ID_CUSTOM_UPDATE_SUCCESS:
             NRF_LOG_INFO("Manufacture specyfic:            ");
             NRF_LOG_HEXDUMP_INFO((uint8_t*)p_page_data->data.custom_calib,
                                sizeof (p_page_data->data.custom_calib));
@@ -148,10 +148,10 @@ static void page1_data_log(ant_bpwr_page1_data_t const * p_page_data)
 }
 
 
-void ant_bpwr_page_1_encode(uint8_t                     * p_page_buffer,
-                            ant_bpwr_page1_data_t const * p_page_data)
+void ant_shift_page_1_encode(uint8_t                     * p_page_buffer,
+                            ant_shift_page1_data_t const * p_page_data)
 {
-    ant_bpwr_page1_data_layout_t * p_outcoming_data = (ant_bpwr_page1_data_layout_t *)p_page_buffer;
+    ant_shift_page1_data_layout_t * p_outcoming_data = (ant_shift_page1_data_layout_t *)p_page_buffer;
 
     page1_data_log(p_page_data);
 
@@ -159,21 +159,21 @@ void ant_bpwr_page_1_encode(uint8_t                     * p_page_buffer,
 
     switch (p_page_data->calibration_id)
     {
-        case ANT_BPWR_CALIB_ID_MANUAL:
+        case ANT_SHIFT_CALIB_ID_MANUAL:
             memset(p_outcoming_data->data.general_calib_request.reserved, 0xFF,
                    sizeof (p_outcoming_data->data.general_calib_request.reserved));
             break;
 
-        case ANT_BPWR_CALIB_ID_AUTO:
+        case ANT_SHIFT_CALIB_ID_AUTO:
             memset(p_outcoming_data->data.auto_zero_config.reserved, 0xFF,
                    sizeof (p_outcoming_data->data.auto_zero_config.reserved));
             p_outcoming_data->data.auto_zero_config.auto_zero_status =
                 p_page_data->auto_zero_status;
             break;
 
-        case ANT_BPWR_CALIB_ID_MANUAL_SUCCESS:
+        case ANT_SHIFT_CALIB_ID_MANUAL_SUCCESS:
         /* fall through */
-        case ANT_BPWR_CALIB_ID_FAILED:
+        case ANT_SHIFT_CALIB_ID_FAILED:
             memset(p_outcoming_data->data.general_calib_response.reserved, 0xFF,
                    sizeof (p_outcoming_data->data.general_calib_response.reserved));
             p_outcoming_data->data.general_calib_response.auto_zero_status =
@@ -182,27 +182,27 @@ void ant_bpwr_page_1_encode(uint8_t                     * p_page_buffer,
                                            p_outcoming_data->data.general_calib_response.data));
             break;
 
-        case ANT_BPWR_CALIB_ID_CTF:
+        case ANT_SHIFT_CALIB_ID_CTF:
             NRF_LOG_INFO("Not supported");
             break;
 
-        case ANT_BPWR_CALIB_ID_AUTO_SUPPORT:
+        case ANT_SHIFT_CALIB_ID_AUTO_SUPPORT:
             memset(p_outcoming_data->data.auto_zero_support.reserved1, 0xFF,
                    sizeof (p_outcoming_data->data.auto_zero_support.reserved1));
             p_outcoming_data->data.auto_zero_support.reserved0 = 0x00;
             p_outcoming_data->data.auto_zero_support.enable    =
-                (p_page_data->auto_zero_status == ANT_BPWR_AUTO_ZERO_NOT_SUPPORTED) ? false : true;
+                (p_page_data->auto_zero_status == ANT_SHIFT_AUTO_ZERO_NOT_SUPPORTED) ? false : true;
             p_outcoming_data->data.auto_zero_support.status =
-                (p_page_data->auto_zero_status == ANT_BPWR_AUTO_ZERO_ON) ? true : false;
+                (p_page_data->auto_zero_status == ANT_SHIFT_AUTO_ZERO_ON) ? true : false;
             break;
 
-        case ANT_BPWR_CALIB_ID_CUSTOM_REQ:
+        case ANT_SHIFT_CALIB_ID_CUSTOM_REQ:
         /* fall through */
-        case ANT_BPWR_CALIB_ID_CUSTOM_REQ_SUCCESS:
+        case ANT_SHIFT_CALIB_ID_CUSTOM_REQ_SUCCESS:
         /* fall through */
-        case ANT_BPWR_CALIB_ID_CUSTOM_UPDATE:
+        case ANT_SHIFT_CALIB_ID_CUSTOM_UPDATE:
         /* fall through */
-        case ANT_BPWR_CALIB_ID_CUSTOM_UPDATE_SUCCESS:
+        case ANT_SHIFT_CALIB_ID_CUSTOM_UPDATE_SUCCESS:
             memcpy(p_outcoming_data->data.custom_calib.manufac_spec,
                    (void *)p_page_data->data.custom_calib,
                    sizeof (p_page_data->data.custom_calib));
@@ -214,63 +214,63 @@ void ant_bpwr_page_1_encode(uint8_t                     * p_page_buffer,
 }
 
 
-void ant_bpwr_page_1_decode(uint8_t const         * p_page_buffer,
-                            ant_bpwr_page1_data_t * p_page_data)
+void ant_shift_page_1_decode(uint8_t const         * p_page_buffer,
+                            ant_shift_page1_data_t * p_page_data)
 {
-    ant_bpwr_page1_data_layout_t const * p_incoming_data =
-        (ant_bpwr_page1_data_layout_t *)p_page_buffer;
+    ant_shift_page1_data_layout_t const * p_incoming_data =
+        (ant_shift_page1_data_layout_t *)p_page_buffer;
 
-    p_page_data->calibration_id = (ant_bpwr_calib_id_t)p_incoming_data->calibration_id;
+    p_page_data->calibration_id = (ant_shift_calib_id_t)p_incoming_data->calibration_id;
 
     switch (p_incoming_data->calibration_id)
     {
-        case ANT_BPWR_CALIB_ID_MANUAL:
+        case ANT_SHIFT_CALIB_ID_MANUAL:
             // No implementation needed
             break;
 
-        case ANT_BPWR_CALIB_ID_AUTO:
+        case ANT_SHIFT_CALIB_ID_AUTO:
             /* fall through */
             p_page_data->auto_zero_status =
-                (ant_bpwr_auto_zero_status_t)p_incoming_data->data.auto_zero_config.auto_zero_status;
+                (ant_shift_auto_zero_status_t)p_incoming_data->data.auto_zero_config.auto_zero_status;
             break;
 
-        case ANT_BPWR_CALIB_ID_MANUAL_SUCCESS:
+        case ANT_SHIFT_CALIB_ID_MANUAL_SUCCESS:
         /* fall through */
-        case ANT_BPWR_CALIB_ID_FAILED:
+        case ANT_SHIFT_CALIB_ID_FAILED:
             p_page_data->auto_zero_status =
-                (ant_bpwr_auto_zero_status_t)p_incoming_data->data.general_calib_response.
+                (ant_shift_auto_zero_status_t)p_incoming_data->data.general_calib_response.
                 auto_zero_status;
             p_page_data->data.general_calib = uint16_decode(
                 p_incoming_data->data.general_calib_response.data);
             break;
 
-        case ANT_BPWR_CALIB_ID_CTF:
+        case ANT_SHIFT_CALIB_ID_CTF:
             NRF_LOG_INFO("Not supported");
             break;
 
-        case ANT_BPWR_CALIB_ID_AUTO_SUPPORT:
+        case ANT_SHIFT_CALIB_ID_AUTO_SUPPORT:
 
             if (p_incoming_data->data.auto_zero_support.enable == false)
             {
-                p_page_data->auto_zero_status = ANT_BPWR_AUTO_ZERO_NOT_SUPPORTED;
+                p_page_data->auto_zero_status = ANT_SHIFT_AUTO_ZERO_NOT_SUPPORTED;
             }
             else if (p_incoming_data->data.auto_zero_support.status)
             {
-                p_page_data->auto_zero_status = ANT_BPWR_AUTO_ZERO_ON;
+                p_page_data->auto_zero_status = ANT_SHIFT_AUTO_ZERO_ON;
             }
             else
             {
-                p_page_data->auto_zero_status = ANT_BPWR_AUTO_ZERO_OFF;
+                p_page_data->auto_zero_status = ANT_SHIFT_AUTO_ZERO_OFF;
             }
             break;
 
-        case ANT_BPWR_CALIB_ID_CUSTOM_REQ:
+        case ANT_SHIFT_CALIB_ID_CUSTOM_REQ:
         /* fall through */
-        case ANT_BPWR_CALIB_ID_CUSTOM_REQ_SUCCESS:
+        case ANT_SHIFT_CALIB_ID_CUSTOM_REQ_SUCCESS:
         /* fall through */
-        case ANT_BPWR_CALIB_ID_CUSTOM_UPDATE:
+        case ANT_SHIFT_CALIB_ID_CUSTOM_UPDATE:
         /* fall through */
-        case ANT_BPWR_CALIB_ID_CUSTOM_UPDATE_SUCCESS:
+        case ANT_SHIFT_CALIB_ID_CUSTOM_UPDATE_SUCCESS:
             memcpy((void *)p_page_data->data.custom_calib,
                    p_incoming_data->data.custom_calib.manufac_spec,
                    sizeof (p_page_data->data.custom_calib));
@@ -283,4 +283,4 @@ void ant_bpwr_page_1_decode(uint8_t const         * p_page_buffer,
     page1_data_log(p_page_data);
 }
 
-#endif // NRF_MODULE_ENABLED(ANT_BPWR)
+#endif // NRF_MODULE_ENABLED(ANT_SHIFT)

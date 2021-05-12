@@ -37,8 +37,8 @@
  * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  */
-#ifndef ANT_BPWR_UTILS_H__
-#define ANT_BPWR_UTILS_H__
+#ifndef ANT_SHIFT_UTILS_H__
+#define ANT_SHIFT_UTILS_H__
 
 #include "app_util.h"
 #include "nrf_assert.h"
@@ -50,30 +50,30 @@ extern "C" {
 
 /** @file
  *
- * @defgroup ant_sdk_profiles_bpwr_utils Bicycle Power profile utilities
+ * @defgroup ant_sdk_profiles_shift_utils Bicycle Power profile utilities
  * @{
- * @ingroup ant_bpwr
+ * @ingroup ant_shift
  * @brief This module implements utilities for the Bicycle Power profile.
  *
  */
 
 /*@brief A reversal of torque period unit.
  *
- * @details According to the ANT BPWR specification, the torque period unit is 1/2048 of a second.
+ * @details According to the ANT SHIFT specification, the torque period unit is 1/2048 of a second.
  */
-#define ANT_BPWR_TORQUE_PERIOD_UNIT_REVERSAL                2048
-#define ANT_BPWR_TORQUE_PERIOD_DISP_PRECISION               1000
-#define ANT_BPWR_TORQUE_PERIOD_RESCALE(VALUE)               value_rescale((VALUE), ANT_BPWR_TORQUE_PERIOD_UNIT_REVERSAL,  \
-                                                                            ANT_BPWR_TORQUE_PERIOD_DISP_PRECISION)
+#define ANT_SHIFT_TORQUE_PERIOD_UNIT_REVERSAL                2048
+#define ANT_SHIFT_TORQUE_PERIOD_DISP_PRECISION               1000
+#define ANT_SHIFT_TORQUE_PERIOD_RESCALE(VALUE)               value_rescale((VALUE), ANT_SHIFT_TORQUE_PERIOD_UNIT_REVERSAL,  \
+                                                                            ANT_SHIFT_TORQUE_PERIOD_DISP_PRECISION)
 
 /*@brief A reversal of accumulated torque unit.
  *
- * @details According to the ANT BPWR specification, the accumulated torque unit is 1/32 of a Nm.
+ * @details According to the ANT SHIFT specification, the accumulated torque unit is 1/32 of a Nm.
  */
-#define ANT_BPWR_ACC_TORQUE_UNIT_REVERSAL                   32
-#define ANT_BPWR_ACC_TORQUE_DISP_PRECISION                  10
-#define ANT_BPWR_ACC_TORQUE_RESCALE(VALUE)                  value_rescale((VALUE), ANT_BPWR_ACC_TORQUE_UNIT_REVERSAL,  \
-                                                                            ANT_BPWR_ACC_TORQUE_DISP_PRECISION)
+#define ANT_SHIFT_ACC_TORQUE_UNIT_REVERSAL                   32
+#define ANT_SHIFT_ACC_TORQUE_DISP_PRECISION                  10
+#define ANT_SHIFT_ACC_TORQUE_RESCALE(VALUE)                  value_rescale((VALUE), ANT_SHIFT_ACC_TORQUE_UNIT_REVERSAL,  \
+                                                                            ANT_SHIFT_ACC_TORQUE_DISP_PRECISION)
 
 /** @} */
 
@@ -82,5 +82,5 @@ extern "C" {
 }
 #endif
 
-#endif // ANT_BPWR_UTILS_H__
+#endif // ANT_SHIFT_UTILS_H__
 

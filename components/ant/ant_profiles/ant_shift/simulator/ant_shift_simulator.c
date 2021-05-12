@@ -37,7 +37,7 @@
  * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  */
-#include "ant_bpwr_simulator.h"
+#include "ant_shift_simulator.h"
 #include "app_util.h"
 #include "nordic_common.h"
 
@@ -54,13 +54,13 @@
 #define PEDAL_INCR 1
 
 #define TORQUE_PERIOD            774
-#define SIMULATOR_TIME_INCREMENT BPWR_MSG_PERIOD
+#define SIMULATOR_TIME_INCREMENT SHIFT_MSG_PERIOD
 
 #define TORQUE_INCR 10
 
 
-void ant_bpwr_simulator_init(ant_bpwr_simulator_t           * p_simulator,
-                             ant_bpwr_simulator_cfg_t const * p_config,
+void ant_shift_simulator_init(ant_shift_simulator_t           * p_simulator,
+                             ant_shift_simulator_cfg_t const * p_config,
                              bool                             auto_change)
 {
     p_simulator->p_profile      = p_config->p_profile;
@@ -82,7 +82,7 @@ void ant_bpwr_simulator_init(ant_bpwr_simulator_t           * p_simulator,
     p_simulator->_cb.pedal_sensorsim_cfg.incr         = PEDAL_INCR;
     p_simulator->_cb.pedal_sensorsim_cfg.start_at_max = false;
 
-    p_simulator->p_profile->BPWR_PROFILE_pedal_power.differentiation = 0x01; // right
+    p_simulator->p_profile->SHIFT_PROFILE_pedal_power.differentiation = 0x01; // right
 
     sensorsim_init(&(p_simulator->_cb.power_sensorsim_state),
                    &(p_simulator->_cb.power_sensorsim_cfg));
@@ -93,11 +93,11 @@ void ant_bpwr_simulator_init(ant_bpwr_simulator_t           * p_simulator,
 }
 
 
-void ant_bpwr_simulator_one_iteration(ant_bpwr_simulator_t * p_simulator, ant_bpwr_evt_t event)
+void ant_shift_simulator_one_iteration(ant_shift_simulator_t * p_simulator, ant_shift_evt_t event)
 {
     switch (event)
     {
-        case ANT_BPWR_PAGE_16_UPDATED:
+        case ANT_SHIFT_PAGE_16_UPDATED:
 
             if (p_simulator->_cb.auto_change)
             {
@@ -109,60 +109,60 @@ void ant_bpwr_simulator_one_iteration(ant_bpwr_simulator_t * p_simulator, ant_bp
                                                    &(p_simulator->_cb.pedal_sensorsim_cfg)));
             }
 
-            p_simulator->p_profile->BPWR_PROFILE_instantaneous_power =
+            p_simulator->p_profile->SHIFT_PROFILE_instantaneous_power =
                 p_simulator->_cb.power_sensorsim_state.current_val;
-            p_simulator->p_profile->BPWR_PROFILE_accumulated_power +=
+            p_simulator->p_profile->SHIFT_PROFILE_accumulated_power +=
                 p_simulator->_cb.power_sensorsim_state.current_val;
 
-            if (p_simulator->p_profile->BPWR_PROFILE_accumulated_power == UINT16_MAX)
+            if (p_simulator->p_profile->SHIFT_PROFILE_accumulated_power == UINT16_MAX)
             {
-                p_simulator->p_profile->BPWR_PROFILE_accumulated_power = 0;
+                p_simulator->p_profile->SHIFT_PROFILE_accumulated_power = 0;
             }
-            p_simulator->p_profile->BPWR_PROFILE_instantaneous_cadence =
+            p_simulator->p_profile->SHIFT_PROFILE_instantaneous_cadence =
                  p_simulator->_cb.cadence_sensorsim_state.current_val;
-            p_simulator->p_profile->BPWR_PROFILE_pedal_power.distribution =
+            p_simulator->p_profile->SHIFT_PROFILE_pedal_power.distribution =
                 p_simulator->_cb.pedal_sensorsim_state.current_val;
-            p_simulator->p_profile->BPWR_PROFILE_power_update_event_count++;
+            p_simulator->p_profile->SHIFT_PROFILE_power_update_event_count++;
             break;
 
-        case ANT_BPWR_PAGE_17_UPDATED:
+        case ANT_SHIFT_PAGE_17_UPDATED:
 
             if (p_simulator->_cb.auto_change)
             {
                 UNUSED_PARAMETER(sensorsim_measure(&(p_simulator->_cb.cadence_sensorsim_state),
                                                    &(p_simulator->_cb.cadence_sensorsim_cfg)));
             }
-            p_simulator->p_profile->BPWR_PROFILE_instantaneous_cadence =
+            p_simulator->p_profile->SHIFT_PROFILE_instantaneous_cadence =
                  p_simulator->_cb.cadence_sensorsim_state.current_val;
-            p_simulator->p_profile->BPWR_PROFILE_wheel_period += TORQUE_PERIOD;
+            p_simulator->p_profile->SHIFT_PROFILE_wheel_period += TORQUE_PERIOD;
             p_simulator->_cb.tick_incr                        +=
                 SIMULATOR_TIME_INCREMENT;
-            p_simulator->p_profile->BPWR_PROFILE_wheel_tick +=
+            p_simulator->p_profile->SHIFT_PROFILE_wheel_tick +=
                 p_simulator->_cb.tick_incr / (TORQUE_PERIOD * 16);
             p_simulator->_cb.tick_incr =
                 p_simulator->_cb.tick_incr % (TORQUE_PERIOD * 16);
-            p_simulator->p_profile->BPWR_PROFILE_wheel_accumulated_torque += TORQUE_INCR;
-            p_simulator->p_profile->BPWR_PROFILE_wheel_update_event_count++;
+            p_simulator->p_profile->SHIFT_PROFILE_wheel_accumulated_torque += TORQUE_INCR;
+            p_simulator->p_profile->SHIFT_PROFILE_wheel_update_event_count++;
             break;
 
-        case ANT_BPWR_PAGE_18_UPDATED:
+        case ANT_SHIFT_PAGE_18_UPDATED:
 
             if (p_simulator->_cb.auto_change)
             {
                 UNUSED_PARAMETER(sensorsim_measure(&(p_simulator->_cb.cadence_sensorsim_state),
                                                    &(p_simulator->_cb.cadence_sensorsim_cfg)));
             }
-            p_simulator->p_profile->BPWR_PROFILE_instantaneous_cadence =
+            p_simulator->p_profile->SHIFT_PROFILE_instantaneous_cadence =
                  p_simulator->_cb.cadence_sensorsim_state.current_val;
-            p_simulator->p_profile->BPWR_PROFILE_crank_period = TORQUE_PERIOD;
+            p_simulator->p_profile->SHIFT_PROFILE_crank_period = TORQUE_PERIOD;
             p_simulator->_cb.tick_incr                        +=
                 SIMULATOR_TIME_INCREMENT;
-            p_simulator->p_profile->BPWR_PROFILE_crank_tick +=
+            p_simulator->p_profile->SHIFT_PROFILE_crank_tick +=
                 p_simulator->_cb.tick_incr / (TORQUE_PERIOD * 16);
             p_simulator->_cb.tick_incr =
                 p_simulator->_cb.tick_incr % (TORQUE_PERIOD * 16);
-            p_simulator->p_profile->BPWR_PROFILE_crank_accumulated_torque += TORQUE_INCR;
-            p_simulator->p_profile->BPWR_PROFILE_crank_update_event_count++;
+            p_simulator->p_profile->SHIFT_PROFILE_crank_accumulated_torque += TORQUE_INCR;
+            p_simulator->p_profile->SHIFT_PROFILE_crank_update_event_count++;
             break;
 
         default:
@@ -171,7 +171,7 @@ void ant_bpwr_simulator_one_iteration(ant_bpwr_simulator_t * p_simulator, ant_bp
 }
 
 
-void ant_bpwr_simulator_increment(ant_bpwr_simulator_t * p_simulator)
+void ant_shift_simulator_increment(ant_shift_simulator_t * p_simulator)
 {
     if (!p_simulator->_cb.auto_change)
     {
@@ -185,7 +185,7 @@ void ant_bpwr_simulator_increment(ant_bpwr_simulator_t * p_simulator)
 }
 
 
-void ant_bpwr_simulator_decrement(ant_bpwr_simulator_t * p_simulator)
+void ant_shift_simulator_decrement(ant_shift_simulator_t * p_simulator)
 {
     if (!p_simulator->_cb.auto_change)
     {

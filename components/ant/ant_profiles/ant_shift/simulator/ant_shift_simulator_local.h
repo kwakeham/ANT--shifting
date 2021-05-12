@@ -37,13 +37,13 @@
  * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  */
-#ifndef ANT_BPWR_SIMULATOR_LOCAL_H__
-#define ANT_BPWR_SIMULATOR_LOCAL_H__
+#ifndef ANT_SHIFT_SIMULATOR_LOCAL_H__
+#define ANT_SHIFT_SIMULATOR_LOCAL_H__
 
 #include <stdint.h>
 #include <stdbool.h>
 #include "bsp.h"
-#include "ant_bpwr.h"
+#include "ant_shift.h"
 #include "sensorsim.h"
 
 #ifdef __cplusplus
@@ -51,8 +51,8 @@ extern "C" {
 #endif
 
 /**
- * @ingroup ant_sdk_bpwr_simulator
- * @brief BPWR simulator control block structure. */
+ * @ingroup ant_sdk_shift_simulator
+ * @brief SHIFT simulator control block structure. */
 typedef struct
 {
     bool              auto_change;             ///< Power will change automatically (if auto_change is set) or manually.
@@ -63,7 +63,7 @@ typedef struct
     sensorsim_cfg_t   cadence_sensorsim_cfg;   ///< Cadence configuration of the simulated sensor.
     sensorsim_state_t pedal_sensorsim_state;   ///< Pedal state of the simulated sensor.
     sensorsim_cfg_t   pedal_sensorsim_cfg;     ///< Pedal configuration of the simulated sensor.
-}ant_bpwr_simulator_cb_t;
+}ant_shift_simulator_cb_t;
 
 
 
@@ -71,4 +71,4 @@ typedef struct
 }
 #endif
 
-#endif // ANT_BPWR_SIMULATOR_LOCAL_H__
+#endif // ANT_SHIFT_SIMULATOR_LOCAL_H__
