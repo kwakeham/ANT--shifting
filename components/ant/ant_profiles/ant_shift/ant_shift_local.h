@@ -37,8 +37,8 @@
  * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  */
-#ifndef ANT_BPWR_LOCAL_H__
-#define ANT_BPWR_LOCAL_H__
+#ifndef ANT_SHIFT_LOCAL_H__
+#define ANT_SHIFT_LOCAL_H__
 
 #include <stdint.h>
 #include <stdbool.h>
@@ -73,4 +73,4 @@ typedef struct
 }
 #endif
 
-#endif // ANT_BPWR_LOCAL_H__
+#endif // ANT_SHIFT_LOCAL_H__

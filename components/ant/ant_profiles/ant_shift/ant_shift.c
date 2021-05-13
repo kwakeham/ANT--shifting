@@ -38,7 +38,7 @@
  *
  */
 #include "sdk_common.h"
-#if NRF_MODULE_ENABLED(ANT_BPWR)
+#if NRF_MODULE_ENABLED(ANT_SHIFT)
 
 #include "nrf_assert.h"
 #include "app_error.h"
@@ -46,20 +46,20 @@
 #include "ant_shift.h"
 
 #define NRF_LOG_MODULE_NAME ant_shift
-#if ANT_BPWR_LOG_ENABLED
-#define NRF_LOG_LEVEL       ANT_BPWR_LOG_LEVEL
-#define NRF_LOG_INFO_COLOR  ANT_BPWR_INFO_COLOR
-#else // ANT_BPWR_LOG_ENABLED
+#if ANT_SHIFT_LOG_ENABLED
+#define NRF_LOG_LEVEL       ANT_SHIFT_LOG_LEVEL
+#define NRF_LOG_INFO_COLOR  ANT_SHIFT_INFO_COLOR
+#else // ANT_SHIFT_LOG_ENABLED
 #define NRF_LOG_LEVEL       0
-#endif // ANT_BPWR_LOG_ENABLED
+#endif // ANT_SHIFT_LOG_ENABLED
 #include "nrf_log.h"
 NRF_LOG_MODULE_REGISTER();
 
-#define BPWR_CALIB_INT_TIMEOUT ((ANT_CLOCK_FREQUENCY * BPWR_CALIBRATION_TIMOUT_S) / BPWR_MSG_PERIOD) // calibration timeout in ant message period's unit
+#define SHIFT_CALIB_INT_TIMEOUT ((ANT_CLOCK_FREQUENCY * SHIFT_CALIBRATION_TIMOUT_S) / SHIFT_MSG_PERIOD) // calibration timeout in ant message period's unit
 
 // for torque sensor Minimum: Interleave every 9th message
-#define BPWR_PAGE_16_INTERVAL      5   // Preferred: Interleave every 5th message
-#define BPWR_PAGE_16_INTERVAL_OFS  2   // Permissible offset
+#define SHIFT_PAGE_1_INTERVAL      5   // Preferred: Interleave every 5th message
+#define SHIFT_PAGE_1_INTERVAL_OFS  2   // Permissible offset
 #define COMMON_PAGE_80_INTERVAL    119 // Minimum: Interleave every 121 messages
 #define COMMON_PAGE_81_INTERVAL    120 // Minimum: Interleave every 121 messages
 #define AUTO_ZERO_SUPPORT_INTERVAL 120 // Minimum: Interleave every 121 messages
@@ -84,10 +84,7 @@ static ret_code_t ant_shift_init(ant_shift_profile_t         * p_profile,
 {
     p_profile->channel_number = p_channel_config->channel_number;
 
-    p_profile->page_1  = DEFAULT_ANT_BPWR_PAGE1();
-    p_profile->page_16 = DEFAULT_ANT_BPWR_PAGE16();
-    p_profile->page_17 = DEFAULT_ANT_BPWR_PAGE17();
-    p_profile->page_18 = DEFAULT_ANT_BPWR_PAGE18();
+    p_profile->page_1  = DEFAULT_ANT_SHIFT_PAGE1();
     p_profile->page_80 = DEFAULT_ANT_COMMON_page80();
     p_profile->page_81 = DEFAULT_ANT_COMMON_page81();
 
@@ -107,10 +104,10 @@ ret_code_t ant_shift_disp_init(ant_shift_profile_t           * p_profile,
     ASSERT(p_disp_config->p_cb != NULL);
 
     p_profile->evt_handler   = p_disp_config->evt_handler;
-    p_profile->_cb.p_disp_cb = p_disp_config->p_cb;
+    // p_profile->_cb.p_disp_cb = p_disp_config->p_cb;
 
-    p_profile->_cb.p_disp_cb ->calib_timeout = 0;
-    p_profile->_cb.p_disp_cb ->calib_stat    = BPWR_DISP_CALIB_NONE;
+    // p_profile->_cb.p_disp_cb ->calib_timeout = 0;
+    // p_profile->_cb.p_disp_cb ->calib_stat    = SHIFT_DISP_CALIB_NONE;
 
     return ant_shift_init(p_profile, p_channel_config);
 }
@@ -125,15 +122,14 @@ ret_code_t ant_shift_sens_init(ant_shift_profile_t           * p_profile,
     ASSERT(p_sens_config != NULL);
     ASSERT(p_sens_config->p_cb != NULL);
     ASSERT(p_sens_config->evt_handler != NULL);
-    ASSERT(p_sens_config->calib_handler != NULL);
+    // ASSERT(p_sens_config->calib_handler != NULL);
 
     p_profile->evt_handler   = p_sens_config->evt_handler;
-    p_profile->_cb.p_sens_cb = p_sens_config->p_cb;
+    // p_profile->_cb.p_sens_cb = p_sens_config->p_cb;
 
-    p_profile->_cb.p_sens_cb->torque_use      = p_sens_config->torque_use;
-    p_profile->_cb.p_sens_cb->calib_handler   = p_sens_config->calib_handler;
-    p_profile->_cb.p_sens_cb->calib_stat      = BPWR_SENS_CALIB_NONE;
-    p_profile->_cb.p_sens_cb->message_counter = 0;
+    // p_profile->_cb.p_sens_cb->calib_handler   = p_sens_config->calib_handler;
+    // p_profile->_cb.p_sens_cb->calib_stat      = SHIFT_SENS_CALIB_NONE;
+    // p_profile->_cb.p_sens_cb->message_counter = 0;
 
     return ant_shift_init(p_profile, p_channel_config);
 }
@@ -151,48 +147,48 @@ static ant_shift_page_t next_page_number_get(ant_shift_profile_t * p_profile)
     ant_shift_sens_cb_t * p_shift_cb = p_profile->_cb.p_sens_cb;
     ant_shift_page_t      page_number;
 
-    if (p_shift_cb->calib_stat == BPWR_SENS_CALIB_READY)
+    // if (p_shift_cb->calib_stat == SHIFT_SENS_CALIB_READY)
+    // {
+    //     page_number           = ANT_SHIFT_PAGE_1;
+    //     p_shift_cb->calib_stat = SHIFT_SENS_CALIB_NONE; // mark event as processed
+    // }
+    // else if ((p_profile->SHIFT_PROFILE_auto_zero_status != ANT_SHIFT_AUTO_ZERO_NOT_SUPPORTED)
+    //          && (p_shift_cb->message_counter == AUTO_ZERO_SUPPORT_INTERVAL))
+    // {
+    //     page_number                            = ANT_SHIFT_PAGE_1;
+    //     p_profile->SHIFT_PROFILE_calibration_id = ANT_SHIFT_CALIB_ID_AUTO_SUPPORT;
+    //     p_shift_cb->message_counter++;
+    // }
+    if (p_shift_cb->message_counter >= COMMON_PAGE_81_INTERVAL)
     {
-        page_number           = ANT_BPWR_PAGE_1;
-        p_shift_cb->calib_stat = BPWR_SENS_CALIB_NONE; // mark event as processed
-    }
-    else if ((p_profile->BPWR_PROFILE_auto_zero_status != ANT_BPWR_AUTO_ZERO_NOT_SUPPORTED)
-             && (p_shift_cb->message_counter == AUTO_ZERO_SUPPORT_INTERVAL))
-    {
-        page_number                            = ANT_BPWR_PAGE_1;
-        p_profile->BPWR_PROFILE_calibration_id = ANT_BPWR_CALIB_ID_AUTO_SUPPORT;
-        p_shift_cb->message_counter++;
-    }
-    else if (p_shift_cb->message_counter >= COMMON_PAGE_81_INTERVAL)
-    {
-        page_number                = ANT_BPWR_PAGE_81;
+        page_number                = ANT_SHIFT_PAGE_81;
         p_shift_cb->message_counter = 0;
     }
     else
     {
         if (p_shift_cb->message_counter == COMMON_PAGE_80_INTERVAL)
         {
-            page_number = ANT_BPWR_PAGE_80;
+            page_number = ANT_SHIFT_PAGE_80;
         }
         else
         {
-            if ( p_shift_cb->torque_use == TORQUE_NONE)
-            {
-                page_number = ANT_BPWR_PAGE_16;
-            }
-            else if ((p_shift_cb->message_counter % BPWR_PAGE_16_INTERVAL)
-                     == BPWR_PAGE_16_INTERVAL_OFS)
-            {
-                page_number = ANT_BPWR_PAGE_16;
-            }
-            else if ( p_shift_cb->torque_use == TORQUE_WHEEL)
-            {
-                page_number = ANT_BPWR_PAGE_17;
-            }
-            else // assumed TORQUE_CRANK
-            {
-                page_number = ANT_BPWR_PAGE_18;
-            }
+            // if ( p_shift_cb->torque_use == TORQUE_NONE)
+            // {
+            //     page_number = ANT_SHIFT_PAGE_16;
+            // }
+            // else if ((p_shift_cb->message_counter % SHIFT_PAGE_16_INTERVAL)
+            //          == SHIFT_PAGE_16_INTERVAL_OFS)
+            // {
+            //     page_number = ANT_SHIFT_PAGE_16;
+            // }
+            // else if ( p_shift_cb->torque_use == TORQUE_WHEEL)
+            // {
+            //     page_number = ANT_SHIFT_PAGE_17;
+            // }
+            // else // assumed TORQUE_CRANK
+            // {
+                page_number = ANT_SHIFT_PAGE_1;
+            // }
         }
         p_shift_cb->message_counter++;
     }
@@ -216,24 +212,24 @@ static void sens_message_encode(ant_shift_profile_t * p_profile, uint8_t * p_mes
 
     switch (p_shift_message_payload->page_number)
     {
-        case ANT_BPWR_PAGE_1:
+        case ANT_SHIFT_PAGE_1:
             ant_shift_page_1_encode(p_shift_message_payload->page_payload, &(p_profile->page_1));
             break;
 
-        case ANT_BPWR_PAGE_16:
-            ant_shift_page_16_encode(p_shift_message_payload->page_payload, &(p_profile->page_16));
-            ant_shift_cadence_encode(p_shift_message_payload->page_payload, &(p_profile->common));
-            break;
+        // case ANT_SHIFT_PAGE_16:
+        //     ant_shift_page_16_encode(p_shift_message_payload->page_payload, &(p_profile->page_16));
+        //     ant_shift_cadence_encode(p_shift_message_payload->page_payload, &(p_profile->common));
+        //     break;
 
-        case ANT_BPWR_PAGE_17:
-            ant_shift_page_17_encode(p_shift_message_payload->page_payload, &(p_profile->page_17));
-            ant_shift_cadence_encode(p_shift_message_payload->page_payload, &(p_profile->common));
-            break;
+        // case ANT_SHIFT_PAGE_17:
+        //     ant_shift_page_17_encode(p_shift_message_payload->page_payload, &(p_profile->page_17));
+        //     ant_shift_cadence_encode(p_shift_message_payload->page_payload, &(p_profile->common));
+        //     break;
 
-        case ANT_BPWR_PAGE_18:
-            ant_shift_page_18_encode(p_shift_message_payload->page_payload, &(p_profile->page_18));
-            ant_shift_cadence_encode(p_shift_message_payload->page_payload, &(p_profile->common));
-            break;
+        // case ANT_SHIFT_PAGE_18:
+        //     ant_shift_page_18_encode(p_shift_message_payload->page_payload, &(p_profile->page_18));
+        //     ant_shift_cadence_encode(p_shift_message_payload->page_payload, &(p_profile->common));
+        //     break;
 
         case ANT_COMMON_PAGE_80:
             ant_common_page_80_encode(p_shift_message_payload->page_payload, &(p_profile->page_80));
@@ -264,10 +260,10 @@ static void sens_message_decode(ant_shift_profile_t * p_profile, uint8_t * p_mes
 
     switch (p_shift_message_payload->page_number)
     {
-        case ANT_BPWR_PAGE_1:
+        case ANT_SHIFT_PAGE_1:
             ant_shift_page_1_decode(p_shift_message_payload->page_payload, &page1);
-            p_profile->_cb.p_sens_cb->calib_stat = BPWR_SENS_CALIB_REQUESTED;
-            p_profile->_cb.p_sens_cb->calib_handler(p_profile, &page1);
+            // p_profile->_cb.p_sens_cb->calib_stat = SHIFT_SENS_CALIB_REQUESTED;
+            // p_profile->_cb.p_sens_cb->calib_handler(p_profile, &page1);
             break;
 
         default:
@@ -289,25 +285,25 @@ static void disp_message_decode(ant_shift_profile_t * p_profile, uint8_t * p_mes
 
     switch (p_shift_message_payload->page_number)
     {
-        case ANT_BPWR_PAGE_1:
+        case ANT_SHIFT_PAGE_1:
             ant_shift_page_1_decode(p_shift_message_payload->page_payload, &(p_profile->page_1));
-            p_profile->_cb.p_disp_cb->calib_stat = BPWR_DISP_CALIB_NONE;
+            // p_profile->_cb.p_disp_cb->calib_stat = SHIFT_DISP_CALIB_NONE;
             break;
 
-        case ANT_BPWR_PAGE_16:
-            ant_shift_page_16_decode(p_shift_message_payload->page_payload, &(p_profile->page_16));
-            ant_shift_cadence_decode(p_shift_message_payload->page_payload, &(p_profile->common));
-            break;
+        // case ANT_SHIFT_PAGE_16:
+        //     ant_shift_page_16_decode(p_shift_message_payload->page_payload, &(p_profile->page_16));
+        //     ant_shift_cadence_decode(p_shift_message_payload->page_payload, &(p_profile->common));
+        //     break;
 
-        case ANT_BPWR_PAGE_17:
-            ant_shift_page_17_decode(p_shift_message_payload->page_payload, &(p_profile->page_17));
-            ant_shift_cadence_decode(p_shift_message_payload->page_payload, &(p_profile->common));
-            break;
+        // case ANT_SHIFT_PAGE_17:
+        //     ant_shift_page_17_decode(p_shift_message_payload->page_payload, &(p_profile->page_17));
+        //     ant_shift_cadence_decode(p_shift_message_payload->page_payload, &(p_profile->common));
+        //     break;
 
-        case ANT_BPWR_PAGE_18:
-            ant_shift_page_18_decode(p_shift_message_payload->page_payload, &(p_profile->page_18));
-            ant_shift_cadence_decode(p_shift_message_payload->page_payload, &(p_profile->common));
-            break;
+        // case ANT_SHIFT_PAGE_18:
+        //     ant_shift_page_18_decode(p_shift_message_payload->page_payload, &(p_profile->page_18));
+        //     ant_shift_cadence_decode(p_shift_message_payload->page_payload, &(p_profile->common));
+        //     break;
 
         case ANT_COMMON_PAGE_80:
             ant_common_page_80_decode(p_shift_message_payload->page_payload, &(p_profile->page_80));
@@ -329,12 +325,12 @@ ret_code_t ant_shift_calib_request(ant_shift_profile_t * p_profile, ant_shift_pa
 {
     ant_shift_message_layout_t shift_message_payload;
 
-    if (p_profile->_cb.p_disp_cb->calib_stat == BPWR_DISP_CALIB_REQUESTED)
-    {
-        return NRF_SUCCESS; // calibration in progress, so omit this request
-    }
+    // if (p_profile->_cb.p_disp_cb->calib_stat == SHIFT_DISP_CALIB_REQUESTED)
+    // {
+    //     return NRF_SUCCESS; // calibration in progress, so omit this request
+    // }
 
-    shift_message_payload.page_number = ANT_BPWR_PAGE_1;
+    shift_message_payload.page_number = ANT_SHIFT_PAGE_1;
     ant_shift_page_1_encode(shift_message_payload.page_payload, p_page_1);
 
     uint32_t err_code = sd_ant_acknowledge_message_tx(p_profile->channel_number,
@@ -343,8 +339,8 @@ ret_code_t ant_shift_calib_request(ant_shift_profile_t * p_profile, ant_shift_pa
 
     if (err_code == NRF_SUCCESS)
     {
-        p_profile->_cb.p_disp_cb->calib_timeout = BPWR_CALIB_INT_TIMEOUT; // initialize watch on calibration's time-out
-        p_profile->_cb.p_disp_cb->calib_stat    = BPWR_DISP_CALIB_REQUESTED;
+        // p_profile->_cb.p_disp_cb->calib_timeout = SHIFT_CALIB_INT_TIMEOUT; // initialize watch on calibration's time-out
+        // p_profile->_cb.p_disp_cb->calib_stat    = SHIFT_DISP_CALIB_REQUESTED;
         NRF_LOG_INFO("Start calibration process");
     }
     return err_code;
@@ -353,55 +349,55 @@ ret_code_t ant_shift_calib_request(ant_shift_profile_t * p_profile, ant_shift_pa
 
 void ant_shift_calib_response(ant_shift_profile_t * p_profile)
 {
-    if (p_profile->_cb.p_sens_cb->calib_stat != BPWR_SENS_CALIB_READY) // abort if callback request is in progress
-    {
-        p_profile->_cb.p_sens_cb->calib_stat = BPWR_SENS_CALIB_READY; // calibration respond
-    }
+    // if (p_profile->_cb.p_sens_cb->calib_stat != SHIFT_SENS_CALIB_READY) // abort if callback request is in progress
+    // {
+    //     p_profile->_cb.p_sens_cb->calib_stat = SHIFT_SENS_CALIB_READY; // calibration respond
+    // }
 }
 
 
 /**@brief Function for hangling calibration events.
  */
-static void service_calib(ant_shift_profile_t * p_profile, uint8_t event)
-{
-    ant_shift_evt_t       shift_event;
+// static void service_calib(ant_shift_profile_t * p_profile, uint8_t event)
+// {
+//     ant_shift_evt_t       shift_event;
 
-    if (p_profile->_cb.p_disp_cb->calib_stat == BPWR_DISP_CALIB_REQUESTED)
-    {
-        switch (event)
-        {
-            case EVENT_RX:
-            /* fall through */
-            case EVENT_RX_FAIL:
+//     if (p_profile->_cb.p_disp_cb->calib_stat == SHIFT_DISP_CALIB_REQUESTED)
+//     {
+//         switch (event)
+//         {
+//             case EVENT_RX:
+//             /* fall through */
+//             case EVENT_RX_FAIL:
 
-                if (p_profile->_cb.p_disp_cb->calib_timeout-- == 0)
-                {
-                    shift_event = ANT_BPWR_CALIB_TIMEOUT;
-                    break;
-                }
-                else
-                {
-                    return;
-                }
+//                 if (p_profile->_cb.p_disp_cb->calib_timeout-- == 0)
+//                 {
+//                     shift_event = ANT_SHIFT_CALIB_TIMEOUT;
+//                     break;
+//                 }
+//                 else
+//                 {
+//                     return;
+//                 }
 
-            case EVENT_TRANSFER_TX_FAILED:
-                shift_event = ANT_BPWR_CALIB_REQUEST_TX_FAILED;
-                break;
+//             case EVENT_TRANSFER_TX_FAILED:
+//                 shift_event = ANT_SHIFT_CALIB_REQUEST_TX_FAILED;
+//                 break;
 
-            case EVENT_RX_SEARCH_TIMEOUT:
-                shift_event = ANT_BPWR_CALIB_TIMEOUT;
-                break;
+//             case EVENT_RX_SEARCH_TIMEOUT:
+//                 shift_event = ANT_SHIFT_CALIB_TIMEOUT;
+//                 break;
 
-            default:
-                return;
-        }
+//             default:
+//                 return;
+//         }
 
-        NRF_LOG_INFO("End calibration process");
-        p_profile->_cb.p_disp_cb->calib_stat = BPWR_DISP_CALIB_NONE;
+//         NRF_LOG_INFO("End calibration process");
+//         p_profile->_cb.p_disp_cb->calib_stat = SHIFT_DISP_CALIB_NONE;
 
-        p_profile->evt_handler(p_profile, shift_event);
-    }
-}
+//         p_profile->evt_handler(p_profile, shift_event);
+//     }
+// }
 
 
 static void ant_message_send(ant_shift_profile_t * p_profile)
@@ -483,8 +479,8 @@ void ant_shift_disp_evt_handler(ant_evt_t * p_ant_event, void * p_context)
             default:
                 break;
         }
-        service_calib(p_profile, p_ant_event->event);
+        // service_calib(p_profile, p_ant_event->event);
     }
 }
 
-#endif // NRF_MODULE_ENABLED(ANT_BPWR)
+#endif // NRF_MODULE_ENABLED(ANT_SHIFT)

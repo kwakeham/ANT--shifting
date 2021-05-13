@@ -53,45 +53,66 @@
 extern "C" {
 #endif
 
-/**@brief Data structure for Bicycle Power data page 16.
+/**@brief Data structure for Shift  data page 1.
  *
- * @note This structure implements only page 16 specific data.
+ * @note This structure implements only page 1 specific data.
  */
 typedef struct
 {
-    uint8_t  update_event_count;    ///< Power event count.
+    uint8_t  update_event_count;    ///< Event counter increments with each shift event.
+    uint8_t  page1_reserved;    ///< Reserved: 0xFF, to be used in future
     union
     {
         struct
         {
-            uint8_t rear : 5;     ///< Pedal power distribution (%).
-            uint8_t front : 3;  ///< Pedal differentiation: 1 -> right, 0 -> unknown.
-        } items;
-        uint8_t byte;
-    } current_gear;
-    union
-    {
+            uint8_t rear : 5;       ///< Current gear of rear derailleur. 31 = Unknown Current Gear / Error
+            uint8_t front : 3;      ///< Current gear of front derailleur. 7 = Unknown Current Gear / Error
+        } current_gear;
         struct
         {
-            uint8_t rear : 5;     ///< Pedal power distribution (%).
-            uint8_t front : 3;  ///< Pedal differentiation: 1 -> right, 0 -> unknown.
-        } items;
-        uint8_t byte;
-    } total_gear;
+            uint8_t rear : 5;       ///< Total number of gears in front derailleur. 0 = Unknown Gear Count / Error
+            uint8_t front : 3;      ///< Total number of gears in rear derailleur. 0 = Unknown Gear Count / Error
+        } total_gear;
+        struct
+        {
+            uint8_t inboard : 4;    ///< Rear Derailleur Over Inboard Shift Count
+            uint8_t outboard : 4;   ///< Rear Derailleur Over Outboard Shift Count
+        } invalid_shift_count_rear;
+        struct
+        {
+            uint8_t inboard : 4;    ///< Front Derailleur Over Inboard Shift Count
+            uint8_t outboard : 4;   ///< Front Derailleur Over Outboard Shift Count
+        } invalid_shift_count_front;
+        struct
+        {
+            uint8_t front : 4;      ///< Rear Derailleur Shift Failure Count
+            uint8_t rear : 4;       ///< Front Derailleur Shift Failure Count
+        } shift_failure_count;
+    } gear;
+
 
 } ant_shift_page1_data_t;
 
+
 /**@brief Initialize page 16.
  */
-#define DEFAULT_ANT_SHIFT_PAGE16()                               \
-    (ant_shift_page16_data_t)                                    \
+#define DEFAULT_ANT_SHIFT_PAGE1()                               \
+    (ant_shift_page1_data_t)                                    \
     {                                                           \
-        .update_event_count                 = 0,                \
-        .pedal_power.items.distribution     = 0,                \
-        .pedal_power.items.differentiation  = 0,                \
-        .accumulated_power                  = 0,                \
-        .instantaneous_power                = 0,                \
+        .update_event_count                      = 0,           \
+        .page1_reserved                          = 0xFF,        \
+        .gear.current_gear.rear                  = 0,           \
+        .gear.current_gear.front                 = 0,           \
+        .gear.total_gear.rear                    = 0,           \
+        .gear.total_gear.front                   = 0,           \
+        .gear.invalid_shift_count_rear.inboard   = 0,           \
+        .gear.invalid_shift_count_rear.outboard  = 0,           \
+        .gear.invalid_shift_count_front.inboard  = 0,           \
+        .gear.invalid_shift_count_front.outboard = 0,           \
+        .gear.shift_failure_count.rear = 0,                     \
+        .gear.shift_failure_count.front = 0,                    \
     }
+
 
 /**@brief Function for encoding page 16.
  *
