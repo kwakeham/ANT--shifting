@@ -210,6 +210,12 @@ flash: default
 	nrfjprog -f nrf52 --program $(OUTPUT_DIRECTORY)/nrf52832_xxaa.hex --sectorerase
 	nrfjprog -f nrf52 --reset
 
+# Flash softdevice
+flash_softdevice:
+	@echo Flashing: s212_nrf52_7.0.1_softdevice.hex
+	nrfjprog -f nrf52 --program $(SDK_ROOT)/components/softdevice/s212/hex/s212_nrf52_7.0.1_softdevice.hex --sectorerase
+	nrfjprog -f nrf52 --reset
+
 erase:
 	nrfjprog -f nrf52 --eraseall
 

@@ -69,7 +69,7 @@ SRC_FILES += \
 
 # Include folders common to all targets
 INC_FOLDERS += \
-  $(SDK_ROOT)/components/ant/ant_profiles/ant_shift/simulator \
+  $(COMPONENT_DIR)/components/ant/ant_profiles/ant_shift/simulator \
   $(SDK_ROOT)/external/fprintf \
   $(SDK_ROOT)/components/ant/ant_key_manager \
   $(SDK_ROOT)/components/libraries/hardfault/nrf52 \
@@ -208,6 +208,12 @@ $(foreach target, $(TARGETS), $(call define_target, $(target)))
 flash: default
 	@echo Flashing: $(OUTPUT_DIRECTORY)/nrf52832_xxaa.hex
 	nrfjprog -f nrf52 --program $(OUTPUT_DIRECTORY)/nrf52832_xxaa.hex --sectorerase
+	nrfjprog -f nrf52 --reset
+
+# Flash softdevice
+flash_softdevice:
+	@echo Flashing: s212_nrf52_7.0.1_softdevice.hex
+	nrfjprog -f nrf52 --program $(SDK_ROOT)/components/softdevice/s212/hex/s212_nrf52_7.0.1_softdevice.hex --sectorerase
 	nrfjprog -f nrf52 --reset
 
 erase:
