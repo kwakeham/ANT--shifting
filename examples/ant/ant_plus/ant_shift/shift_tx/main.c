@@ -51,7 +51,7 @@
  *
  */
 /**@file
- * @defgroup ant_bpwr_sensor_main ANT Bicycle Power sensor example
+ * @defgroup ant_shift_sensor_main ANT Bicycle Power sensor example
  * @{
  * @ingroup nrf_ant_bicycle_power
  *
@@ -74,8 +74,8 @@
 #include "nrf_sdh.h"
 #include "nrf_sdh_ant.h"
 #include "ant_key_manager.h"
-#include "ant_bpwr.h"
-#include "ant_bpwr_simulator.h"
+#include "ant_shift.h"
+#include "ant_shift_simulator.h"
 #include "ant_state_indicator.h"
 
 #include "nrf_log.h"
@@ -90,119 +90,119 @@
     #error Unsupported value of MODIFICATION_TYPE.
 #endif
 
-/** @snippet [ANT BPWR TX Instance] */
-void ant_bpwr_evt_handler(ant_bpwr_profile_t * p_profile, ant_bpwr_evt_t event);
-void ant_bpwr_calib_handler(ant_bpwr_profile_t * p_profile, ant_bpwr_page1_data_t * p_page1);
+/** @snippet [ANT SHIFT TX Instance] */
+void ant_shift_evt_handler(ant_shift_profile_t * p_profile, ant_shift_evt_t event);
+void ant_shift_calib_handler(ant_shift_profile_t * p_profile, ant_shift_page1_data_t * p_page1);
 
-BPWR_SENS_CHANNEL_CONFIG_DEF(m_ant_bpwr,
-                             BPWR_CHANNEL_NUM,
+SHIFT_SENS_CHANNEL_CONFIG_DEF(m_ant_shift,
+                             SHIFT_CHANNEL_NUM,
                              CHAN_ID_TRANS_TYPE,
                              CHAN_ID_DEV_NUM,
                              ANTPLUS_NETWORK_NUM);
-BPWR_SENS_PROFILE_CONFIG_DEF(m_ant_bpwr,
-                            (ant_bpwr_torque_t)(SENSOR_TYPE),
-                            ant_bpwr_calib_handler,
-                            ant_bpwr_evt_handler);
+SHIFT_SENS_PROFILE_CONFIG_DEF(m_ant_shift,
+                            (ant_shift_torque_t)(SENSOR_TYPE),
+                            ant_shift_calib_handler,
+                            ant_shift_evt_handler);
 
-static ant_bpwr_profile_t m_ant_bpwr;
+static ant_shift_profile_t m_ant_shift;
 
 
-NRF_SDH_ANT_OBSERVER(m_ant_observer, ANT_BPWR_ANT_OBSERVER_PRIO,
-                     ant_bpwr_sens_evt_handler, &m_ant_bpwr);
+NRF_SDH_ANT_OBSERVER(m_ant_observer, ANT_SHIFT_ANT_OBSERVER_PRIO,
+                     ant_shift_sens_evt_handler, &m_ant_shift);
 
-/** @snippet [ANT BPWR TX Instance] */
+/** @snippet [ANT SHIFT TX Instance] */
 
-static ant_bpwr_simulator_t  m_ant_bpwr_simulator;
+static ant_shift_simulator_t  m_ant_shift_simulator;
 
 /**@brief Function for handling bsp events.
  */
-/** @snippet [ANT BPWR simulator button] */
+/** @snippet [ANT SHIFT simulator button] */
 void bsp_evt_handler(bsp_event_t event)
 {
     switch (event)
     {
         case BSP_EVENT_KEY_0:
-            ant_bpwr_simulator_increment(&m_ant_bpwr_simulator);
+            ant_shift_simulator_increment(&m_ant_shift_simulator);
             break;
 
         case BSP_EVENT_KEY_1:
-            ant_bpwr_simulator_decrement(&m_ant_bpwr_simulator);
+            ant_shift_simulator_decrement(&m_ant_shift_simulator);
             break;
 
         case BSP_EVENT_KEY_2:
-            ant_bpwr_calib_response(&m_ant_bpwr);
+            ant_shift_calib_response(&m_ant_shift);
             break;
 
         default:
             break;
     }
 }
-/** @snippet [ANT BPWR simulator button] */
+/** @snippet [ANT SHIFT simulator button] */
 
-/**@brief Function for handling ANT BPWR events.
+/**@brief Function for handling ANT SHIFT events.
  */
-/** @snippet [ANT BPWR simulator call] */
-void ant_bpwr_evt_handler(ant_bpwr_profile_t * p_profile, ant_bpwr_evt_t event)
+/** @snippet [ANT SHIFT simulator call] */
+void ant_shift_evt_handler(ant_shift_profile_t * p_profile, ant_shift_evt_t event)
 {
     nrf_pwr_mgmt_feed();
 
     switch (event)
     {
-        case ANT_BPWR_PAGE_1_UPDATED:
+        case ANT_SHIFT_PAGE_1_UPDATED:
             /* fall through */
-        case ANT_BPWR_PAGE_16_UPDATED:
+        case ANT_SHIFT_PAGE_16_UPDATED:
             /* fall through */
-        case ANT_BPWR_PAGE_17_UPDATED:
+        case ANT_SHIFT_PAGE_17_UPDATED:
             /* fall through */
-        case ANT_BPWR_PAGE_18_UPDATED:
+        case ANT_SHIFT_PAGE_18_UPDATED:
             /* fall through */
-        case ANT_BPWR_PAGE_80_UPDATED:
+        case ANT_SHIFT_PAGE_80_UPDATED:
             /* fall through */
-        case ANT_BPWR_PAGE_81_UPDATED:
-            ant_bpwr_simulator_one_iteration(&m_ant_bpwr_simulator, event);
+        case ANT_SHIFT_PAGE_81_UPDATED:
+            ant_shift_simulator_one_iteration(&m_ant_shift_simulator, event);
             break;
 
         default:
             break;
     }
 }
-/** @snippet [ANT BPWR simulator call] */
+/** @snippet [ANT SHIFT simulator call] */
 
-/**@brief Function for handling ANT BPWR events.
+/**@brief Function for handling ANT SHIFT events.
  */
-/** @snippet [ANT BPWR calibration] */
-void ant_bpwr_calib_handler(ant_bpwr_profile_t * p_profile, ant_bpwr_page1_data_t * p_page1)
+/** @snippet [ANT SHIFT calibration] */
+void ant_shift_calib_handler(ant_shift_profile_t * p_profile, ant_shift_page1_data_t * p_page1)
 {
     switch (p_page1->calibration_id)
     {
-        case ANT_BPWR_CALIB_ID_MANUAL:
-            m_ant_bpwr.BPWR_PROFILE_calibration_id     = ANT_BPWR_CALIB_ID_MANUAL_SUCCESS;
-            m_ant_bpwr.BPWR_PROFILE_general_calib_data = CALIBRATION_DATA;
+        case ANT_SHIFT_CALIB_ID_MANUAL:
+            m_ant_shift.SHIFT_PROFILE_calibration_id     = ANT_SHIFT_CALIB_ID_MANUAL_SUCCESS;
+            m_ant_shift.SHIFT_PROFILE_general_calib_data = CALIBRATION_DATA;
             break;
 
-        case ANT_BPWR_CALIB_ID_AUTO:
-            m_ant_bpwr.BPWR_PROFILE_calibration_id     = ANT_BPWR_CALIB_ID_MANUAL_SUCCESS;
-            m_ant_bpwr.BPWR_PROFILE_auto_zero_status   = p_page1->auto_zero_status;
-            m_ant_bpwr.BPWR_PROFILE_general_calib_data = CALIBRATION_DATA;
+        case ANT_SHIFT_CALIB_ID_AUTO:
+            m_ant_shift.SHIFT_PROFILE_calibration_id     = ANT_SHIFT_CALIB_ID_MANUAL_SUCCESS;
+            m_ant_shift.SHIFT_PROFILE_auto_zero_status   = p_page1->auto_zero_status;
+            m_ant_shift.SHIFT_PROFILE_general_calib_data = CALIBRATION_DATA;
             break;
 
-        case ANT_BPWR_CALIB_ID_CUSTOM_REQ:
-            m_ant_bpwr.BPWR_PROFILE_calibration_id = ANT_BPWR_CALIB_ID_CUSTOM_REQ_SUCCESS;
-            memcpy(m_ant_bpwr.BPWR_PROFILE_custom_calib_data, p_page1->data.custom_calib,
-                   sizeof (m_ant_bpwr.BPWR_PROFILE_custom_calib_data));
+        case ANT_SHIFT_CALIB_ID_CUSTOM_REQ:
+            m_ant_shift.SHIFT_PROFILE_calibration_id = ANT_SHIFT_CALIB_ID_CUSTOM_REQ_SUCCESS;
+            memcpy(m_ant_shift.SHIFT_PROFILE_custom_calib_data, p_page1->data.custom_calib,
+                   sizeof (m_ant_shift.SHIFT_PROFILE_custom_calib_data));
             break;
 
-        case ANT_BPWR_CALIB_ID_CUSTOM_UPDATE:
-            m_ant_bpwr.BPWR_PROFILE_calibration_id = ANT_BPWR_CALIB_ID_CUSTOM_UPDATE_SUCCESS;
-            memcpy(m_ant_bpwr.BPWR_PROFILE_custom_calib_data, p_page1->data.custom_calib,
-                   sizeof (m_ant_bpwr.BPWR_PROFILE_custom_calib_data));
+        case ANT_SHIFT_CALIB_ID_CUSTOM_UPDATE:
+            m_ant_shift.SHIFT_PROFILE_calibration_id = ANT_SHIFT_CALIB_ID_CUSTOM_UPDATE_SUCCESS;
+            memcpy(m_ant_shift.SHIFT_PROFILE_custom_calib_data, p_page1->data.custom_calib,
+                   sizeof (m_ant_shift.SHIFT_PROFILE_custom_calib_data));
             break;
 
         default:
             break;
     }
 }
-/** @snippet [ANT BPWR calibration] */
+/** @snippet [ANT SHIFT calibration] */
 
 /**
  * @brief Function for setup all thinks not directly associated with ANT stack/protocol.
@@ -224,7 +224,7 @@ static void utils_setup(void)
                         bsp_evt_handler);
     APP_ERROR_CHECK(err_code);
 
-    err_code = ant_state_indicator_init(m_ant_bpwr.channel_number, BPWR_SENS_CHANNEL_TYPE);
+    err_code = ant_state_indicator_init(m_ant_shift.channel_number, SHIFT_SENS_CHANNEL_TYPE);
     APP_ERROR_CHECK(err_code);
 }
 
@@ -239,26 +239,26 @@ static void log_init(void)
     NRF_LOG_DEFAULT_BACKENDS_INIT();
 }
 
-/**@brief Function for the BPWR simulator initialization.
+/**@brief Function for the SHIFT simulator initialization.
  */
 void simulator_setup(void)
 {
-    /** @snippet [ANT BPWR simulator init] */
-    const ant_bpwr_simulator_cfg_t simulator_cfg =
+    /** @snippet [ANT SHIFT simulator init] */
+    const ant_shift_simulator_cfg_t simulator_cfg =
     {
-        .p_profile   = &m_ant_bpwr,
-        .sensor_type = (ant_bpwr_torque_t)(SENSOR_TYPE),
+        .p_profile   = &m_ant_shift,
+        .sensor_type = (ant_shift_torque_t)(SENSOR_TYPE),
     };
-    /** @snippet [ANT BPWR simulator init] */
+    /** @snippet [ANT SHIFT simulator init] */
 
 #if MODIFICATION_TYPE == MODIFICATION_TYPE_AUTO
-    /** @snippet [ANT BPWR simulator auto init] */
-    ant_bpwr_simulator_init(&m_ant_bpwr_simulator, &simulator_cfg, true);
-    /** @snippet [ANT BPWR simulator auto init] */
+    /** @snippet [ANT SHIFT simulator auto init] */
+    ant_shift_simulator_init(&m_ant_shift_simulator, &simulator_cfg, true);
+    /** @snippet [ANT SHIFT simulator auto init] */
 #else
-    /** @snippet [ANT BPWR simulator button init] */
-    ant_bpwr_simulator_init(&m_ant_bpwr_simulator, &simulator_cfg, false);
-    /** @snippet [ANT BPWR simulator button init] */
+    /** @snippet [ANT SHIFT simulator button init] */
+    ant_shift_simulator_init(&m_ant_shift_simulator, &simulator_cfg, false);
+    /** @snippet [ANT SHIFT simulator button init] */
 #endif
 }
 
@@ -288,31 +288,31 @@ static void softdevice_setup(void)
  */
 static void profile_setup(void)
 {
-/** @snippet [ANT BPWR TX Profile Setup] */
+/** @snippet [ANT SHIFT TX Profile Setup] */
     ret_code_t err_code;
 
-    err_code = ant_bpwr_sens_init(&m_ant_bpwr,
-                                  BPWR_SENS_CHANNEL_CONFIG(m_ant_bpwr),
-                                  BPWR_SENS_PROFILE_CONFIG(m_ant_bpwr));
+    err_code = ant_shift_sens_init(&m_ant_shift,
+                                  SHIFT_SENS_CHANNEL_CONFIG(m_ant_shift),
+                                  SHIFT_SENS_PROFILE_CONFIG(m_ant_shift));
     APP_ERROR_CHECK(err_code);
 
     // fill manufacturer's common data page.
-    m_ant_bpwr.page_80 = ANT_COMMON_page80(BPWR_HW_REVISION,
-                                           BPWR_MANUFACTURER_ID,
-                                           BPWR_MODEL_NUMBER);
+    m_ant_shift.page_80 = ANT_COMMON_page80(SHIFT_HW_REVISION,
+                                           SHIFT_MANUFACTURER_ID,
+                                           SHIFT_MODEL_NUMBER);
     // fill product's common data page.
-    m_ant_bpwr.page_81 = ANT_COMMON_page81(BPWR_SW_REVISION_MAJOR,
-                                           BPWR_SW_REVISION_MINOR,
-                                           BPWR_SERIAL_NUMBER);
+    m_ant_shift.page_81 = ANT_COMMON_page81(SHIFT_SW_REVISION_MAJOR,
+                                           SHIFT_SW_REVISION_MINOR,
+                                           SHIFT_SERIAL_NUMBER);
 
-    m_ant_bpwr.BPWR_PROFILE_auto_zero_status = ANT_BPWR_AUTO_ZERO_OFF;
+    m_ant_shift.SHIFT_PROFILE_auto_zero_status = ANT_SHIFT_AUTO_ZERO_OFF;
 
-    err_code = ant_bpwr_sens_open(&m_ant_bpwr);
+    err_code = ant_shift_sens_open(&m_ant_shift);
     APP_ERROR_CHECK(err_code);
 
     err_code = ant_state_indicator_channel_opened();
     APP_ERROR_CHECK(err_code);
-/** @snippet [ANT BPWR TX Profile Setup] */
+/** @snippet [ANT SHIFT TX Profile Setup] */
 }
 
 /**@brief Function for application main entry, does not return.

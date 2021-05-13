@@ -1,12 +1,13 @@
-PROJECT_NAME     := ant_bpwr_tx_pca10040_s212
+PROJECT_NAME     := ant_shift_rx_pca10040_s212
 TARGETS          := nrf52832_xxaa
 OUTPUT_DIRECTORY := _build
 
-SDK_ROOT := ../../../../../../../..
+SDK_ROOT := ../../../../../../../../../nRF5_SDK_16.0.0_98a08e2
 PROJ_DIR := ../../..
+COMPONENT_DIR :=../../../../../../../..
 
 $(OUTPUT_DIRECTORY)/nrf52832_xxaa.out: \
-  LINKER_SCRIPT  := ant_bpwr_tx_gcc_nrf52.ld
+  LINKER_SCRIPT  := ant_shift_rx_gcc_nrf52.ld
 
 # Source files common to all targets
 SRC_FILES += \
@@ -47,20 +48,13 @@ SRC_FILES += \
   $(SDK_ROOT)/modules/nrfx/drivers/src/prs/nrfx_prs.c \
   $(SDK_ROOT)/modules/nrfx/drivers/src/nrfx_uart.c \
   $(SDK_ROOT)/modules/nrfx/drivers/src/nrfx_uarte.c \
-  $(SDK_ROOT)/components/ant/ant_profiles/ant_bpwr/ant_bpwr.c \
-  $(SDK_ROOT)/components/ant/ant_profiles/ant_bpwr/pages/ant_bpwr_common_data.c \
-  $(SDK_ROOT)/components/ant/ant_profiles/ant_bpwr/pages/ant_bpwr_page_1.c \
-  $(SDK_ROOT)/components/ant/ant_profiles/ant_bpwr/pages/ant_bpwr_page_16.c \
-  $(SDK_ROOT)/components/ant/ant_profiles/ant_bpwr/pages/ant_bpwr_page_17.c \
-  $(SDK_ROOT)/components/ant/ant_profiles/ant_bpwr/pages/ant_bpwr_page_18.c \
-  $(SDK_ROOT)/components/ant/ant_profiles/ant_bpwr/pages/ant_bpwr_page_torque.c \
-  $(SDK_ROOT)/components/ant/ant_profiles/ant_bpwr/simulator/ant_bpwr_simulator.c \
   $(SDK_ROOT)/components/ant/ant_channel_config/ant_channel_config.c \
   $(SDK_ROOT)/components/ant/ant_profiles/ant_common/pages/ant_common_page_80.c \
   $(SDK_ROOT)/components/ant/ant_profiles/ant_common/pages/ant_common_page_81.c \
   $(SDK_ROOT)/components/ant/ant_key_manager/ant_key_manager.c \
   $(SDK_ROOT)/components/ant/ant_state_indicator/ant_state_indicator.c \
   $(SDK_ROOT)/components/libraries/bsp/bsp.c \
+  $(SDK_ROOT)/components/libraries/bsp/bsp_btn_ant.c \
   $(PROJ_DIR)/main.c \
   $(SDK_ROOT)/external/segger_rtt/SEGGER_RTT.c \
   $(SDK_ROOT)/external/segger_rtt/SEGGER_RTT_Syscalls_GCC.c \
@@ -68,10 +62,14 @@ SRC_FILES += \
   $(SDK_ROOT)/modules/nrfx/mdk/system_nrf52.c \
   $(SDK_ROOT)/components/softdevice/common/nrf_sdh.c \
   $(SDK_ROOT)/components/softdevice/common/nrf_sdh_ant.c \
+  $(COMPONENT_DIR)/components/ant/ant_profiles/ant_shift/ant_shift.c \
+  $(COMPONENT_DIR)/components/ant/ant_profiles/ant_shift/pages/ant_shift_common_data.c \
+  $(COMPONENT_DIR)/components/ant/ant_profiles/ant_shift/pages/ant_shift_page_1.c \
+  # $(COMPONENT_DIR)/components/ant/ant_profiles/ant_shift/simulator/ant_shift_simulator.c \
 
 # Include folders common to all targets
 INC_FOLDERS += \
-  $(SDK_ROOT)/components/ant/ant_profiles/ant_bpwr/simulator \
+  $(SDK_ROOT)/components/ant/ant_profiles/ant_shift/simulator \
   $(SDK_ROOT)/external/fprintf \
   $(SDK_ROOT)/components/ant/ant_key_manager \
   $(SDK_ROOT)/components/libraries/hardfault/nrf52 \
@@ -81,14 +79,12 @@ INC_FOLDERS += \
   $(SDK_ROOT)/components/libraries/scheduler \
   ../config \
   $(SDK_ROOT)/components/libraries/experimental_section_vars \
-  $(SDK_ROOT)/components/ant/ant_profiles/ant_bpwr/utils \
   $(SDK_ROOT)/modules/nrfx/mdk \
   $(SDK_ROOT)/components/libraries/delay \
   $(SDK_ROOT)/components/libraries/strerror \
   $(SDK_ROOT)/integration/nrfx/legacy \
   $(SDK_ROOT)/components/boards \
   $(SDK_ROOT)/components/softdevice/s212/headers \
-  $(SDK_ROOT)/components/ant/ant_profiles/ant_bpwr \
   $(SDK_ROOT)/components/ant/ant_state_indicator \
   $(SDK_ROOT)/components/libraries/log \
   $(SDK_ROOT)/modules/nrfx/hal \
@@ -111,11 +107,13 @@ INC_FOLDERS += \
   $(SDK_ROOT)/components/libraries/timer \
   $(SDK_ROOT)/components/libraries/atomic \
   $(SDK_ROOT)/components/libraries/button \
-  $(SDK_ROOT)/components/ant/ant_profiles/ant_bpwr/pages \
   $(SDK_ROOT)/components/toolchain/cmsis/include \
   $(SDK_ROOT)/components/libraries/mutex \
   $(SDK_ROOT)/components/libraries/pwr_mgmt \
   $(SDK_ROOT)/components/libraries/sensorsim \
+  $(COMPONENT_DIR)/components/ant/ant_profiles/ant_shift \
+  $(COMPONENT_DIR)/components/ant/ant_profiles/ant_shift/utils \
+  $(COMPONENT_DIR)/components/ant/ant_profiles/ant_shift/pages \
 
 # Libraries common to all targets
 LIB_FILES += \
