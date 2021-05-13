@@ -57,15 +57,13 @@
 #include "ant_shift_pages.h"
 #include "sdk_errors.h"
 
-#define BPWR_DEVICE_TYPE            0x0Bu               ///< Device type reserved for ANT+ Bicycle Power.
-#define BPWR_ANTPLUS_RF_FREQ        0x39u               ///< Frequency, decimal 57 (2457 MHz).
-#define BPWR_MSG_PERIOD             8182u               ///< Message period, decimal 8182 (4.0049 Hz).
+#define SHIFT_DEVICE_TYPE            0x22u               ///< Device type reserved for ANT+ Shifting.
+#define SHIFT_ANTPLUS_RF_FREQ        0x39u               ///< Frequency, decimal 57 (2457 MHz).
+#define SHIFT_MSG_PERIOD             8192u               ///< Message period, decimal 8192 (4.000 Hz).
 
-#define BPWR_EXT_ASSIGN             0x00                ///< ANT ext assign (see Ext. Assign Channel Parameters in ant_parameters.h: @ref ant_parameters).
-#define BPWR_DISP_CHANNEL_TYPE      CHANNEL_TYPE_SLAVE  ///< Display Bicycle Power channel type.
-#define BPWR_SENS_CHANNEL_TYPE      CHANNEL_TYPE_MASTER ///< Sensor Bicycle Power channel type.
-
-#define BPWR_CALIBRATION_TIMOUT_S   5u                  ///< Time-out for responding to calibration callback (s).
+#define SHIFT_EXT_ASSIGN             0x00                ///< ANT ext assign (see Ext. Assign Channel Parameters in ant_parameters.h: @ref ant_parameters).
+#define SHIFT_DISP_CHANNEL_TYPE      CHANNEL_TYPE_SLAVE  ///< Display Bicycle Power channel type.
+#define SHIFT_SENS_CHANNEL_TYPE      CHANNEL_TYPE_MASTER ///< Sensor Bicycle Power channel type.
 
 
 /**@brief Initialize an ANT channel configuration structure for the Bicycle Power profile (Display).
@@ -76,7 +74,7 @@
  * @param[in]  DEVICE_NUMBER        Number of the device assigned to the profile instance.
  * @param[in]  NETWORK_NUMBER       Number of the network assigned to the profile instance.
  */
-#define BPWR_DISP_CHANNEL_CONFIG_DEF(NAME,                                      \
+#define SHIFT_DISP_CHANNEL_CONFIG_DEF(NAME,                                      \
                                      CHANNEL_NUMBER,                            \
                                      TRANSMISSION_TYPE,                         \
                                      DEVICE_NUMBER,                             \
@@ -84,16 +82,16 @@
 static const ant_channel_config_t   CONCAT_2(NAME, _channel_shift_disp_config) = \
     {                                                                           \
         .channel_number    = (CHANNEL_NUMBER),                                  \
-        .channel_type      = BPWR_DISP_CHANNEL_TYPE,                            \
-        .ext_assign        = BPWR_EXT_ASSIGN,                                   \
-        .rf_freq           = BPWR_ANTPLUS_RF_FREQ,                              \
+        .channel_type      = SHIFT_DISP_CHANNEL_TYPE,                            \
+        .ext_assign        = SHIFT_EXT_ASSIGN,                                   \
+        .rf_freq           = SHIFT_ANTPLUS_RF_FREQ,                              \
         .transmission_type = (TRANSMISSION_TYPE),                               \
-        .device_type       = BPWR_DEVICE_TYPE,                                  \
+        .device_type       = SHIFT_DEVICE_TYPE,                                  \
         .device_number     = (DEVICE_NUMBER),                                   \
-        .channel_period    = BPWR_MSG_PERIOD,                                   \
+        .channel_period    = SHIFT_MSG_PERIOD,                                   \
         .network_number    = (NETWORK_NUMBER),                                  \
     }
-#define BPWR_DISP_CHANNEL_CONFIG(NAME) &CONCAT_2(NAME, _channel_shift_disp_config)
+#define SHIFT_DISP_CHANNEL_CONFIG(NAME) &CONCAT_2(NAME, _channel_shift_disp_config)
 
 /**@brief Initialize an ANT channel configuration structure for the Bicycle Power profile (Sensor).
  *
@@ -103,7 +101,7 @@ static const ant_channel_config_t   CONCAT_2(NAME, _channel_shift_disp_config) =
  * @param[in]  DEVICE_NUMBER        Number of the device assigned to the profile instance.
  * @param[in]  NETWORK_NUMBER       Number of the network assigned to the profile instance.
  */
-#define BPWR_SENS_CHANNEL_CONFIG_DEF(NAME,                                      \
+#define SHIFT_SENS_CHANNEL_CONFIG_DEF(NAME,                                      \
                                      CHANNEL_NUMBER,                            \
                                      TRANSMISSION_TYPE,                         \
                                      DEVICE_NUMBER,                             \
@@ -111,23 +109,23 @@ static const ant_channel_config_t   CONCAT_2(NAME, _channel_shift_disp_config) =
 static const ant_channel_config_t   CONCAT_2(NAME, _channel_shift_sens_config) = \
     {                                                                           \
         .channel_number    = (CHANNEL_NUMBER),                                  \
-        .channel_type      = BPWR_SENS_CHANNEL_TYPE,                            \
-        .ext_assign        = BPWR_EXT_ASSIGN,                                   \
-        .rf_freq           = BPWR_ANTPLUS_RF_FREQ,                              \
+        .channel_type      = SHIFT_SENS_CHANNEL_TYPE,                            \
+        .ext_assign        = SHIFT_EXT_ASSIGN,                                   \
+        .rf_freq           = SHIFT_ANTPLUS_RF_FREQ,                              \
         .transmission_type = (TRANSMISSION_TYPE),                               \
-        .device_type       = BPWR_DEVICE_TYPE,                                  \
+        .device_type       = SHIFT_DEVICE_TYPE,                                  \
         .device_number     = (DEVICE_NUMBER),                                   \
-        .channel_period    = BPWR_MSG_PERIOD,                                   \
+        .channel_period    = SHIFT_MSG_PERIOD,                                   \
         .network_number    = (NETWORK_NUMBER),                                  \
     }
-#define BPWR_SENS_CHANNEL_CONFIG(NAME) &CONCAT_2(NAME, _channel_shift_sens_config)
+#define SHIFT_SENS_CHANNEL_CONFIG(NAME) &CONCAT_2(NAME, _channel_shift_sens_config)
 
-/**@brief Initialize an ANT profile configuration structure for the BPWR profile (Display).
+/**@brief Initialize an ANT profile configuration structure for the SHIFT profile (Display).
  *
  * @param[in]  NAME                 Name of related instance.
- * @param[in]  EVT_HANDLER          Event handler to be called for handling events in the BPWR profile.
+ * @param[in]  EVT_HANDLER          Event handler to be called for handling events in the SHIFT profile.
  */
-#define BPWR_DISP_PROFILE_CONFIG_DEF(NAME,                                          \
+#define SHIFT_DISP_PROFILE_CONFIG_DEF(NAME,                                          \
                                      EVT_HANDLER)                                   \
 static ant_shift_disp_cb_t            CONCAT_2(NAME, _shift_disp_cb);                 \
 static const ant_shift_disp_config_t  CONCAT_2(NAME, _profile_shift_disp_config) =    \
@@ -135,17 +133,17 @@ static const ant_shift_disp_config_t  CONCAT_2(NAME, _profile_shift_disp_config)
         .p_cb               = &CONCAT_2(NAME, _shift_disp_cb),                       \
         .evt_handler        = (EVT_HANDLER),                                        \
     }
-#define BPWR_DISP_PROFILE_CONFIG(NAME) &CONCAT_2(NAME, _profile_shift_disp_config)
+#define SHIFT_DISP_PROFILE_CONFIG(NAME) &CONCAT_2(NAME, _profile_shift_disp_config)
 
 
-/**@brief Initialize an ANT profile configuration structure for the BPWR profile (Sensor).
+/**@brief Initialize an ANT profile configuration structure for the SHIFT profile (Sensor).
  *
  * @param[in]  NAME                 Name of related instance.
  * @param[in]  TORQUE_USED          Determines whether the torque page is included.
  * @param[in]  CALIB_HANDLER        Event handler to be called for handling calibration requests.
- * @param[in]  EVT_HANDLER          Event handler to be called for handling events in the BPWR profile.
+ * @param[in]  EVT_HANDLER          Event handler to be called for handling events in the SHIFT profile.
  */
-#define BPWR_SENS_PROFILE_CONFIG_DEF(NAME,                                          \
+#define SHIFT_SENS_PROFILE_CONFIG_DEF(NAME,                                          \
                                      TORQUE_USED,                                   \
                                      CALIB_HANDLER,                                 \
                                      EVT_HANDLER)                                   \
@@ -157,45 +155,30 @@ static const ant_shift_sens_config_t  CONCAT_2(NAME, _profile_shift_sens_config)
         .p_cb               = &CONCAT_2(NAME, _shift_sens_cb),                       \
         .evt_handler        = (EVT_HANDLER),                                        \
     }
-#define BPWR_SENS_PROFILE_CONFIG(NAME) &NAME##_profile_shift_sens_config
+#define SHIFT_SENS_PROFILE_CONFIG(NAME) &NAME##_profile_shift_sens_config
 
 
-/**@brief Configuration values for the Bicycle Power torque page. */
-typedef enum
-{
-    TORQUE_NONE  = 0,
-    TORQUE_WHEEL = 1,
-    TORQUE_CRANK = 2,
-} ant_shift_torque_t;
 
 /**@brief Bicycle Power page number type. */
 typedef enum
 {
-    ANT_BPWR_PAGE_1  = 1,  ///< Calibration data page.
-    ANT_BPWR_PAGE_16 = 16, ///< Standard power-only main data page.
-    ANT_BPWR_PAGE_17 = 17, ///< Standard wheel torque main data page.
-    ANT_BPWR_PAGE_18 = 18, ///< Standard crank torque main data page.
-    ANT_BPWR_PAGE_80 = ANT_COMMON_PAGE_80,
-    ANT_BPWR_PAGE_81 = ANT_COMMON_PAGE_81
+    ANT_SHIFT_PAGE_1  = 1,  ///< Shift System Status.
+    ANT_SHIFT_PAGE_80 = ANT_COMMON_PAGE_80,
+    ANT_SHIFT_PAGE_81 = ANT_COMMON_PAGE_81
 } ant_shift_page_t;
 
-/**@brief BPWR profile event type. */
+/**@brief SHIFT profile event type. */
 typedef enum
 {
-    ANT_BPWR_PAGE_1_UPDATED  = ANT_BPWR_PAGE_1,  ///< Data page 1 and speed have been updated (Display) or sent (Sensor).
-    ANT_BPWR_PAGE_16_UPDATED = ANT_BPWR_PAGE_16, ///< Data page 16 and speed have been updated (Display) or sent (Sensor).
-    ANT_BPWR_PAGE_17_UPDATED = ANT_BPWR_PAGE_17, ///< Data page 17 and speed have been updated (Display) or sent (Sensor).
-    ANT_BPWR_PAGE_18_UPDATED = ANT_BPWR_PAGE_18, ///< Data page 18 has been updated (Display) or sent (Sensor).
-    ANT_BPWR_PAGE_80_UPDATED = ANT_BPWR_PAGE_80, ///< Data page 80 has been updated (Display) or sent (Sensor).
-    ANT_BPWR_PAGE_81_UPDATED = ANT_BPWR_PAGE_81, ///< Data page 81 has been updated (Display) or sent (Sensor).
-    ANT_BPWR_CALIB_TIMEOUT,                      ///< Request of calibration time-out occurred (Display).
-    ANT_BPWR_CALIB_REQUEST_TX_FAILED,            ///< Calibration request did not reach the destination (Display).
+    ANT_SHIFT_PAGE_1_UPDATED  = ANT_SHIFT_PAGE_1,  ///< Data page 1 and speed have been updated (Display) or sent (Sensor).
+    ANT_SHIFT_PAGE_80_UPDATED = ANT_SHIFT_PAGE_80, ///< Data page 80 has been updated (Display) or sent (Sensor).
+    ANT_SHIFT_PAGE_81_UPDATED = ANT_SHIFT_PAGE_81, ///< Data page 81 has been updated (Display) or sent (Sensor).
 } ant_shift_evt_t;
 
 // Forward declaration of the ant_shift_profile_t type.
 typedef struct ant_shift_profile_s ant_shift_profile_t;
 
-/**@brief BPWR event handler type. */
+/**@brief SHIFT event handler type. */
 typedef void (* ant_shift_evt_handler_t) (ant_shift_profile_t *, ant_shift_evt_t);
 
 
@@ -208,17 +191,15 @@ extern "C" {
 /**@brief Bicycle Power Sensor configuration structure. */
 typedef struct
 {
-    ant_shift_torque_t        torque_use;    ///< Determines whether the torque page is included.
     ant_shift_sens_cb_t     * p_cb;          ///< Pointer to the data buffer for internal use.
-    ant_shift_evt_handler_t   evt_handler;   ///< Event handler to be called for handling events in the BPWR profile.
-    ant_shift_calib_handler_t calib_handler; ///< Event handler to be called for handling calibration requests.
+    ant_shift_evt_handler_t   evt_handler;   ///< Event handler to be called for handling events in the SHIFT profile.
 } ant_shift_sens_config_t;
 
 /**@brief Bicycle Power Display configuration structure. */
 typedef struct
 {
     ant_shift_disp_cb_t   * p_cb;            ///< Pointer to the data buffer for internal use.
-    ant_shift_evt_handler_t evt_handler;     ///< Event handler to be called for handling events in the BPWR profile.
+    ant_shift_evt_handler_t evt_handler;     ///< Event handler to be called for handling events in the SHIFT profile.
 } ant_shift_disp_config_t;
 
 /**@brief Bicycle Power profile structure. */
@@ -229,42 +210,39 @@ struct ant_shift_profile_s
         ant_shift_disp_cb_t * p_disp_cb;
         ant_shift_sens_cb_t * p_sens_cb;
     } _cb;                                ///< Pointer to internal control block.
-    ant_shift_evt_handler_t   evt_handler;    ///< Event handler to be called for handling events in the BPWR profile.
+    ant_shift_evt_handler_t   evt_handler;    ///< Event handler to be called for handling events in the SHIFT profile.
     ant_shift_page1_data_t    page_1;         ///< Page 1.
-    ant_shift_page16_data_t   page_16;        ///< Page 16.
-    ant_shift_page17_data_t   page_17;        ///< Page 17.
-    ant_shift_page18_data_t   page_18;        ///< Page 18.
     ant_common_page80_data_t page_80;        ///< Page 80.
     ant_common_page81_data_t page_81;        ///< Page 81.
-    ant_shift_common_data_t   common;         ///< BPWR common data.
+    ant_shift_common_data_t   common;         ///< SHIFT common data.
 };
 
 /** @name Defines for accessing ant_shift_profile_t member variables
    @{ */
-#define BPWR_PROFILE_calibration_id              page_1.calibration_id
-#define BPWR_PROFILE_auto_zero_status            page_1.auto_zero_status
-#define BPWR_PROFILE_general_calib_data          page_1.data.general_calib
-#define BPWR_PROFILE_custom_calib_data           page_1.data.custom_calib
-#define BPWR_PROFILE_instantaneous_cadence       common.instantaneous_cadence
-#define BPWR_PROFILE_pedal_power                 page_16.pedal_power.items
-#define BPWR_PROFILE_power_update_event_count    page_16.update_event_count
-#define BPWR_PROFILE_accumulated_power           page_16.accumulated_power
-#define BPWR_PROFILE_instantaneous_power         page_16.instantaneous_power
-#define BPWR_PROFILE_wheel_update_event_count    page_17.update_event_count
-#define BPWR_PROFILE_wheel_tick                  page_17.tick
-#define BPWR_PROFILE_wheel_period                page_17.period
-#define BPWR_PROFILE_wheel_accumulated_torque    page_17.accumulated_torque
-#define BPWR_PROFILE_crank_update_event_count    page_18.update_event_count
-#define BPWR_PROFILE_crank_tick                  page_18.tick
-#define BPWR_PROFILE_crank_period                page_18.period
-#define BPWR_PROFILE_crank_accumulated_torque    page_18.accumulated_torque
-#define BPWR_PROFILE_manuf_id                    page_80.manuf_id
-#define BPWR_PROFILE_hw_revision                 page_80.hw_revision
-#define BPWR_PROFILE_manufacturer_id             page_80.manufacturer_id
-#define BPWR_PROFILE_model_number                page_80.model_number
-#define BPWR_PROFILE_sw_revision_minor           page_81.sw_revision_minor
-#define BPWR_PROFILE_sw_revision_major           page_81.sw_revision_major
-#define BPWR_PROFILE_serial_number               page_81.serial_number
+#define SHIFT_PROFILE_calibration_id              page_1.calibration_id
+#define SHIFT_PROFILE_auto_zero_status            page_1.auto_zero_status
+#define SHIFT_PROFILE_general_calib_data          page_1.data.general_calib
+#define SHIFT_PROFILE_custom_calib_data           page_1.data.custom_calib
+#define SHIFT_PROFILE_instantaneous_cadence       common.instantaneous_cadence
+#define SHIFT_PROFILE_pedal_power                 page_16.pedal_power.items
+#define SHIFT_PROFILE_power_update_event_count    page_16.update_event_count
+#define SHIFT_PROFILE_accumulated_power           page_16.accumulated_power
+#define SHIFT_PROFILE_instantaneous_power         page_16.instantaneous_power
+#define SHIFT_PROFILE_wheel_update_event_count    page_17.update_event_count
+#define SHIFT_PROFILE_wheel_tick                  page_17.tick
+#define SHIFT_PROFILE_wheel_period                page_17.period
+#define SHIFT_PROFILE_wheel_accumulated_torque    page_17.accumulated_torque
+#define SHIFT_PROFILE_crank_update_event_count    page_18.update_event_count
+#define SHIFT_PROFILE_crank_tick                  page_18.tick
+#define SHIFT_PROFILE_crank_period                page_18.period
+#define SHIFT_PROFILE_crank_accumulated_torque    page_18.accumulated_torque
+#define SHIFT_PROFILE_manuf_id                    page_80.manuf_id
+#define SHIFT_PROFILE_hw_revision                 page_80.hw_revision
+#define SHIFT_PROFILE_manufacturer_id             page_80.manufacturer_id
+#define SHIFT_PROFILE_model_number                page_80.model_number
+#define SHIFT_PROFILE_sw_revision_minor           page_81.sw_revision_minor
+#define SHIFT_PROFILE_sw_revision_major           page_81.sw_revision_major
+#define SHIFT_PROFILE_serial_number               page_81.serial_number
 /** @} */
 
 /**@brief Function for initializing the ANT Bicycle Power Display profile instance.
@@ -291,7 +269,7 @@ ret_code_t ant_shift_sens_init(ant_shift_profile_t           * p_profile,
                               ant_channel_config_t const   * p_channel_config,
                               ant_shift_sens_config_t const * p_sens_config);
 
-/**@brief Function for opening the profile instance channel for ANT BPWR Display.
+/**@brief Function for opening the profile instance channel for ANT SHIFT Display.
  *
  * Before calling this function, pages should be configured.
  *
@@ -301,7 +279,7 @@ ret_code_t ant_shift_sens_init(ant_shift_profile_t           * p_profile,
  */
 ret_code_t ant_shift_disp_open(ant_shift_profile_t * p_profile);
 
-/**@brief Function for opening the profile instance channel for ANT BPWR Sensor.
+/**@brief Function for opening the profile instance channel for ANT SHIFT Sensor.
  *
  * Before calling this function, pages should be configured.
  *

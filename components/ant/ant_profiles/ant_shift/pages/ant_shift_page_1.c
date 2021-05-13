@@ -40,7 +40,7 @@
 #include "sdk_common.h"
 #if NRF_MODULE_ENABLED(ANT_SHIFT)
 
-#include "ant_shift_page_16.h"
+#include "ant_shift_page_1.h"
 
 #define NRF_LOG_MODULE_NAME ant_shift_page_16
 #if ANT_SHIFT_PAGE_16_LOG_ENABLED
@@ -60,58 +60,58 @@ typedef struct
     uint8_t reserved;
     uint8_t accumulated_power[2];
     uint8_t instantaneous_power[2];
-}ant_shift_page16_data_layout_t;
+}ant_shift_page1_data_layout_t;
 
 
-static void page16_data_log(ant_shift_page16_data_t const * p_page_data)
+static void page1_data_log(ant_shift_page1_data_t const * p_page_data)
 {
     NRF_LOG_INFO("event count:                        %u", p_page_data->update_event_count);
 
-    if (p_page_data->pedal_power.byte != 0xFF)
-    {
-        NRF_LOG_INFO("pedal power:                        %u %%",
-                   p_page_data->pedal_power.items.distribution);
-    }
-    else
-    {
-        NRF_LOG_INFO("pedal power:                        --");
-    }
+    // if (p_page_data->pedal_power.byte != 0xFF)
+    // {
+    //     NRF_LOG_INFO("pedal power:                        %u %%",
+    //                p_page_data->pedal_power.items.distribution);
+    // }
+    // else
+    // {
+    //     NRF_LOG_INFO("pedal power:                        --");
+    // }
 
-    NRF_LOG_INFO("accumulated power:                  %u W", p_page_data->accumulated_power);
-    NRF_LOG_INFO("instantaneous power:                %u W", p_page_data->instantaneous_power);
+    // NRF_LOG_INFO("accumulated power:                  %u W", p_page_data->accumulated_power);
+    // NRF_LOG_INFO("instantaneous power:                %u W", p_page_data->instantaneous_power);
 }
 
 
-void ant_shift_page_16_encode(uint8_t                      * p_page_buffer,
-                             ant_shift_page16_data_t const * p_page_data)
+void ant_shift_page_1_encode(uint8_t                      * p_page_buffer,
+                             ant_shift_page1_data_t const * p_page_data)
 {
-    ant_shift_page16_data_layout_t * p_outcoming_data =
-        (ant_shift_page16_data_layout_t *)p_page_buffer;
+    ant_shift_page1_data_layout_t * p_outcoming_data =
+        (ant_shift_page1_data_layout_t *)p_page_buffer;
 
     p_outcoming_data->update_event_count    = p_page_data->update_event_count;
-    p_outcoming_data->pedal_power           = p_page_data->pedal_power.byte;
+    // p_outcoming_data->pedal_power           = p_page_data->pedal_power.byte;
 
-    UNUSED_PARAMETER(uint16_encode(p_page_data->accumulated_power,
-                                   p_outcoming_data->accumulated_power));
-    UNUSED_PARAMETER(uint16_encode(p_page_data->instantaneous_power,
-                                   p_outcoming_data->instantaneous_power));
+    // UNUSED_PARAMETER(uint16_encode(p_page_data->accumulated_power,
+    //                                p_outcoming_data->accumulated_power));
+    // UNUSED_PARAMETER(uint16_encode(p_page_data->instantaneous_power,
+    //                                p_outcoming_data->instantaneous_power));
 
-    page16_data_log(p_page_data);
+    page1_data_log(p_page_data);
 }
 
 
-void ant_shift_page_16_decode(uint8_t const          * p_page_buffer,
-                             ant_shift_page16_data_t * p_page_data)
+void ant_shift_page_1_decode(uint8_t const          * p_page_buffer,
+                             ant_shift_page1_data_t * p_page_data)
 {
-    ant_shift_page16_data_layout_t const * p_incoming_data =
-        (ant_shift_page16_data_layout_t *)p_page_buffer;
+    ant_shift_page1_data_layout_t const * p_incoming_data =
+        (ant_shift_page1_data_layout_t *)p_page_buffer;
 
     p_page_data->update_event_count    = p_incoming_data->update_event_count;
-    p_page_data->pedal_power.byte      = p_incoming_data->pedal_power;
-    p_page_data->accumulated_power     = uint16_decode(p_incoming_data->accumulated_power);
-    p_page_data->instantaneous_power   = uint16_decode(p_incoming_data->instantaneous_power);
+    // p_page_data->pedal_power.byte      = p_incoming_data->pedal_power;
+    // p_page_data->accumulated_power     = uint16_decode(p_incoming_data->accumulated_power);
+    // p_page_data->instantaneous_power   = uint16_decode(p_incoming_data->instantaneous_power);
 
-    page16_data_log(p_page_data);
+    page1_data_log(p_page_data);
 }
 
 #endif // NRF_MODULE_ENABLED(ANT_SHIFT)

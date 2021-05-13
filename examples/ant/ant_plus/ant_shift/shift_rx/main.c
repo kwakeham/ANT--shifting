@@ -101,16 +101,14 @@ NRF_SDH_ANT_OBSERVER(m_ant_observer, ANT_SHIFT_ANT_OBSERVER_PRIO,
  */
 void bsp_evt_handler(bsp_event_t evt)
 {
-    ret_code_t            err_code;
-    ant_shift_page1_data_t page1;
+    //TODO: update gear changes on key_0 and key_1
+    // ret_code_t            err_code;
+    // ant_shift_page1_data_t page1;
 
     switch (evt)
     {
         case BSP_EVENT_KEY_0:
-            // request to calibrating the sensor
-            page1    = ANT_SHIFT_GENERAL_CALIB_REQUEST();
-            err_code = ant_shift_calib_request(&m_ant_shift, &page1);
-            APP_ERROR_CHECK(err_code);
+
             break;
 
         case BSP_EVENT_SLEEP:
@@ -161,12 +159,12 @@ void ant_shift_evt_handler(ant_shift_profile_t * p_profile, ant_shift_evt_t even
             NRF_LOG_DEBUG("Received calibration data");
             break;
 
-        case ANT_SHIFT_PAGE_16_UPDATED:
-            /* fall through */
-        case ANT_SHIFT_PAGE_17_UPDATED:
-            /* fall through */
-        case ANT_SHIFT_PAGE_18_UPDATED:
-            /* fall through */
+        // case ANT_SHIFT_PAGE_16_UPDATED:
+        //     /* fall through */
+        // case ANT_SHIFT_PAGE_17_UPDATED:
+        //     /* fall through */
+        // case ANT_SHIFT_PAGE_18_UPDATED:
+        //     /* fall through */
         case ANT_SHIFT_PAGE_80_UPDATED:
             /* fall through */
         case ANT_SHIFT_PAGE_81_UPDATED:
@@ -174,15 +172,15 @@ void ant_shift_evt_handler(ant_shift_profile_t * p_profile, ant_shift_evt_t even
             NRF_LOG_DEBUG("Page was updated");
             break;
 
-        case ANT_SHIFT_CALIB_TIMEOUT:
-            // calibration request time-out
-            NRF_LOG_DEBUG("ANT_SHIFT_CALIB_TIMEOUT");
-            break;
+        // case ANT_SHIFT_CALIB_TIMEOUT:
+        //     // calibration request time-out
+        //     NRF_LOG_DEBUG("ANT_SHIFT_CALIB_TIMEOUT");
+        //     break;
 
-        case ANT_SHIFT_CALIB_REQUEST_TX_FAILED:
-            // Please consider retrying the request.
-            NRF_LOG_DEBUG("ANT_SHIFT_CALIB_REQUEST_TX_FAILED");
-            break;
+        // case ANT_SHIFT_CALIB_REQUEST_TX_FAILED:
+        //     // Please consider retrying the request.
+        //     NRF_LOG_DEBUG("ANT_SHIFT_CALIB_REQUEST_TX_FAILED");
+        //     break;
 
         default:
             // never occurred

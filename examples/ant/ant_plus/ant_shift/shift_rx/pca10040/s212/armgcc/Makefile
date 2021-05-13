@@ -65,7 +65,7 @@ SRC_FILES += \
   $(COMPONENT_DIR)/components/ant/ant_profiles/ant_shift/ant_shift.c \
   $(COMPONENT_DIR)/components/ant/ant_profiles/ant_shift/pages/ant_shift_common_data.c \
   $(COMPONENT_DIR)/components/ant/ant_profiles/ant_shift/pages/ant_shift_page_1.c \
-  $(COMPONENT_DIR)/components/ant/ant_profiles/ant_shift/simulator/ant_shift_simulator.c \
+  # $(COMPONENT_DIR)/components/ant/ant_profiles/ant_shift/simulator/ant_shift_simulator.c \
 
 # Include folders common to all targets
 INC_FOLDERS += \

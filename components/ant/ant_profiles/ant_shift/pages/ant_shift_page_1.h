@@ -37,8 +37,8 @@
  * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  */
-#ifndef ANT_SHIFT_PAGE_16_H__
-#define ANT_SHIFT_PAGE_16_H__
+#ifndef ANT_SHIFT_PAGE_1_H__
+#define ANT_SHIFT_PAGE_1_H__
 
 /** @file
  *
@@ -79,7 +79,7 @@ typedef struct
         uint8_t byte;
     } total_gear;
 
-} ant_shift_page16_data_t;
+} ant_shift_page1_data_t;
 
 /**@brief Initialize page 16.
  */
@@ -99,7 +99,7 @@ typedef struct
  * @param[out] p_page_buffer    Pointer to the data buffer.
  */
 void ant_shift_page_1_encode(uint8_t                      * p_page_buffer,
-                             ant_shift_page16_data_t const * p_page_data);
+                             ant_shift_page1_data_t const * p_page_data);
 
 /**@brief Function for decoding page 16.
  *
@@ -107,7 +107,7 @@ void ant_shift_page_1_encode(uint8_t                      * p_page_buffer,
  * @param[out] p_page_data      Pointer to the page data.
  */
 void ant_shift_page_1_decode(uint8_t const          * p_page_buffer,
-                             ant_shift_page16_data_t * p_page_data);
+                             ant_shift_page1_data_t * p_page_data);
 
 
 #ifdef __cplusplus
