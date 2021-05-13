@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2015 - 2020, Nordic Semiconductor ASA
+ * Copyright (c) 2019 - 2021, Titan Lab inc.
  *
  * All rights reserved.
  *
@@ -15,17 +15,15 @@
  *    conditions and the following disclaimer in the documentation and/or other
  *    materials provided with the distribution.
  *
- * 3. Neither the name of Nordic Semiconductor ASA nor the names of its
+ * 3. Neither the name of Titan Lab Inc.,  nor the names of its
  *    contributors may be used to endorse or promote products derived from this
  *    software without specific prior written permission.
  *
- * 4. This software, with or without modification, must only be used with a
- *    Nordic Semiconductor ASA integrated circuit.
  *
  * 5. Any software provided in binary form under this license must not be reverse
  *    engineered, decompiled, modified and/or disassembled.
  *
- * THIS SOFTWARE IS PROVIDED BY NORDIC SEMICONDUCTOR ASA "AS IS" AND ANY EXPRESS
+ * THIS SOFTWARE IS PROVIDED BY TITAN LAB INC. "AS IS" AND ANY EXPRESS
  * OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
  * OF MERCHANTABILITY, NONINFRINGEMENT, AND FITNESS FOR A PARTICULAR PURPOSE ARE
  * DISCLAIMED. IN NO EVENT SHALL NORDIC SEMICONDUCTOR ASA OR CONTRIBUTORS BE
@@ -50,10 +48,10 @@ extern "C" {
 
 /** @file
  *
- * @defgroup ant_sdk_profiles_shift_utils Bicycle Power profile utilities
+ * @defgroup ant_sdk_profiles_shift_utils Shift profile utilities
  * @{
  * @ingroup ant_shift
- * @brief This module implements utilities for the Bicycle Power profile.
+ * @brief This module implements utilities for the Shift profile.
  *
  */
 

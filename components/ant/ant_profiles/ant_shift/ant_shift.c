@@ -43,9 +43,9 @@
 #include "nrf_assert.h"
 #include "app_error.h"
 #include "ant_interface.h"
-#include "ant_bpwr.h"
+#include "ant_shift.h"
 
-#define NRF_LOG_MODULE_NAME ant_bpwr
+#define NRF_LOG_MODULE_NAME ant_shift
 #if ANT_BPWR_LOG_ENABLED
 #define NRF_LOG_LEVEL       ANT_BPWR_LOG_LEVEL
 #define NRF_LOG_INFO_COLOR  ANT_BPWR_INFO_COLOR
@@ -69,7 +69,7 @@ typedef struct
 {
     uint8_t page_number;
     uint8_t page_payload[7];
-} ant_bpwr_message_layout_t;
+} ant_shift_message_layout_t;
 
 
 /**@brief Function for initializing the ANT Bicycle Power Profile instance.
@@ -79,7 +79,7 @@ typedef struct
  *
  * @retval     NRF_SUCCESS      If initialization was successful. Otherwise, an error code is returned.
  */
-static ret_code_t ant_bpwr_init(ant_bpwr_profile_t         * p_profile,
+static ret_code_t ant_shift_init(ant_shift_profile_t         * p_profile,
                                 ant_channel_config_t const * p_channel_config)
 {
     p_profile->channel_number = p_channel_config->channel_number;
@@ -96,9 +96,9 @@ static ret_code_t ant_bpwr_init(ant_bpwr_profile_t         * p_profile,
 }
 
 
-ret_code_t ant_bpwr_disp_init(ant_bpwr_profile_t           * p_profile,
+ret_code_t ant_shift_disp_init(ant_shift_profile_t           * p_profile,
                               ant_channel_config_t const   * p_channel_config,
-                              ant_bpwr_disp_config_t const * p_disp_config)
+                              ant_shift_disp_config_t const * p_disp_config)
 {
     ASSERT(p_profile != NULL);
     ASSERT(p_channel_config != NULL);
@@ -112,13 +112,13 @@ ret_code_t ant_bpwr_disp_init(ant_bpwr_profile_t           * p_profile,
     p_profile->_cb.p_disp_cb ->calib_timeout = 0;
     p_profile->_cb.p_disp_cb ->calib_stat    = BPWR_DISP_CALIB_NONE;
 
-    return ant_bpwr_init(p_profile, p_channel_config);
+    return ant_shift_init(p_profile, p_channel_config);
 }
 
 
-ret_code_t ant_bpwr_sens_init(ant_bpwr_profile_t           * p_profile,
+ret_code_t ant_shift_sens_init(ant_shift_profile_t           * p_profile,
                               ant_channel_config_t const   * p_channel_config,
-                              ant_bpwr_sens_config_t const * p_sens_config)
+                              ant_shift_sens_config_t const * p_sens_config)
 {
     ASSERT(p_profile != NULL);
     ASSERT(p_channel_config != NULL);
@@ -135,7 +135,7 @@ ret_code_t ant_bpwr_sens_init(ant_bpwr_profile_t           * p_profile,
     p_profile->_cb.p_sens_cb->calib_stat      = BPWR_SENS_CALIB_NONE;
     p_profile->_cb.p_sens_cb->message_counter = 0;
 
-    return ant_bpwr_init(p_profile, p_channel_config);
+    return ant_shift_init(p_profile, p_channel_config);
 }
 
 
@@ -146,46 +146,46 @@ ret_code_t ant_bpwr_sens_init(ant_bpwr_profile_t           * p_profile,
  *
  * @return     Next page number.
  */
-static ant_bpwr_page_t next_page_number_get(ant_bpwr_profile_t * p_profile)
+static ant_shift_page_t next_page_number_get(ant_shift_profile_t * p_profile)
 {
-    ant_bpwr_sens_cb_t * p_bpwr_cb = p_profile->_cb.p_sens_cb;
-    ant_bpwr_page_t      page_number;
+    ant_shift_sens_cb_t * p_shift_cb = p_profile->_cb.p_sens_cb;
+    ant_shift_page_t      page_number;
 
-    if (p_bpwr_cb->calib_stat == BPWR_SENS_CALIB_READY)
+    if (p_shift_cb->calib_stat == BPWR_SENS_CALIB_READY)
     {
         page_number           = ANT_BPWR_PAGE_1;
-        p_bpwr_cb->calib_stat = BPWR_SENS_CALIB_NONE; // mark event as processed
+        p_shift_cb->calib_stat = BPWR_SENS_CALIB_NONE; // mark event as processed
     }
     else if ((p_profile->BPWR_PROFILE_auto_zero_status != ANT_BPWR_AUTO_ZERO_NOT_SUPPORTED)
-             && (p_bpwr_cb->message_counter == AUTO_ZERO_SUPPORT_INTERVAL))
+             && (p_shift_cb->message_counter == AUTO_ZERO_SUPPORT_INTERVAL))
     {
         page_number                            = ANT_BPWR_PAGE_1;
         p_profile->BPWR_PROFILE_calibration_id = ANT_BPWR_CALIB_ID_AUTO_SUPPORT;
-        p_bpwr_cb->message_counter++;
+        p_shift_cb->message_counter++;
     }
-    else if (p_bpwr_cb->message_counter >= COMMON_PAGE_81_INTERVAL)
+    else if (p_shift_cb->message_counter >= COMMON_PAGE_81_INTERVAL)
     {
         page_number                = ANT_BPWR_PAGE_81;
-        p_bpwr_cb->message_counter = 0;
+        p_shift_cb->message_counter = 0;
     }
     else
     {
-        if (p_bpwr_cb->message_counter == COMMON_PAGE_80_INTERVAL)
+        if (p_shift_cb->message_counter == COMMON_PAGE_80_INTERVAL)
         {
             page_number = ANT_BPWR_PAGE_80;
         }
         else
         {
-            if ( p_bpwr_cb->torque_use == TORQUE_NONE)
+            if ( p_shift_cb->torque_use == TORQUE_NONE)
             {
                 page_number = ANT_BPWR_PAGE_16;
             }
-            else if ((p_bpwr_cb->message_counter % BPWR_PAGE_16_INTERVAL)
+            else if ((p_shift_cb->message_counter % BPWR_PAGE_16_INTERVAL)
                      == BPWR_PAGE_16_INTERVAL_OFS)
             {
                 page_number = ANT_BPWR_PAGE_16;
             }
-            else if ( p_bpwr_cb->torque_use == TORQUE_WHEEL)
+            else if ( p_shift_cb->torque_use == TORQUE_WHEEL)
             {
                 page_number = ANT_BPWR_PAGE_17;
             }
@@ -194,7 +194,7 @@ static ant_bpwr_page_t next_page_number_get(ant_bpwr_profile_t * p_profile)
                 page_number = ANT_BPWR_PAGE_18;
             }
         }
-        p_bpwr_cb->message_counter++;
+        p_shift_cb->message_counter++;
     }
 
     return page_number;
@@ -205,49 +205,49 @@ static ant_bpwr_page_t next_page_number_get(ant_bpwr_profile_t * p_profile)
  *
  * @note Assume to be call each time when Tx window will occur.
  */
-static void sens_message_encode(ant_bpwr_profile_t * p_profile, uint8_t * p_message_payload)
+static void sens_message_encode(ant_shift_profile_t * p_profile, uint8_t * p_message_payload)
 {
-    ant_bpwr_message_layout_t * p_bpwr_message_payload =
-        (ant_bpwr_message_layout_t *)p_message_payload;
+    ant_shift_message_layout_t * p_shift_message_payload =
+        (ant_shift_message_layout_t *)p_message_payload;
 
-    p_bpwr_message_payload->page_number = next_page_number_get(p_profile);
+    p_shift_message_payload->page_number = next_page_number_get(p_profile);
 
-    NRF_LOG_INFO("B-PWR tx page: %u", p_bpwr_message_payload->page_number);
+    NRF_LOG_INFO("B-PWR tx page: %u", p_shift_message_payload->page_number);
 
-    switch (p_bpwr_message_payload->page_number)
+    switch (p_shift_message_payload->page_number)
     {
         case ANT_BPWR_PAGE_1:
-            ant_bpwr_page_1_encode(p_bpwr_message_payload->page_payload, &(p_profile->page_1));
+            ant_shift_page_1_encode(p_shift_message_payload->page_payload, &(p_profile->page_1));
             break;
 
         case ANT_BPWR_PAGE_16:
-            ant_bpwr_page_16_encode(p_bpwr_message_payload->page_payload, &(p_profile->page_16));
-            ant_bpwr_cadence_encode(p_bpwr_message_payload->page_payload, &(p_profile->common));
+            ant_shift_page_16_encode(p_shift_message_payload->page_payload, &(p_profile->page_16));
+            ant_shift_cadence_encode(p_shift_message_payload->page_payload, &(p_profile->common));
             break;
 
         case ANT_BPWR_PAGE_17:
-            ant_bpwr_page_17_encode(p_bpwr_message_payload->page_payload, &(p_profile->page_17));
-            ant_bpwr_cadence_encode(p_bpwr_message_payload->page_payload, &(p_profile->common));
+            ant_shift_page_17_encode(p_shift_message_payload->page_payload, &(p_profile->page_17));
+            ant_shift_cadence_encode(p_shift_message_payload->page_payload, &(p_profile->common));
             break;
 
         case ANT_BPWR_PAGE_18:
-            ant_bpwr_page_18_encode(p_bpwr_message_payload->page_payload, &(p_profile->page_18));
-            ant_bpwr_cadence_encode(p_bpwr_message_payload->page_payload, &(p_profile->common));
+            ant_shift_page_18_encode(p_shift_message_payload->page_payload, &(p_profile->page_18));
+            ant_shift_cadence_encode(p_shift_message_payload->page_payload, &(p_profile->common));
             break;
 
         case ANT_COMMON_PAGE_80:
-            ant_common_page_80_encode(p_bpwr_message_payload->page_payload, &(p_profile->page_80));
+            ant_common_page_80_encode(p_shift_message_payload->page_payload, &(p_profile->page_80));
             break;
 
         case ANT_COMMON_PAGE_81:
-            ant_common_page_81_encode(p_bpwr_message_payload->page_payload, &(p_profile->page_81));
+            ant_common_page_81_encode(p_shift_message_payload->page_payload, &(p_profile->page_81));
             break;
 
         default:
             return;
     }
 
-    p_profile->evt_handler(p_profile, (ant_bpwr_evt_t)p_bpwr_message_payload->page_number);
+    p_profile->evt_handler(p_profile, (ant_shift_evt_t)p_shift_message_payload->page_number);
 
 }
 
@@ -256,16 +256,16 @@ static void sens_message_encode(ant_bpwr_profile_t * p_profile, uint8_t * p_mess
  *
  * @note Assume to be call each time when Rx window will occur.
  */
-static void sens_message_decode(ant_bpwr_profile_t * p_profile, uint8_t * p_message_payload)
+static void sens_message_decode(ant_shift_profile_t * p_profile, uint8_t * p_message_payload)
 {
-    const ant_bpwr_message_layout_t * p_bpwr_message_payload =
-        (ant_bpwr_message_layout_t *)p_message_payload;
-    ant_bpwr_page1_data_t page1;
+    const ant_shift_message_layout_t * p_shift_message_payload =
+        (ant_shift_message_layout_t *)p_message_payload;
+    ant_shift_page1_data_t page1;
 
-    switch (p_bpwr_message_payload->page_number)
+    switch (p_shift_message_payload->page_number)
     {
         case ANT_BPWR_PAGE_1:
-            ant_bpwr_page_1_decode(p_bpwr_message_payload->page_payload, &page1);
+            ant_shift_page_1_decode(p_shift_message_payload->page_payload, &page1);
             p_profile->_cb.p_sens_cb->calib_stat = BPWR_SENS_CALIB_REQUESTED;
             p_profile->_cb.p_sens_cb->calib_handler(p_profile, &page1);
             break;
@@ -280,66 +280,66 @@ static void sens_message_decode(ant_bpwr_profile_t * p_profile, uint8_t * p_mess
  *
  * @note Assume to be call each time when Rx window will occur.
  */
-static void disp_message_decode(ant_bpwr_profile_t * p_profile, uint8_t * p_message_payload)
+static void disp_message_decode(ant_shift_profile_t * p_profile, uint8_t * p_message_payload)
 {
-    const ant_bpwr_message_layout_t * p_bpwr_message_payload =
-        (ant_bpwr_message_layout_t *)p_message_payload;
+    const ant_shift_message_layout_t * p_shift_message_payload =
+        (ant_shift_message_layout_t *)p_message_payload;
 
-    NRF_LOG_INFO("B-PWR rx page: %u", p_bpwr_message_payload->page_number);
+    NRF_LOG_INFO("B-PWR rx page: %u", p_shift_message_payload->page_number);
 
-    switch (p_bpwr_message_payload->page_number)
+    switch (p_shift_message_payload->page_number)
     {
         case ANT_BPWR_PAGE_1:
-            ant_bpwr_page_1_decode(p_bpwr_message_payload->page_payload, &(p_profile->page_1));
+            ant_shift_page_1_decode(p_shift_message_payload->page_payload, &(p_profile->page_1));
             p_profile->_cb.p_disp_cb->calib_stat = BPWR_DISP_CALIB_NONE;
             break;
 
         case ANT_BPWR_PAGE_16:
-            ant_bpwr_page_16_decode(p_bpwr_message_payload->page_payload, &(p_profile->page_16));
-            ant_bpwr_cadence_decode(p_bpwr_message_payload->page_payload, &(p_profile->common));
+            ant_shift_page_16_decode(p_shift_message_payload->page_payload, &(p_profile->page_16));
+            ant_shift_cadence_decode(p_shift_message_payload->page_payload, &(p_profile->common));
             break;
 
         case ANT_BPWR_PAGE_17:
-            ant_bpwr_page_17_decode(p_bpwr_message_payload->page_payload, &(p_profile->page_17));
-            ant_bpwr_cadence_decode(p_bpwr_message_payload->page_payload, &(p_profile->common));
+            ant_shift_page_17_decode(p_shift_message_payload->page_payload, &(p_profile->page_17));
+            ant_shift_cadence_decode(p_shift_message_payload->page_payload, &(p_profile->common));
             break;
 
         case ANT_BPWR_PAGE_18:
-            ant_bpwr_page_18_decode(p_bpwr_message_payload->page_payload, &(p_profile->page_18));
-            ant_bpwr_cadence_decode(p_bpwr_message_payload->page_payload, &(p_profile->common));
+            ant_shift_page_18_decode(p_shift_message_payload->page_payload, &(p_profile->page_18));
+            ant_shift_cadence_decode(p_shift_message_payload->page_payload, &(p_profile->common));
             break;
 
         case ANT_COMMON_PAGE_80:
-            ant_common_page_80_decode(p_bpwr_message_payload->page_payload, &(p_profile->page_80));
+            ant_common_page_80_decode(p_shift_message_payload->page_payload, &(p_profile->page_80));
             break;
 
         case ANT_COMMON_PAGE_81:
-            ant_common_page_81_decode(p_bpwr_message_payload->page_payload, &(p_profile->page_81));
+            ant_common_page_81_decode(p_shift_message_payload->page_payload, &(p_profile->page_81));
             break;
 
         default:
             return;
     }
 
-    p_profile->evt_handler(p_profile, (ant_bpwr_evt_t)p_bpwr_message_payload->page_number);
+    p_profile->evt_handler(p_profile, (ant_shift_evt_t)p_shift_message_payload->page_number);
 }
 
 
-ret_code_t ant_bpwr_calib_request(ant_bpwr_profile_t * p_profile, ant_bpwr_page1_data_t * p_page_1)
+ret_code_t ant_shift_calib_request(ant_shift_profile_t * p_profile, ant_shift_page1_data_t * p_page_1)
 {
-    ant_bpwr_message_layout_t bpwr_message_payload;
+    ant_shift_message_layout_t shift_message_payload;
 
     if (p_profile->_cb.p_disp_cb->calib_stat == BPWR_DISP_CALIB_REQUESTED)
     {
         return NRF_SUCCESS; // calibration in progress, so omit this request
     }
 
-    bpwr_message_payload.page_number = ANT_BPWR_PAGE_1;
-    ant_bpwr_page_1_encode(bpwr_message_payload.page_payload, p_page_1);
+    shift_message_payload.page_number = ANT_BPWR_PAGE_1;
+    ant_shift_page_1_encode(shift_message_payload.page_payload, p_page_1);
 
     uint32_t err_code = sd_ant_acknowledge_message_tx(p_profile->channel_number,
-                                                      sizeof (bpwr_message_payload),
-                                                      (uint8_t *) &bpwr_message_payload);
+                                                      sizeof (shift_message_payload),
+                                                      (uint8_t *) &shift_message_payload);
 
     if (err_code == NRF_SUCCESS)
     {
@@ -351,7 +351,7 @@ ret_code_t ant_bpwr_calib_request(ant_bpwr_profile_t * p_profile, ant_bpwr_page1
 }
 
 
-void ant_bpwr_calib_response(ant_bpwr_profile_t * p_profile)
+void ant_shift_calib_response(ant_shift_profile_t * p_profile)
 {
     if (p_profile->_cb.p_sens_cb->calib_stat != BPWR_SENS_CALIB_READY) // abort if callback request is in progress
     {
@@ -362,9 +362,9 @@ void ant_bpwr_calib_response(ant_bpwr_profile_t * p_profile)
 
 /**@brief Function for hangling calibration events.
  */
-static void service_calib(ant_bpwr_profile_t * p_profile, uint8_t event)
+static void service_calib(ant_shift_profile_t * p_profile, uint8_t event)
 {
-    ant_bpwr_evt_t       bpwr_event;
+    ant_shift_evt_t       shift_event;
 
     if (p_profile->_cb.p_disp_cb->calib_stat == BPWR_DISP_CALIB_REQUESTED)
     {
@@ -376,7 +376,7 @@ static void service_calib(ant_bpwr_profile_t * p_profile, uint8_t event)
 
                 if (p_profile->_cb.p_disp_cb->calib_timeout-- == 0)
                 {
-                    bpwr_event = ANT_BPWR_CALIB_TIMEOUT;
+                    shift_event = ANT_BPWR_CALIB_TIMEOUT;
                     break;
                 }
                 else
@@ -385,11 +385,11 @@ static void service_calib(ant_bpwr_profile_t * p_profile, uint8_t event)
                 }
 
             case EVENT_TRANSFER_TX_FAILED:
-                bpwr_event = ANT_BPWR_CALIB_REQUEST_TX_FAILED;
+                shift_event = ANT_BPWR_CALIB_REQUEST_TX_FAILED;
                 break;
 
             case EVENT_RX_SEARCH_TIMEOUT:
-                bpwr_event = ANT_BPWR_CALIB_TIMEOUT;
+                shift_event = ANT_BPWR_CALIB_TIMEOUT;
                 break;
 
             default:
@@ -399,12 +399,12 @@ static void service_calib(ant_bpwr_profile_t * p_profile, uint8_t event)
         NRF_LOG_INFO("End calibration process");
         p_profile->_cb.p_disp_cb->calib_stat = BPWR_DISP_CALIB_NONE;
 
-        p_profile->evt_handler(p_profile, bpwr_event);
+        p_profile->evt_handler(p_profile, shift_event);
     }
 }
 
 
-static void ant_message_send(ant_bpwr_profile_t * p_profile)
+static void ant_message_send(ant_shift_profile_t * p_profile)
 {
     uint32_t err_code;
     uint8_t  p_message_payload[ANT_STANDARD_DATA_PAYLOAD_SIZE];
@@ -418,14 +418,14 @@ static void ant_message_send(ant_bpwr_profile_t * p_profile)
 }
 
 
-ret_code_t ant_bpwr_disp_open(ant_bpwr_profile_t * p_profile)
+ret_code_t ant_shift_disp_open(ant_shift_profile_t * p_profile)
 {
     NRF_LOG_INFO("ANT B-PWR %u open", p_profile->channel_number);
     return sd_ant_channel_open(p_profile->channel_number);
 }
 
 
-ret_code_t ant_bpwr_sens_open(ant_bpwr_profile_t * p_profile)
+ret_code_t ant_shift_sens_open(ant_shift_profile_t * p_profile)
 {
     // Fill tx buffer for the first frame
     ant_message_send(p_profile);
@@ -435,9 +435,9 @@ ret_code_t ant_bpwr_sens_open(ant_bpwr_profile_t * p_profile)
 }
 
 
-void ant_bpwr_sens_evt_handler(ant_evt_t * p_ant_event, void * p_context)
+void ant_shift_sens_evt_handler(ant_evt_t * p_ant_event, void * p_context)
 {
-    ant_bpwr_profile_t * p_profile = ( ant_bpwr_profile_t *)p_context;
+    ant_shift_profile_t * p_profile = ( ant_shift_profile_t *)p_context;
 
     if (p_ant_event->channel == p_profile->channel_number)
     {
@@ -462,9 +462,9 @@ void ant_bpwr_sens_evt_handler(ant_evt_t * p_ant_event, void * p_context)
 }
 
 
-void ant_bpwr_disp_evt_handler(ant_evt_t * p_ant_event, void * p_context)
+void ant_shift_disp_evt_handler(ant_evt_t * p_ant_event, void * p_context)
 {
-    ant_bpwr_profile_t * p_profile = ( ant_bpwr_profile_t *)p_context;
+    ant_shift_profile_t * p_profile = ( ant_shift_profile_t *)p_context;
 
     if (p_ant_event->channel == p_profile->channel_number)
     {
