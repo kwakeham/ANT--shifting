@@ -54,9 +54,9 @@
 #define ANTPLUS_NETWORK_NUM 0
 #endif
 
-// <o> BPWR_CHANNEL_NUM - Channel number assigned to BPWR profile. 
-#ifndef BPWR_CHANNEL_NUM
-#define BPWR_CHANNEL_NUM 0
+// <o> SHIFT_CHANNEL_NUM - Channel number assigned to SHIFT profile. 
+#ifndef SHIFT_CHANNEL_NUM
+#define SHIFT_CHANNEL_NUM 0
 #endif
 
 // <o> CALIBRATION_DATA - Calibration data. 
@@ -77,19 +77,19 @@
 // <h> MANUFACTURER_IDENTIFICATION_COMMON_PAGE 
 
 //==========================================================
-// <o> BPWR_HW_REVISION - Hardware revision for manufacturer's identification common page 
-#ifndef BPWR_HW_REVISION
-#define BPWR_HW_REVISION 127
+// <o> SHIFT_HW_REVISION - Hardware revision for manufacturer's identification common page 
+#ifndef SHIFT_HW_REVISION
+#define SHIFT_HW_REVISION 127
 #endif
 
-// <o> BPWR_MANUFACTURER_ID - Manufacturer ID for manufacturer's identification common page 
-#ifndef BPWR_MANUFACTURER_ID
-#define BPWR_MANUFACTURER_ID 43690
+// <o> SHIFT_MANUFACTURER_ID - Manufacturer ID for manufacturer's identification common page 
+#ifndef SHIFT_MANUFACTURER_ID
+#define SHIFT_MANUFACTURER_ID 43690
 #endif
 
-// <o> BPWR_MODEL_NUMBER - Model number for manufacturer's identification common page 
-#ifndef BPWR_MODEL_NUMBER
-#define BPWR_MODEL_NUMBER 21845
+// <o> SHIFT_MODEL_NUMBER - Model number for manufacturer's identification common page 
+#ifndef SHIFT_MODEL_NUMBER
+#define SHIFT_MODEL_NUMBER 21845
 #endif
 
 // </h> 
@@ -109,19 +109,19 @@
 // <h> PRODUCT_INFORMATION_COMMON_PAGE 
 
 //==========================================================
-// <o> BPWR_SW_REVISION_MAJOR - Software revision major number for product information common page 
-#ifndef BPWR_SW_REVISION_MAJOR
-#define BPWR_SW_REVISION_MAJOR 170
+// <o> SHIFT_SW_REVISION_MAJOR - Software revision major number for product information common page 
+#ifndef SHIFT_SW_REVISION_MAJOR
+#define SHIFT_SW_REVISION_MAJOR 170
 #endif
 
-// <o> BPWR_SW_REVISION_MINOR - Software revision minor number for product information common page, unused value 
-#ifndef BPWR_SW_REVISION_MINOR
-#define BPWR_SW_REVISION_MINOR 255
+// <o> SHIFT_SW_REVISION_MINOR - Software revision minor number for product information common page, unused value 
+#ifndef SHIFT_SW_REVISION_MINOR
+#define SHIFT_SW_REVISION_MINOR 255
 #endif
 
-// <o> BPWR_SERIAL_NUMBER - Serial number for product information common page 
-#ifndef BPWR_SERIAL_NUMBER
-#define BPWR_SERIAL_NUMBER 12345678
+// <o> SHIFT_SERIAL_NUMBER - Serial number for product information common page 
+#ifndef SHIFT_SERIAL_NUMBER
+#define SHIFT_SERIAL_NUMBER 12345678
 #endif
 
 // </h> 
@@ -143,17 +143,17 @@
 // <h> nRF_ANT 
 
 //==========================================================
-// <e> ANT_BPWR_ENABLED - ant_bpwr - Bicycle Power Profile
+// <e> ANT_SHIFT_ENABLED - ant_bpwr - Bicycle Power Profile
 //==========================================================
-#ifndef ANT_BPWR_ENABLED
-#define ANT_BPWR_ENABLED 1
+#ifndef ANT_SHIFT_ENABLED
+#define ANT_SHIFT_ENABLED 1
 #endif
-// <e> ANT_BPWR_LOG_ENABLED - Enables general logging in the module.
+// <e> ANT_SHIFT_LOG_ENABLED - Enables general logging in the module.
 //==========================================================
-#ifndef ANT_BPWR_LOG_ENABLED
-#define ANT_BPWR_LOG_ENABLED 1
+#ifndef ANT_SHIFT_LOG_ENABLED
+#define ANT_SHIFT_LOG_ENABLED 1
 #endif
-// <o> ANT_BPWR_LOG_LEVEL  - Default Severity level
+// <o> ANT_SHIFT_LOG_LEVEL  - Default Severity level
  
 // <0=> Off 
 // <1=> Error 
@@ -161,11 +161,11 @@
 // <3=> Info 
 // <4=> Debug 
 
-#ifndef ANT_BPWR_LOG_LEVEL
-#define ANT_BPWR_LOG_LEVEL 3
+#ifndef ANT_SHIFT_LOG_LEVEL
+#define ANT_SHIFT_LOG_LEVEL 3
 #endif
 
-// <o> ANT_BPWR_INFO_COLOR  - ANSI escape code prefix.
+// <o> ANT_SHIFT_INFO_COLOR  - ANSI escape code prefix.
  
 // <0=> Default 
 // <1=> Black 
@@ -177,18 +177,18 @@
 // <7=> Cyan 
 // <8=> White 
 
-#ifndef ANT_BPWR_INFO_COLOR
-#define ANT_BPWR_INFO_COLOR 0
+#ifndef ANT_SHIFT_INFO_COLOR
+#define ANT_SHIFT_INFO_COLOR 0
 #endif
 
 // </e>
 
-// <e> ANT_BPWR_COMMON_LOG_ENABLED - Enables logging of BPWR tracing common data.
+// <e> ANT_SHIFT_COMMON_LOG_ENABLED - Enables logging of SHIFT tracing common data.
 //==========================================================
-#ifndef ANT_BPWR_COMMON_LOG_ENABLED
-#define ANT_BPWR_COMMON_LOG_ENABLED 1
+#ifndef ANT_SHIFT_COMMON_LOG_ENABLED
+#define ANT_SHIFT_COMMON_LOG_ENABLED 1
 #endif
-// <o> ANT_BPWR_COMMON_LOG_LEVEL  - Default Severity level
+// <o> ANT_SHIFT_COMMON_LOG_LEVEL  - Default Severity level
  
 // <0=> Off 
 // <1=> Error 
@@ -196,11 +196,11 @@
 // <3=> Info 
 // <4=> Debug 
 
-#ifndef ANT_BPWR_COMMON_LOG_LEVEL
-#define ANT_BPWR_COMMON_LOG_LEVEL 3
+#ifndef ANT_SHIFT_COMMON_LOG_LEVEL
+#define ANT_SHIFT_COMMON_LOG_LEVEL 3
 #endif
 
-// <o> ANT_BPWR_COMMON_INFO_COLOR  - ANSI escape code prefix.
+// <o> ANT_SHIFT_COMMON_INFO_COLOR  - ANSI escape code prefix.
  
 // <0=> Default 
 // <1=> Black 
@@ -212,18 +212,18 @@
 // <7=> Cyan 
 // <8=> White 
 
-#ifndef ANT_BPWR_COMMON_INFO_COLOR
-#define ANT_BPWR_COMMON_INFO_COLOR 0
+#ifndef ANT_SHIFT_COMMON_INFO_COLOR
+#define ANT_SHIFT_COMMON_INFO_COLOR 0
 #endif
 
 // </e>
 
-// <e> ANT_BPWR_PAGE_TORQUE_LOG_ENABLED - Enables logging of BPWR torque page in the module.
+// <e> ANT_SHIFT_PAGE_TORQUE_LOG_ENABLED - Enables logging of SHIFT torque page in the module.
 //==========================================================
-#ifndef ANT_BPWR_PAGE_TORQUE_LOG_ENABLED
-#define ANT_BPWR_PAGE_TORQUE_LOG_ENABLED 1
+#ifndef ANT_SHIFT_PAGE_TORQUE_LOG_ENABLED
+#define ANT_SHIFT_PAGE_TORQUE_LOG_ENABLED 1
 #endif
-// <o> ANT_BPWR_PAGE_TORQUE_LOG_LEVEL  - Default Severity level
+// <o> ANT_SHIFT_PAGE_TORQUE_LOG_LEVEL  - Default Severity level
  
 // <0=> Off 
 // <1=> Error 
@@ -231,11 +231,11 @@
 // <3=> Info 
 // <4=> Debug 
 
-#ifndef ANT_BPWR_PAGE_TORQUE_LOG_LEVEL
-#define ANT_BPWR_PAGE_TORQUE_LOG_LEVEL 3
+#ifndef ANT_SHIFT_PAGE_TORQUE_LOG_LEVEL
+#define ANT_SHIFT_PAGE_TORQUE_LOG_LEVEL 3
 #endif
 
-// <o> ANT_BPWR_PAGE_TORQUE_INFO_COLOR  - ANSI escape code prefix.
+// <o> ANT_SHIFT_PAGE_TORQUE_INFO_COLOR  - ANSI escape code prefix.
  
 // <0=> Default 
 // <1=> Black 
@@ -247,18 +247,18 @@
 // <7=> Cyan 
 // <8=> White 
 
-#ifndef ANT_BPWR_PAGE_TORQUE_INFO_COLOR
-#define ANT_BPWR_PAGE_TORQUE_INFO_COLOR 0
+#ifndef ANT_SHIFT_PAGE_TORQUE_INFO_COLOR
+#define ANT_SHIFT_PAGE_TORQUE_INFO_COLOR 0
 #endif
 
 // </e>
 
-// <e> ANT_BPWR_PAGE_1_LOG_ENABLED - Enables logging of BPWR page 1 in the module.
+// <e> ANT_SHIFT_PAGE_1_LOG_ENABLED - Enables logging of SHIFT page 1 in the module.
 //==========================================================
-#ifndef ANT_BPWR_PAGE_1_LOG_ENABLED
-#define ANT_BPWR_PAGE_1_LOG_ENABLED 1
+#ifndef ANT_SHIFT_PAGE_1_LOG_ENABLED
+#define ANT_SHIFT_PAGE_1_LOG_ENABLED 1
 #endif
-// <o> ANT_BPWR_PAGE_1_LOG_LEVEL  - Default Severity level
+// <o> ANT_SHIFT_PAGE_1_LOG_LEVEL  - Default Severity level
  
 // <0=> Off 
 // <1=> Error 
@@ -266,11 +266,11 @@
 // <3=> Info 
 // <4=> Debug 
 
-#ifndef ANT_BPWR_PAGE_1_LOG_LEVEL
-#define ANT_BPWR_PAGE_1_LOG_LEVEL 3
+#ifndef ANT_SHIFT_PAGE_1_LOG_LEVEL
+#define ANT_SHIFT_PAGE_1_LOG_LEVEL 3
 #endif
 
-// <o> ANT_BPWR_PAGE_1_INFO_COLOR  - ANSI escape code prefix.
+// <o> ANT_SHIFT_PAGE_1_INFO_COLOR  - ANSI escape code prefix.
  
 // <0=> Default 
 // <1=> Black 
@@ -282,18 +282,18 @@
 // <7=> Cyan 
 // <8=> White 
 
-#ifndef ANT_BPWR_PAGE_1_INFO_COLOR
-#define ANT_BPWR_PAGE_1_INFO_COLOR 0
+#ifndef ANT_SHIFT_PAGE_1_INFO_COLOR
+#define ANT_SHIFT_PAGE_1_INFO_COLOR 0
 #endif
 
 // </e>
 
-// <e> ANT_BPWR_PAGE_16_LOG_ENABLED - Enables logging of BPWR page 16 in the module.
+// <e> ANT_SHIFT_PAGE_16_LOG_ENABLED - Enables logging of SHIFT page 16 in the module.
 //==========================================================
-#ifndef ANT_BPWR_PAGE_16_LOG_ENABLED
-#define ANT_BPWR_PAGE_16_LOG_ENABLED 1
+#ifndef ANT_SHIFT_PAGE_16_LOG_ENABLED
+#define ANT_SHIFT_PAGE_16_LOG_ENABLED 1
 #endif
-// <o> ANT_BPWR_PAGE_16_LOG_LEVEL  - Default Severity level
+// <o> ANT_SHIFT_PAGE_16_LOG_LEVEL  - Default Severity level
  
 // <0=> Off 
 // <1=> Error 
@@ -301,11 +301,11 @@
 // <3=> Info 
 // <4=> Debug 
 
-#ifndef ANT_BPWR_PAGE_16_LOG_LEVEL
-#define ANT_BPWR_PAGE_16_LOG_LEVEL 3
+#ifndef ANT_SHIFT_PAGE_16_LOG_LEVEL
+#define ANT_SHIFT_PAGE_16_LOG_LEVEL 3
 #endif
 
-// <o> ANT_BPWR_PAGE_16_INFO_COLOR  - ANSI escape code prefix.
+// <o> ANT_SHIFT_PAGE_16_INFO_COLOR  - ANSI escape code prefix.
  
 // <0=> Default 
 // <1=> Black 
@@ -317,18 +317,18 @@
 // <7=> Cyan 
 // <8=> White 
 
-#ifndef ANT_BPWR_PAGE_16_INFO_COLOR
-#define ANT_BPWR_PAGE_16_INFO_COLOR 0
+#ifndef ANT_SHIFT_PAGE_16_INFO_COLOR
+#define ANT_SHIFT_PAGE_16_INFO_COLOR 0
 #endif
 
 // </e>
 
-// <e> ANT_BPWR_PAGE_17_LOG_ENABLED - Enables logging of BPWR page 17 in the module.
+// <e> ANT_SHIFT_PAGE_17_LOG_ENABLED - Enables logging of SHIFT page 17 in the module.
 //==========================================================
-#ifndef ANT_BPWR_PAGE_17_LOG_ENABLED
-#define ANT_BPWR_PAGE_17_LOG_ENABLED 1
+#ifndef ANT_SHIFT_PAGE_17_LOG_ENABLED
+#define ANT_SHIFT_PAGE_17_LOG_ENABLED 1
 #endif
-// <o> ANT_BPWR_PAGE_17_LOG_LEVEL  - Default Severity level
+// <o> ANT_SHIFT_PAGE_17_LOG_LEVEL  - Default Severity level
  
 // <0=> Off 
 // <1=> Error 
@@ -336,11 +336,11 @@
 // <3=> Info 
 // <4=> Debug 
 
-#ifndef ANT_BPWR_PAGE_17_LOG_LEVEL
-#define ANT_BPWR_PAGE_17_LOG_LEVEL 3
+#ifndef ANT_SHIFT_PAGE_17_LOG_LEVEL
+#define ANT_SHIFT_PAGE_17_LOG_LEVEL 3
 #endif
 
-// <o> ANT_BPWR_PAGE_17_INFO_COLOR  - ANSI escape code prefix.
+// <o> ANT_SHIFT_PAGE_17_INFO_COLOR  - ANSI escape code prefix.
  
 // <0=> Default 
 // <1=> Black 
@@ -352,18 +352,18 @@
 // <7=> Cyan 
 // <8=> White 
 
-#ifndef ANT_BPWR_PAGE_17_INFO_COLOR
-#define ANT_BPWR_PAGE_17_INFO_COLOR 0
+#ifndef ANT_SHIFT_PAGE_17_INFO_COLOR
+#define ANT_SHIFT_PAGE_17_INFO_COLOR 0
 #endif
 
 // </e>
 
-// <e> ANT_BPWR_PAGE_18_LOG_ENABLED - Enables logging of BPWR page 18 in the module.
+// <e> ANT_SHIFT_PAGE_18_LOG_ENABLED - Enables logging of SHIFT page 18 in the module.
 //==========================================================
-#ifndef ANT_BPWR_PAGE_18_LOG_ENABLED
-#define ANT_BPWR_PAGE_18_LOG_ENABLED 1
+#ifndef ANT_SHIFT_PAGE_18_LOG_ENABLED
+#define ANT_SHIFT_PAGE_18_LOG_ENABLED 1
 #endif
-// <o> ANT_BPWR_PAGE_18_LOG_LEVEL  - Default Severity level
+// <o> ANT_SHIFT_PAGE_18_LOG_LEVEL  - Default Severity level
  
 // <0=> Off 
 // <1=> Error 
@@ -371,11 +371,11 @@
 // <3=> Info 
 // <4=> Debug 
 
-#ifndef ANT_BPWR_PAGE_18_LOG_LEVEL
-#define ANT_BPWR_PAGE_18_LOG_LEVEL 3
+#ifndef ANT_SHIFT_PAGE_18_LOG_LEVEL
+#define ANT_SHIFT_PAGE_18_LOG_LEVEL 3
 #endif
 
-// <o> ANT_BPWR_PAGE_18_INFO_COLOR  - ANSI escape code prefix.
+// <o> ANT_SHIFT_PAGE_18_INFO_COLOR  - ANSI escape code prefix.
  
 // <0=> Default 
 // <1=> Black 
@@ -387,8 +387,8 @@
 // <7=> Cyan 
 // <8=> White 
 
-#ifndef ANT_BPWR_PAGE_18_INFO_COLOR
-#define ANT_BPWR_PAGE_18_INFO_COLOR 0
+#ifndef ANT_SHIFT_PAGE_18_INFO_COLOR
+#define ANT_SHIFT_PAGE_18_INFO_COLOR 0
 #endif
 
 // </e>
@@ -4561,11 +4561,11 @@
 // <h> ANT Observers priorities - Invididual priorities
 
 //==========================================================
-// <o> ANT_BPWR_ANT_OBSERVER_PRIO  
+// <o> ANT_SHIFT_ANT_OBSERVER_PRIO  
 // <i> Priority with which ANT events are dispatched to the Bicycle Power Profile.
 
-#ifndef ANT_BPWR_ANT_OBSERVER_PRIO
-#define ANT_BPWR_ANT_OBSERVER_PRIO 1
+#ifndef ANT_SHIFT_ANT_OBSERVER_PRIO
+#define ANT_SHIFT_ANT_OBSERVER_PRIO 1
 #endif
 
 // <o> ANT_BSC_ANT_OBSERVER_PRIO  

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2015 - 2020, Nordic Semiconductor ASA
+ * Copyright (c) 2015 - 2019, Nordic Semiconductor ASA
  *
  * All rights reserved.
  *
@@ -37,12 +37,12 @@
  * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  */
-#ifndef ANT_SHIFT_PAGE_1_H__
-#define ANT_SHIFT_PAGE_1_H__
+#ifndef ANT_SHIFT_PAGE_16_H__
+#define ANT_SHIFT_PAGE_16_H__
 
 /** @file
  *
- * @defgroup ant_sdk_profiles_shift_page1 Bicycle Power profile page 1
+ * @defgroup ant_sdk_profiles_shift_page16 Bicycle Power profile page 16
  * @{
  * @ingroup ant_sdk_profiles_shift_pages
  */
@@ -53,84 +53,66 @@
 extern "C" {
 #endif
 
-/**@brief SHIFT Calibration ID.
- */
-typedef enum
-{
-    ANT_SHIFT_CALIB_ID_NONE                  = 0x00,
-    ANT_SHIFT_CALIB_ID_MANUAL                = 0xAA, ///< Calibration Request: Manual Zero.
-    ANT_SHIFT_CALIB_ID_AUTO                  = 0xAB, ///< Calibration Request: Auto Zero Configuration.
-    ANT_SHIFT_CALIB_ID_MANUAL_SUCCESS        = 0xAC, ///< Calibration Response: Manual Zero Successful.
-    ANT_SHIFT_CALIB_ID_FAILED                = 0xAF, ///< Calibration Response: Failed.
-    ANT_SHIFT_CALIB_ID_CTF                   = 0x10, ///< Crank Torque Frequency (CTF) Power sensor Defined Message.
-    ANT_SHIFT_CALIB_ID_AUTO_SUPPORT          = 0x12, ///< Auto Zero Support.
-    ANT_SHIFT_CALIB_ID_CUSTOM_REQ            = 0xBA, ///< Custom Calibration Parameter Request.
-    ANT_SHIFT_CALIB_ID_CUSTOM_REQ_SUCCESS    = 0xBB, ///< Custom Calibration Parameter Response.
-    ANT_SHIFT_CALIB_ID_CUSTOM_UPDATE         = 0xBC, ///< Custom Calibration Parameter Update.
-    ANT_SHIFT_CALIB_ID_CUSTOM_UPDATE_SUCCESS = 0xBD, ///< Custom Calibration Parameter Update Response.
-} ant_shift_calib_id_t;
-
-/**@brief SHIFT Calibration Auto Zero Status.
- */
-typedef enum
-{
-    ANT_SHIFT_AUTO_ZERO_NOT_SUPPORTED = 0xFF, ///< Auto Zero Not Supported.
-    ANT_SHIFT_AUTO_ZERO_OFF           = 0x00, ///< Auto Zero OFF.
-    ANT_SHIFT_AUTO_ZERO_ON            = 0x01, ///< Auto Zero ON.
-} ant_shift_auto_zero_status_t;
-
-/**@brief Data structure for Bicycle Power data page 1.
+/**@brief Data structure for Bicycle Power data page 16.
+ *
+ * @note This structure implements only page 16 specific data.
  */
 typedef struct
 {
-    ant_shift_calib_id_t         calibration_id;   ///< Calibration request type.
-    ant_shift_auto_zero_status_t auto_zero_status; ///< Status of automatic zero feature of power sensor.
+    uint8_t  update_event_count;    ///< Power event count.
     union
     {
-        int16_t general_calib;
-        uint8_t custom_calib[6];
-    } data;
-} ant_shift_page1_data_t;
+        struct
+        {
+            uint8_t rear : 5;     ///< Pedal power distribution (%).
+            uint8_t front : 3;  ///< Pedal differentiation: 1 -> right, 0 -> unknown.
+        } items;
+        uint8_t byte;
+    } current_gear;
+    union
+    {
+        struct
+        {
+            uint8_t rear : 5;     ///< Pedal power distribution (%).
+            uint8_t front : 3;  ///< Pedal differentiation: 1 -> right, 0 -> unknown.
+        } items;
+        uint8_t byte;
+    } total_gear;
 
-/**@brief Initialize page 1.
+} ant_shift_page16_data_t;
+
+/**@brief Initialize page 16.
  */
-#define DEFAULT_ANT_SHIFT_PAGE1()                                \
-    (ant_shift_page1_data_t)                                     \
+#define DEFAULT_ANT_SHIFT_PAGE16()                               \
+    (ant_shift_page16_data_t)                                    \
     {                                                           \
-        .calibration_id     = ANT_SHIFT_CALIB_ID_NONE,           \
-        .auto_zero_status   = ANT_SHIFT_AUTO_ZERO_NOT_SUPPORTED, \
-        .data.general_calib = 0x00,                             \
+        .update_event_count                 = 0,                \
+        .pedal_power.items.distribution     = 0,                \
+        .pedal_power.items.differentiation  = 0,                \
+        .accumulated_power                  = 0,                \
+        .instantaneous_power                = 0,                \
     }
 
-/**@brief Initialize page 1 with the general request.
- */
-#define ANT_SHIFT_GENERAL_CALIB_REQUEST()            \
-    (ant_shift_page1_data_t)                         \
-    {                                               \
-        .calibration_id = ANT_SHIFT_CALIB_ID_MANUAL, \
-    }
-
-/**@brief Function for encoding page 1.
+/**@brief Function for encoding page 16.
  *
  * @param[in]  p_page_data      Pointer to the page data.
  * @param[out] p_page_buffer    Pointer to the data buffer.
  */
-void ant_shift_page_1_encode(uint8_t                     * p_page_buffer,
-                            ant_shift_page1_data_t const * p_page_data);
+void ant_shift_page_1_encode(uint8_t                      * p_page_buffer,
+                             ant_shift_page16_data_t const * p_page_data);
 
-/**@brief Function for decoding page 1.
+/**@brief Function for decoding page 16.
  *
  * @param[in]  p_page_buffer    Pointer to the data buffer.
  * @param[out] p_page_data      Pointer to the page data.
  */
-void ant_shift_page_1_decode(uint8_t const         * p_page_buffer,
-                            ant_shift_page1_data_t * p_page_data);
-
+void ant_shift_page_1_decode(uint8_t const          * p_page_buffer,
+                             ant_shift_page16_data_t * p_page_data);
 
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif // ANT_SHIFT_PAGE_1_H__
+#endif // ANT_SHIFT_PAGE_16_H__
 /** @} */

@@ -1,12 +1,12 @@
-PROJECT_NAME     := ant_bpwr_rx_d52_s212
+PROJECT_NAME     := ant_shift_rx_d52_s212
 TARGETS          := nrf52832_xxaa
 OUTPUT_DIRECTORY := _build
 
-SDK_ROOT := ../../../../../../../..
+SDK_ROOT := ../../../../../../../../../nRF5_SDK_16.0.0_98a08e2
 PROJ_DIR := ../../..
 
 $(OUTPUT_DIRECTORY)/nrf52832_xxaa.out: \
-  LINKER_SCRIPT  := ant_bpwr_rx_gcc_nrf52.ld
+  LINKER_SCRIPT  := ant_shift_rx_gcc_nrf52.ld
 
 # Source files common to all targets
 SRC_FILES += \

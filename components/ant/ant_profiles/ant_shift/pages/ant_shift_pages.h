@@ -49,9 +49,6 @@
  */
 
 #include "ant_shift_page_1.h"        // Calibration message main data page.
-#include "ant_shift_page_16.h"       // Standard power-only page.
-#include "ant_shift_page_17.h"       // Wheel Torque main data page.
-#include "ant_shift_page_18.h"       // Crank Torque main data page.
 #include "ant_shift_common_data.h"   // Instantaneous cadence data.
 #include "ant_common_page_80.h"     // Manufacturer's information data page.
 #include "ant_common_page_81.h"     // Product information data page.

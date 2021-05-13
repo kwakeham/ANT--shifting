@@ -68,7 +68,7 @@
 #include "nrf_sdh.h"
 #include "nrf_sdh_ant.h"
 #include "ant_key_manager.h"
-#include "ant_bpwr.h"
+#include "ant_shift.h"
 #include "bsp_btn_ant.h"
 #include "ant_state_indicator.h"
 
@@ -76,40 +76,40 @@
 #include "nrf_log_ctrl.h"
 #include "nrf_log_default_backends.h"
 
-/** @snippet [ANT BPWR RX Instance] */
-void ant_bpwr_evt_handler(ant_bpwr_profile_t * p_profile, ant_bpwr_evt_t event);
+/** @snippet [ANT SHIFT RX Instance] */
+void ant_shift_evt_handler(ant_shift_profile_t * p_profile, ant_shift_evt_t event);
 
-BPWR_DISP_CHANNEL_CONFIG_DEF(m_ant_bpwr,
-                             BPWR_CHANNEL_NUM,
+SHIFT_DISP_CHANNEL_CONFIG_DEF(m_ant_shift,
+                             SHIFT_CHANNEL_NUM,
                              CHAN_ID_TRANS_TYPE,
                              CHAN_ID_DEV_NUM,
                              ANTPLUS_NETWORK_NUM);
-BPWR_DISP_PROFILE_CONFIG_DEF(m_ant_bpwr,
-                             ant_bpwr_evt_handler);
+SHIFT_DISP_PROFILE_CONFIG_DEF(m_ant_shift,
+                             ant_shift_evt_handler);
 
-static ant_bpwr_profile_t m_ant_bpwr;
-/** @snippet [ANT BPWR RX Instance] */
-
-
-NRF_SDH_ANT_OBSERVER(m_ant_observer, ANT_BPWR_ANT_OBSERVER_PRIO,
-                     ant_bpwr_disp_evt_handler, &m_ant_bpwr);
+static ant_shift_profile_t m_ant_shift;
+/** @snippet [ANT SHIFT RX Instance] */
 
 
-/** @snippet [ANT BPWR RX Profile handling] */
+NRF_SDH_ANT_OBSERVER(m_ant_observer, ANT_SHIFT_ANT_OBSERVER_PRIO,
+                     ant_shift_disp_evt_handler, &m_ant_shift);
+
+
+/** @snippet [ANT SHIFT RX Profile handling] */
 
 /**@brief Function for handling bsp events.
  */
 void bsp_evt_handler(bsp_event_t evt)
 {
     ret_code_t            err_code;
-    ant_bpwr_page1_data_t page1;
+    ant_shift_page1_data_t page1;
 
     switch (evt)
     {
         case BSP_EVENT_KEY_0:
             // request to calibrating the sensor
-            page1    = ANT_BPWR_GENERAL_CALIB_REQUEST();
-            err_code = ant_bpwr_calib_request(&m_ant_bpwr, &page1);
+            page1    = ANT_SHIFT_GENERAL_CALIB_REQUEST();
+            err_code = ant_shift_calib_request(&m_ant_shift, &page1);
             APP_ERROR_CHECK(err_code);
             break;
 
@@ -150,38 +150,38 @@ NRF_PWR_MGMT_HANDLER_REGISTER(shutdown_handler, APP_SHUTDOWN_HANDLER_PRIORITY);
 /**@brief Function for handling Bicycle Power profile's events
  *
  */
-void ant_bpwr_evt_handler(ant_bpwr_profile_t * p_profile, ant_bpwr_evt_t event)
+void ant_shift_evt_handler(ant_shift_profile_t * p_profile, ant_shift_evt_t event)
 {
     nrf_pwr_mgmt_feed();
 
     switch (event)
     {
-        case ANT_BPWR_PAGE_1_UPDATED:
+        case ANT_SHIFT_PAGE_1_UPDATED:
             // calibration data received from sensor
             NRF_LOG_DEBUG("Received calibration data");
             break;
 
-        case ANT_BPWR_PAGE_16_UPDATED:
+        case ANT_SHIFT_PAGE_16_UPDATED:
             /* fall through */
-        case ANT_BPWR_PAGE_17_UPDATED:
+        case ANT_SHIFT_PAGE_17_UPDATED:
             /* fall through */
-        case ANT_BPWR_PAGE_18_UPDATED:
+        case ANT_SHIFT_PAGE_18_UPDATED:
             /* fall through */
-        case ANT_BPWR_PAGE_80_UPDATED:
+        case ANT_SHIFT_PAGE_80_UPDATED:
             /* fall through */
-        case ANT_BPWR_PAGE_81_UPDATED:
+        case ANT_SHIFT_PAGE_81_UPDATED:
             // data actualization
             NRF_LOG_DEBUG("Page was updated");
             break;
 
-        case ANT_BPWR_CALIB_TIMEOUT:
+        case ANT_SHIFT_CALIB_TIMEOUT:
             // calibration request time-out
-            NRF_LOG_DEBUG("ANT_BPWR_CALIB_TIMEOUT");
+            NRF_LOG_DEBUG("ANT_SHIFT_CALIB_TIMEOUT");
             break;
 
-        case ANT_BPWR_CALIB_REQUEST_TX_FAILED:
+        case ANT_SHIFT_CALIB_REQUEST_TX_FAILED:
             // Please consider retrying the request.
-            NRF_LOG_DEBUG("ANT_BPWR_CALIB_REQUEST_TX_FAILED");
+            NRF_LOG_DEBUG("ANT_SHIFT_CALIB_REQUEST_TX_FAILED");
             break;
 
         default:
@@ -209,10 +209,10 @@ static void utils_setup(void)
                         bsp_evt_handler);
     APP_ERROR_CHECK(err_code);
 
-    err_code = bsp_btn_ant_init(m_ant_bpwr.channel_number, BPWR_DISP_CHANNEL_TYPE);
+    err_code = bsp_btn_ant_init(m_ant_shift.channel_number, SHIFT_DISP_CHANNEL_TYPE);
     APP_ERROR_CHECK(err_code);
 
-    err_code = ant_state_indicator_init(m_ant_bpwr.channel_number, BPWR_DISP_CHANNEL_TYPE);
+    err_code = ant_state_indicator_init(m_ant_shift.channel_number, SHIFT_DISP_CHANNEL_TYPE);
     APP_ERROR_CHECK(err_code);
 }
 
@@ -240,18 +240,18 @@ static void softdevice_setup(void)
  */
 static void profile_setup(void)
 {
-/** @snippet [ANT BPWR RX Profile Setup] */
-    ret_code_t err_code = ant_bpwr_disp_init(&m_ant_bpwr,
-                                             BPWR_DISP_CHANNEL_CONFIG(m_ant_bpwr),
-                                             BPWR_DISP_PROFILE_CONFIG(m_ant_bpwr));
+/** @snippet [ANT SHIFT RX Profile Setup] */
+    ret_code_t err_code = ant_shift_disp_init(&m_ant_shift,
+                                             SHIFT_DISP_CHANNEL_CONFIG(m_ant_shift),
+                                             SHIFT_DISP_PROFILE_CONFIG(m_ant_shift));
     APP_ERROR_CHECK(err_code);
 
-    err_code = ant_bpwr_disp_open(&m_ant_bpwr);
+    err_code = ant_shift_disp_open(&m_ant_shift);
     APP_ERROR_CHECK(err_code);
 
     err_code = ant_state_indicator_channel_opened();
     APP_ERROR_CHECK(err_code);
-/** @snippet [ANT BPWR RX Profile Setup] */
+/** @snippet [ANT SHIFT RX Profile Setup] */
 }
 
 /**

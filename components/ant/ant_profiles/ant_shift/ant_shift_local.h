@@ -42,14 +42,14 @@
 
 #include <stdint.h>
 #include <stdbool.h>
-#include "ant_bpwr.h"
+#include "ant_shift.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
 /**
- * @addtogroup ant_bpwr
+ * @addtogroup ant_shift
  * @{
  */
 
@@ -57,15 +57,15 @@ extern "C" {
 typedef struct
 {
     uint8_t           message_counter;
-    ant_bpwr_torque_t torque_use;
+    ant_shift_torque_t torque_use;
     enum
     {
         BPWR_SENS_CALIB_NONE,      ///< Idle state.
         BPWR_SENS_CALIB_REQUESTED, ///< Received request for general calibration result message by the sensor.
         BPWR_SENS_CALIB_READY,     ///< Calibration response message is ready to be transmitted.
     }                        calib_stat;
-    ant_bpwr_calib_handler_t calib_handler;
-} ant_bpwr_sens_cb_t;
+    ant_shift_calib_handler_t calib_handler;
+} ant_shift_sens_cb_t;
 
 /**@brief Bicycle Power Sensor RX control block. */
 typedef struct
@@ -76,7 +76,7 @@ typedef struct
         BPWR_DISP_CALIB_NONE,      ///< Idle state.
         BPWR_DISP_CALIB_REQUESTED, ///< Calibration requested.
     } calib_stat;
-} ant_bpwr_disp_cb_t;
+} ant_shift_disp_cb_t;
 
 /**
  * @}
