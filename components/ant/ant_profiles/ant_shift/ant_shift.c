@@ -88,7 +88,7 @@ static ret_code_t ant_shift_init(ant_shift_profile_t         * p_profile,
     p_profile->page_80 = DEFAULT_ANT_COMMON_page80();
     p_profile->page_81 = DEFAULT_ANT_COMMON_page81();
 
-    NRF_LOG_INFO("ANT B-PWR channel %u init", p_profile->channel_number);
+    NRF_LOG_INFO("ANT SHIFT channel %u init", p_profile->channel_number);
     return ant_channel_init(p_channel_config);
 }
 
@@ -262,8 +262,6 @@ static void sens_message_decode(ant_shift_profile_t * p_profile, uint8_t * p_mes
     {
         case ANT_SHIFT_PAGE_1:
             ant_shift_page_1_decode(p_shift_message_payload->page_payload, &page1);
-            // p_profile->_cb.p_sens_cb->calib_stat = SHIFT_SENS_CALIB_REQUESTED;
-            // p_profile->_cb.p_sens_cb->calib_handler(p_profile, &page1);
             break;
 
         default:
@@ -289,21 +287,6 @@ static void disp_message_decode(ant_shift_profile_t * p_profile, uint8_t * p_mes
             ant_shift_page_1_decode(p_shift_message_payload->page_payload, &(p_profile->page_1));
             // p_profile->_cb.p_disp_cb->calib_stat = SHIFT_DISP_CALIB_NONE;
             break;
-
-        // case ANT_SHIFT_PAGE_16:
-        //     ant_shift_page_16_decode(p_shift_message_payload->page_payload, &(p_profile->page_16));
-        //     ant_shift_cadence_decode(p_shift_message_payload->page_payload, &(p_profile->common));
-        //     break;
-
-        // case ANT_SHIFT_PAGE_17:
-        //     ant_shift_page_17_decode(p_shift_message_payload->page_payload, &(p_profile->page_17));
-        //     ant_shift_cadence_decode(p_shift_message_payload->page_payload, &(p_profile->common));
-        //     break;
-
-        // case ANT_SHIFT_PAGE_18:
-        //     ant_shift_page_18_decode(p_shift_message_payload->page_payload, &(p_profile->page_18));
-        //     ant_shift_cadence_decode(p_shift_message_payload->page_payload, &(p_profile->common));
-        //     break;
 
         case ANT_COMMON_PAGE_80:
             ant_common_page_80_decode(p_shift_message_payload->page_payload, &(p_profile->page_80));
@@ -416,7 +399,7 @@ static void ant_message_send(ant_shift_profile_t * p_profile)
 
 ret_code_t ant_shift_disp_open(ant_shift_profile_t * p_profile)
 {
-    NRF_LOG_INFO("ANT B-PWR %u open", p_profile->channel_number);
+    NRF_LOG_INFO("ANT SHIFT %u open", p_profile->channel_number);
     return sd_ant_channel_open(p_profile->channel_number);
 }
 
@@ -426,7 +409,7 @@ ret_code_t ant_shift_sens_open(ant_shift_profile_t * p_profile)
     // Fill tx buffer for the first frame
     ant_message_send(p_profile);
 
-    NRF_LOG_INFO("ANT B-PWR %u open", p_profile->channel_number);
+    NRF_LOG_INFO("ANT SHIFT %u open", p_profile->channel_number);
     return sd_ant_channel_open(p_profile->channel_number);
 }
 

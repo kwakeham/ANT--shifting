@@ -122,7 +122,7 @@
 // <4=> Debug 
 
 #ifndef ANT_SHIFT_LOG_LEVEL
-#define ANT_SHIFT_LOG_LEVEL 3
+#define ANT_SHIFT_LOG_LEVEL 4
 #endif
 
 // <o> ANT_SHIFT_INFO_COLOR  - ANSI escape code prefix.
@@ -157,7 +157,7 @@
 // <4=> Debug 
 
 #ifndef ANT_SHIFT_COMMON_LOG_LEVEL
-#define ANT_SHIFT_COMMON_LOG_LEVEL 3
+#define ANT_SHIFT_COMMON_LOG_LEVEL 4
 #endif
 
 // <o> ANT_SHIFT_COMMON_INFO_COLOR  - ANSI escape code prefix.
@@ -227,7 +227,7 @@
 // <4=> Debug 
 
 #ifndef ANT_SHIFT_PAGE_1_LOG_LEVEL
-#define ANT_SHIFT_PAGE_1_LOG_LEVEL 3
+#define ANT_SHIFT_PAGE_1_LOG_LEVEL 4
 #endif
 
 // <o> ANT_SHIFT_PAGE_1_INFO_COLOR  - ANSI escape code prefix.
