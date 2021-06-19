@@ -208,7 +208,7 @@ static void sens_message_encode(ant_shift_profile_t * p_profile, uint8_t * p_mes
 
     p_shift_message_payload->page_number = next_page_number_get(p_profile);
 
-    NRF_LOG_INFO("B-PWR tx page: %u", p_shift_message_payload->page_number);
+    NRF_LOG_INFO("SHIFT tx page: %u", p_shift_message_payload->page_number);
 
     switch (p_shift_message_payload->page_number)
     {
@@ -279,7 +279,7 @@ static void disp_message_decode(ant_shift_profile_t * p_profile, uint8_t * p_mes
     const ant_shift_message_layout_t * p_shift_message_payload =
         (ant_shift_message_layout_t *)p_message_payload;
 
-    NRF_LOG_INFO("B-PWR rx page: %u", p_shift_message_payload->page_number);
+    NRF_LOG_INFO("SHIFT rx page: %u", p_shift_message_payload->page_number);
 
     switch (p_shift_message_payload->page_number)
     {

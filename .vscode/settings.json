@@ -1,5 +1,6 @@
 {
     "files.associations": {
         "ant_shift.h": "c"
-    }
+    },
+    "C_Cpp.dimInactiveRegions": false
 }

@@ -56,16 +56,31 @@ NRF_LOG_MODULE_REGISTER();
 typedef struct
 {
     uint8_t update_event_count;
-    uint8_t pedal_power;
     uint8_t reserved;
-    uint8_t accumulated_power[2];
-    uint8_t instantaneous_power[2];
+    uint8_t current_gear_rear                   : 5;
+    uint8_t current_gear_front                  : 3;
+
+    uint8_t total_gear_rear                     : 5;
+    uint8_t total_gear_front                    : 3;
+
+    uint8_t invalid_inboard_shift_count_rear    : 4;
+    uint8_t invalid_outboard_shift_count_rear   : 4;
+
+    uint8_t invalid_inboard_shift_count_front   : 4;
+    uint8_t invalid_outboard_shift_count_front  : 4;
+
+    uint8_t shift_failure_count_rear   : 4;
+    uint8_t shift_failure_count_front  : 4;
+
 }ant_shift_page1_data_layout_t;
+
 
 
 static void page1_data_log(ant_shift_page1_data_t const * p_page_data)
 {
     NRF_LOG_INFO("event count:                        %u", p_page_data->update_event_count);
+    NRF_LOG_INFO("gear: %u // %u", p_page_data->gear.current_gear.front, p_page_data->gear.current_gear.rear);
+    NRF_LOG_INFO("total: %u // %u", p_page_data->gear.total_gear.front, p_page_data->gear.total_gear.rear);
 
     // if (p_page_data->pedal_power.byte != 0xFF)
     // {
@@ -88,7 +103,12 @@ void ant_shift_page_1_encode(uint8_t                      * p_page_buffer,
     ant_shift_page1_data_layout_t * p_outcoming_data =
         (ant_shift_page1_data_layout_t *)p_page_buffer;
 
-    p_outcoming_data->update_event_count    = p_page_data->update_event_count;
+    p_outcoming_data->update_event_count   = p_page_data->update_event_count;
+    p_outcoming_data->current_gear_rear    = p_page_data->gear.current_gear.rear;
+    p_outcoming_data->current_gear_front   = p_page_data->gear.current_gear.front;
+    p_outcoming_data->total_gear_rear      = p_page_data->gear.total_gear.rear;
+    p_outcoming_data->total_gear_front     = p_page_data->gear.total_gear.front;
+
     // p_outcoming_data->pedal_power           = p_page_data->pedal_power.byte;
 
     // UNUSED_PARAMETER(uint16_encode(p_page_data->accumulated_power,
@@ -106,8 +126,11 @@ void ant_shift_page_1_decode(uint8_t const          * p_page_buffer,
     ant_shift_page1_data_layout_t const * p_incoming_data =
         (ant_shift_page1_data_layout_t *)p_page_buffer;
 
-    p_page_data->update_event_count    = p_incoming_data->update_event_count;
-    // p_page_data->pedal_power.byte      = p_incoming_data->pedal_power;
+    p_page_data->update_event_count          = p_incoming_data->update_event_count;
+    p_page_data->gear.current_gear.rear      = p_incoming_data->current_gear_rear;
+    p_page_data->gear.current_gear.front     = p_incoming_data->current_gear_front;
+    p_page_data->gear.total_gear.rear        = p_incoming_data->total_gear_rear;
+    p_page_data->gear.total_gear.front       = p_incoming_data->total_gear_front;
     // p_page_data->accumulated_power     = uint16_decode(p_incoming_data->accumulated_power);
     // p_page_data->instantaneous_power   = uint16_decode(p_incoming_data->instantaneous_power);
 
