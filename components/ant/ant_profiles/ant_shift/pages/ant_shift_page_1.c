@@ -79,8 +79,6 @@ typedef struct
 static void page1_data_log(ant_shift_page1_data_t const * p_page_data)
 {
     NRF_LOG_INFO("event count:                        %u", p_page_data->update_event_count);
-    // NRF_LOG_INFO("gear: %u // %u", p_page_data->gear.current.items.front, p_page_data->gear.current.items.rear);
-    // NRF_LOG_INFO("total: %u // %u", p_page_data->gear.total.items.front, p_page_data->gear.total.items.rear);
     NRF_LOG_INFO("gear: %u // %u", p_page_data->current_gear_front, p_page_data->current_gear_rear);
     NRF_LOG_INFO("total: %u // %u", p_page_data->total_gear_front, p_page_data->total_gear_rear);
 
