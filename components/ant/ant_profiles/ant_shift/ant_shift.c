@@ -172,23 +172,7 @@ static ant_shift_page_t next_page_number_get(ant_shift_profile_t * p_profile)
         }
         else
         {
-            // if ( p_shift_cb->torque_use == TORQUE_NONE)
-            // {
-            //     page_number = ANT_SHIFT_PAGE_16;
-            // }
-            // else if ((p_shift_cb->message_counter % SHIFT_PAGE_16_INTERVAL)
-            //          == SHIFT_PAGE_16_INTERVAL_OFS)
-            // {
-            //     page_number = ANT_SHIFT_PAGE_16;
-            // }
-            // else if ( p_shift_cb->torque_use == TORQUE_WHEEL)
-            // {
-            //     page_number = ANT_SHIFT_PAGE_17;
-            // }
-            // else // assumed TORQUE_CRANK
-            // {
                 page_number = ANT_SHIFT_PAGE_1;
-            // }
         }
         p_shift_cb->message_counter++;
     }

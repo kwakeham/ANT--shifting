@@ -79,9 +79,15 @@ typedef struct
 static void page1_data_log(ant_shift_page1_data_t const * p_page_data)
 {
     NRF_LOG_INFO("event count:                        %u", p_page_data->update_event_count);
-    NRF_LOG_INFO("gear: %u // %u", p_page_data->current_gear_front, p_page_data->current_gear_rear);
-    NRF_LOG_INFO("total: %u // %u", p_page_data->total_gear_front, p_page_data->total_gear_rear);
+    NRF_LOG_INFO("gear f/r: %u // %u", p_page_data->current_gear_front, p_page_data->current_gear_rear);
+    NRF_LOG_INFO("total f/r: %u // %u", p_page_data->total_gear_front, p_page_data->total_gear_rear);
+    NRF_LOG_INFO("Invalid rear in/out: %u // %u, front: %u // %u", p_page_data->invalid_inboard_shift_count_rear,
+        p_page_data->invalid_outboard_shift_count_rear,
+        p_page_data->invalid_inboard_shift_count_front,
+        p_page_data->invalid_outboard_shift_count_front);
+    NRF_LOG_INFO("failed f/r: %u // %u", p_page_data->shift_failure_count_front, p_page_data->shift_failure_count_rear);
 
+    
     // if (p_page_data->pedal_power.byte != 0xFF)
     // {
     //     NRF_LOG_INFO("pedal power:                        %u %%",
