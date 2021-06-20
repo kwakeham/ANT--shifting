@@ -53,6 +53,7 @@ static ret_code_t ant_shift_init(ant_shift_profile_t         * p_profile,
     p_profile->page_1  = DEFAULT_ANT_SHIFT_PAGE1();
     p_profile->page_80 = DEFAULT_ANT_COMMON_page80();
     p_profile->page_81 = DEFAULT_ANT_COMMON_page81();
+    p_profile->page_82 = DEFAULT_ANT_SHIFT_PAGE82();
 
     NRF_LOG_INFO("ANT SHIFT channel %u init", p_profile->channel_number);
     return ant_channel_init(p_channel_config);

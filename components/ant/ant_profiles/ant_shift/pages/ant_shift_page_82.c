@@ -38,27 +38,7 @@ typedef struct
 static void page82_data_log(ant_shift_page82_data_t const * p_page_data)
 {
     NRF_LOG_INFO("num batteries: %u, battery ident: %u", p_page_data->battery.number,p_page_data->battery.identifier);
-    // NRF_LOG_INFO("gear f/r: %u // %u", p_page_data->current_gear_front, p_page_data->current_gear_rear);
-    // NRF_LOG_INFO("total f/r: %u // %u", p_page_data->total_gear_front, p_page_data->total_gear_rear);
-    // NRF_LOG_INFO("Invalid rear in/out: %u // %u, front: %u // %u", p_page_data->invalid_inboard_shift_count_rear,
-    //     p_page_data->invalid_outboard_shift_count_rear,
-    //     p_page_data->invalid_inboard_shift_count_front,
-    //     p_page_data->invalid_outboard_shift_count_front);
-    // NRF_LOG_INFO("failed f/r: %u // %u", p_page_data->shift_failure_count_front, p_page_data->shift_failure_count_rear);
-
-    
-    // if (p_page_data->pedal_power.byte != 0xFF)
-    // {
-    //     NRF_LOG_INFO("pedal power:                        %u %%",
-    //                p_page_data->pedal_power.items.distribution);
-    // }
-    // else
-    // {
-    //     NRF_LOG_INFO("pedal power:                        --");
-    // }
-
-    // NRF_LOG_INFO("accumulated power:                  %u W", p_page_data->accumulated_power);
-    // NRF_LOG_INFO("instantaneous power:                %u W", p_page_data->instantaneous_power);
+    NRF_LOG_INFO("operating time: %u, resolution: %u", p_page_data->battery.operating_time,p_page_data->battery.time_resolution);
 }
 
 
@@ -71,17 +51,21 @@ void ant_shift_page_82_encode(uint8_t                      * p_page_buffer,
     p_outcoming_data->battery_identifier   = p_page_data->battery.identifier;
     p_outcoming_data->number_batteries   = p_page_data->battery.number;
 
-    // p_outcoming_data->current_gear_rear     = p_page_data->current_gear_rear;
-    // p_outcoming_data->current_gear_front    = p_page_data->current_gear_front;
-    // p_outcoming_data->total_gear_rear       = p_page_data->total_gear_rear;
-    // p_outcoming_data->total_gear_front      = p_page_data->total_gear_front;
+    if(p_page_data->battery.operating_time > 33554431) //2^24 *2 seconds - 1 is max for 2 second time, so use 16 second
+    {
+        p_outcoming_data->battery_operating_time_msb = (p_page_data->battery.operating_time) >> 20;
+        p_outcoming_data->battery_operating_time = (p_page_data->battery.operating_time) >> 12;
+        p_outcoming_data->battery_operating_time_lsb = (p_page_data->battery.operating_time) >> 4;
+        p_outcoming_data->battery_time_resolution = 0; //set to 0 for 16 second operating time
+    }
+    else //use 2 second so this is just one extra bit shift
+    {
+        p_outcoming_data->battery_operating_time_msb = (p_page_data->battery.operating_time) >> 17;
+        p_outcoming_data->battery_operating_time = (p_page_data->battery.operating_time) >> 9;
+        p_outcoming_data->battery_operating_time_lsb = (p_page_data->battery.operating_time) >> 1;
+        p_outcoming_data->battery_time_resolution = 1; //set to 1 for 2 second operating time
+    }
 
-    // p_outcoming_data->invalid_inboard_shift_count_rear      = p_page_data->invalid_inboard_shift_count_rear;
-    // p_outcoming_data->invalid_outboard_shift_count_rear     = p_page_data->invalid_outboard_shift_count_rear;
-    // p_outcoming_data->invalid_inboard_shift_count_front     = p_page_data->invalid_inboard_shift_count_front;
-    // p_outcoming_data->invalid_outboard_shift_count_front    = p_page_data->invalid_outboard_shift_count_front; 
-    // p_outcoming_data->shift_failure_count_rear              = p_page_data->shift_failure_count_rear;
-    // p_outcoming_data->shift_failure_count_front             = p_page_data->shift_failure_count_front;
 
     page82_data_log(p_page_data);
 }
@@ -95,17 +79,19 @@ void ant_shift_page_82_decode(uint8_t const          * p_page_buffer,
 
     p_page_data->battery.identifier     = p_incoming_data->battery_identifier;
     p_page_data->battery.number     = p_incoming_data->number_batteries;
-    // p_page_data->current_gear_rear      = p_incoming_data->current_gear_rear;
-    // p_page_data->current_gear_front     = p_incoming_data->current_gear_front;
-    // p_page_data->total_gear_rear        = p_incoming_data->total_gear_rear;
-    // p_page_data->total_gear_front       = p_incoming_data->total_gear_front;
+    p_page_data->battery.operating_time = (((p_incoming_data->battery_operating_time_msb)<<24)
+                                            |((p_incoming_data->battery_operating_time)<<16)
+                                            |((p_incoming_data->battery_operating_time_lsb)<<8))>>8;
+    p_page_data->battery.time_resolution = p_incoming_data->battery_time_resolution;
 
-    // p_page_data->invalid_inboard_shift_count_rear       = p_incoming_data->invalid_inboard_shift_count_rear;
-    // p_page_data->invalid_outboard_shift_count_rear      = p_incoming_data->invalid_outboard_shift_count_rear;
-    // p_page_data->invalid_inboard_shift_count_front      = p_incoming_data->invalid_inboard_shift_count_front;
-    // p_page_data->invalid_outboard_shift_count_front     = p_incoming_data->invalid_outboard_shift_count_front;
-    // p_page_data->shift_failure_count_rear               = p_incoming_data->shift_failure_count_rear;
-    // p_page_data->shift_failure_count_front               = p_incoming_data->shift_failure_count_front;
+    //rewrite the time based on it's resolution 1(true) = 2s, 0 (false) = 16 seconds
+    if(p_page_data->battery.time_resolution)
+    {
+        p_page_data->battery.operating_time = p_page_data->battery.operating_time *2;
+    } else
+    {
+        p_page_data->battery.operating_time = p_page_data->battery.operating_time * 16;
+    }
 
     page82_data_log(p_page_data);
 }

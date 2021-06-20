@@ -24,11 +24,10 @@ typedef struct
     {
         uint8_t number                    : 4;
         uint8_t identifier                  : 4;
-        uint32_t operating_time;
-        uint8_t fractional_voltage;
-        uint8_t coarse_voltage              : 4;
+        uint32_t operating_time;                    //operating time in seconds, NOT the ANT+ time
+        uint16_t voltage;
         uint8_t status                      : 3;
-        bool time_resolution              : 1;
+        bool time_resolution              : 1;      //Leaving this in incase of checks
     }battery;
 
 } ant_shift_page82_data_t;
@@ -39,17 +38,12 @@ typedef struct
 #define DEFAULT_ANT_SHIFT_PAGE82()                              \
     (ant_shift_page82_data_t)                                   \
     {                                                          \
-        .update_event_count                     = 0,           \
-        .page82_reserved                        = 0xFF,        \
-        .number_batteries                       = 1,           \
-        .battery_identifier                     = 0,           \
-        .battery_operating_time_lsb             = 0,           \
-        .battery_operating_time                 = 0,           \
-        .battery_operating_time_msb             = 0,           \
-        .battery_fractional_voltage             = 0,           \
-        .battery_coarse_voltage                 = 0,           \
-        .battery_status                         = 0,           \
-        .battery_time_resolution                = 0,           \
+        .battery.number                         = 1,           \
+        .battery.identifier                     = 0,           \
+        .battery.operating_time                 = 0,           \
+        .battery.voltage                        = 0,           \
+        .battery.status                         = 0,           \
+        .battery.time_resolution                = 0,           \
     }
 
 
