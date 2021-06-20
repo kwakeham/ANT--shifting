@@ -79,8 +79,10 @@ typedef struct
 static void page1_data_log(ant_shift_page1_data_t const * p_page_data)
 {
     NRF_LOG_INFO("event count:                        %u", p_page_data->update_event_count);
-    NRF_LOG_INFO("gear: %u // %u", p_page_data->gear.current_gear.front, p_page_data->gear.current_gear.rear);
-    NRF_LOG_INFO("total: %u // %u", p_page_data->gear.total_gear.front, p_page_data->gear.total_gear.rear);
+    // NRF_LOG_INFO("gear: %u // %u", p_page_data->gear.current.items.front, p_page_data->gear.current.items.rear);
+    // NRF_LOG_INFO("total: %u // %u", p_page_data->gear.total.items.front, p_page_data->gear.total.items.rear);
+    NRF_LOG_INFO("gear: %u // %u", p_page_data->current_gear_front, p_page_data->current_gear_rear);
+    NRF_LOG_INFO("total: %u // %u", p_page_data->total_gear_front, p_page_data->total_gear_rear);
 
     // if (p_page_data->pedal_power.byte != 0xFF)
     // {
@@ -104,10 +106,10 @@ void ant_shift_page_1_encode(uint8_t                      * p_page_buffer,
         (ant_shift_page1_data_layout_t *)p_page_buffer;
 
     p_outcoming_data->update_event_count   = p_page_data->update_event_count;
-    p_outcoming_data->current_gear_rear    = p_page_data->gear.current_gear.rear;
-    p_outcoming_data->current_gear_front   = p_page_data->gear.current_gear.front;
-    p_outcoming_data->total_gear_rear      = p_page_data->gear.total_gear.rear;
-    p_outcoming_data->total_gear_front     = p_page_data->gear.total_gear.front;
+    // p_outcoming_data->current_gear_rear    = p_page_data->gear.current_gear.rear;
+    // p_outcoming_data->current_gear_front   = p_page_data->gear.current_gear.front;
+    // p_outcoming_data->total_gear_rear      = p_page_data->gear.total_gear.rear;
+    // p_outcoming_data->total_gear_front     = p_page_data->gear.total_gear.front;
 
     // p_outcoming_data->pedal_power           = p_page_data->pedal_power.byte;
 
@@ -127,10 +129,10 @@ void ant_shift_page_1_decode(uint8_t const          * p_page_buffer,
         (ant_shift_page1_data_layout_t *)p_page_buffer;
 
     p_page_data->update_event_count          = p_incoming_data->update_event_count;
-    p_page_data->gear.current_gear.rear      = p_incoming_data->current_gear_rear;
-    p_page_data->gear.current_gear.front     = p_incoming_data->current_gear_front;
-    p_page_data->gear.total_gear.rear        = p_incoming_data->total_gear_rear;
-    p_page_data->gear.total_gear.front       = p_incoming_data->total_gear_front;
+    p_page_data->current_gear_rear      = p_incoming_data->current_gear_rear;
+    p_page_data->current_gear_front     = p_incoming_data->current_gear_front;
+    p_page_data->total_gear_rear        = p_incoming_data->total_gear_rear;
+    p_page_data->total_gear_front       = p_incoming_data->total_gear_front;
     // p_page_data->accumulated_power     = uint16_decode(p_incoming_data->accumulated_power);
     // p_page_data->instantaneous_power   = uint16_decode(p_incoming_data->instantaneous_power);
 
