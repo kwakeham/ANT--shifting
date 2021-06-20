@@ -66,7 +66,7 @@
 
 // <o> CHAN_ID_DEV_NUM - Channel ID: Device Number. 
 #ifndef CHAN_ID_DEV_NUM
-#define CHAN_ID_DEV_NUM 2
+#define CHAN_ID_DEV_NUM 0
 #endif
 
 // <o> CHAN_ID_TRANS_TYPE - Channel ID: Transmission type. 
