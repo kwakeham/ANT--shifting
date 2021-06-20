@@ -2,6 +2,7 @@
  * Copyright (c) 2019 - 2022, Titan Lab Inc.
  *
  */
+
 /**
  * @file
  * @defgroup ant_shift Bicycle Shift profile

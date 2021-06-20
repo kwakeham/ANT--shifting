@@ -62,7 +62,7 @@ static void page1_data_log(ant_shift_page1_data_t const * p_page_data)
 }
 
 
-void ant_shift_page_1_encode(uint8_t                      * p_page_buffer,
+void ant_shift_page_82_encode(uint8_t                      * p_page_buffer,
                              ant_shift_page1_data_t const * p_page_data)
 {
     ant_shift_page1_data_layout_t * p_outcoming_data =
@@ -86,7 +86,7 @@ void ant_shift_page_1_encode(uint8_t                      * p_page_buffer,
 }
 
 
-void ant_shift_page_1_decode(uint8_t const          * p_page_buffer,
+void ant_shift_page_82_decode(uint8_t const          * p_page_buffer,
                              ant_shift_page1_data_t * p_page_data)
 {
     ant_shift_page1_data_layout_t const * p_incoming_data =

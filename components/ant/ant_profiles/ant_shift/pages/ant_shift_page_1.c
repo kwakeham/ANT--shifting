@@ -7,7 +7,7 @@
 
 #include "ant_shift_page_1.h"
 
-#define NRF_LOG_MODULE_NAME ant_shift_page_16
+#define NRF_LOG_MODULE_NAME ant_shift_page_1
 #if ANT_SHIFT_PAGE_1_LOG_ENABLED
 #define NRF_LOG_LEVEL       ANT_SHIFT_PAGE_1_LOG_LEVEL
 #define NRF_LOG_INFO_COLOR  ANT_SHIFT_PAGE_1_INFO_COLOR
@@ -51,20 +51,6 @@ static void page1_data_log(ant_shift_page1_data_t const * p_page_data)
         p_page_data->invalid_inboard_shift_count_front,
         p_page_data->invalid_outboard_shift_count_front);
     NRF_LOG_INFO("failed f/r: %u // %u", p_page_data->shift_failure_count_front, p_page_data->shift_failure_count_rear);
-
-    
-    // if (p_page_data->pedal_power.byte != 0xFF)
-    // {
-    //     NRF_LOG_INFO("pedal power:                        %u %%",
-    //                p_page_data->pedal_power.items.distribution);
-    // }
-    // else
-    // {
-    //     NRF_LOG_INFO("pedal power:                        --");
-    // }
-
-    // NRF_LOG_INFO("accumulated power:                  %u W", p_page_data->accumulated_power);
-    // NRF_LOG_INFO("instantaneous power:                %u W", p_page_data->instantaneous_power);
 }
 
 
