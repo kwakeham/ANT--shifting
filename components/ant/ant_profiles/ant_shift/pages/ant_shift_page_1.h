@@ -40,13 +40,11 @@ typedef struct
             uint8_t inboard_shift_count    : 4;
             uint8_t outboard_shift_count   : 4;
         }rear;
-        
         struct 
         {
             uint8_t inboard_shift_count   : 4;
             uint8_t outboard_shift_count  : 4;
         }front;
-        
     }invalid;
 
     struct 
@@ -54,7 +52,6 @@ typedef struct
     uint8_t rear   : 4;
     uint8_t front  : 4;
     }shift_failure_count;
-    
 } ant_shift_page1_data_t;
 
 
