@@ -23,21 +23,38 @@ typedef struct
 {
     uint8_t  update_event_count;    ///< Event counter increments with each shift event.
     uint8_t  page1_reserved;    ///< Reserved: 0xFF, to be used in future
-    uint8_t current_gear_rear                   : 5;
-    uint8_t current_gear_front                  : 3;
+    struct 
+    {
+        uint8_t gear_rear                   : 5;
+        uint8_t gear_front                  : 3;
+    }current;
+    struct 
+    {
+        uint8_t gear_rear                     : 5;
+        uint8_t gear_front                    : 3;
+    }total;
+    struct 
+    {
+        struct 
+        {
+            uint8_t inboard_shift_count    : 4;
+            uint8_t outboard_shift_count   : 4;
+        }rear;
+        
+        struct 
+        {
+            uint8_t inboard_shift_count   : 4;
+            uint8_t outboard_shift_count  : 4;
+        }front;
+        
+    }invalid;
 
-    uint8_t total_gear_rear                     : 5;
-    uint8_t total_gear_front                    : 3;
-
-    uint8_t invalid_inboard_shift_count_rear    : 4;
-    uint8_t invalid_outboard_shift_count_rear   : 4;
-
-    uint8_t invalid_inboard_shift_count_front   : 4;
-    uint8_t invalid_outboard_shift_count_front  : 4;
-
-    uint8_t shift_failure_count_rear   : 4;
-    uint8_t shift_failure_count_front  : 4;
-
+    struct 
+    {
+    uint8_t rear   : 4;
+    uint8_t front  : 4;
+    }shift_failure_count;
+    
 } ant_shift_page1_data_t;
 
 
@@ -48,16 +65,16 @@ typedef struct
     {                                                           \
         .update_event_count                      = 0,           \
         .page1_reserved                          = 0xFF,        \
-        .current_gear_rear                  = 0,           \
-        .current_gear_front                 = 0,           \
-        .total_gear_rear                    = 0,           \
-        .total_gear_front                   = 0,           \
-        .invalid_inboard_shift_count_rear   = 0,           \
-        .invalid_outboard_shift_count_rear  = 0,           \
-        .invalid_inboard_shift_count_front  = 0,           \
-        .invalid_outboard_shift_count_front = 0,           \
-        .shift_failure_count_rear = 0,                     \
-        .shift_failure_count_front = 0,                    \
+        .current.gear_rear                  = 0,           \
+        .current.gear_front                 = 0,           \
+        .total.gear_rear                    = 0,           \
+        .total.gear_front                   = 0,           \
+        .invalid.rear.inboard_shift_count   = 0,           \
+        .invalid.rear.outboard_shift_count  = 0,           \
+        .invalid.front.inboard_shift_count  = 0,           \
+        .invalid.front.outboard_shift_count = 0,           \
+        .shift_failure_count.rear = 0,                     \
+        .shift_failure_count.front = 0,                    \
     }
 
 /**@brief Function for encoding page 1.

@@ -216,7 +216,7 @@
 // <e> ANT_SHIFT_PAGE_1_LOG_ENABLED - Enables logging of SHIFT page 1 in the module.
 //==========================================================
 #ifndef ANT_SHIFT_PAGE_1_LOG_ENABLED
-#define ANT_SHIFT_PAGE_1_LOG_ENABLED 0
+#define ANT_SHIFT_PAGE_1_LOG_ENABLED 1
 #endif
 // <o> ANT_SHIFT_PAGE_1_LOG_LEVEL  - Default Severity level
  
@@ -251,7 +251,7 @@
 // <e> ANT_SHIFT_PAGE_82_LOG_ENABLED - Enables logging of SHIFT page 16 in the module.
 //==========================================================
 #ifndef ANT_SHIFT_PAGE_82_LOG_ENABLED
-#define ANT_SHIFT_PAGE_82_LOG_ENABLED 1
+#define ANT_SHIFT_PAGE_82_LOG_ENABLED 0
 #endif
 // <o> ANT_SHIFT_PAGE_82_LOG_LEVEL  - Default Severity level
  
