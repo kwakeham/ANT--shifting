@@ -104,17 +104,18 @@ void ant_shift_page_1_encode(uint8_t                      * p_page_buffer,
         (ant_shift_page1_data_layout_t *)p_page_buffer;
 
     p_outcoming_data->update_event_count   = p_page_data->update_event_count;
-    // p_outcoming_data->current_gear_rear    = p_page_data->gear.current_gear.rear;
-    // p_outcoming_data->current_gear_front   = p_page_data->gear.current_gear.front;
-    // p_outcoming_data->total_gear_rear      = p_page_data->gear.total_gear.rear;
-    // p_outcoming_data->total_gear_front     = p_page_data->gear.total_gear.front;
 
-    // p_outcoming_data->pedal_power           = p_page_data->pedal_power.byte;
+    p_outcoming_data->current_gear_rear     = p_page_data->current_gear_rear;
+    p_outcoming_data->current_gear_front    = p_page_data->current_gear_front;
+    p_outcoming_data->total_gear_rear       = p_page_data->total_gear_rear;
+    p_outcoming_data->total_gear_front      = p_page_data->total_gear_front;
 
-    // UNUSED_PARAMETER(uint16_encode(p_page_data->accumulated_power,
-    //                                p_outcoming_data->accumulated_power));
-    // UNUSED_PARAMETER(uint16_encode(p_page_data->instantaneous_power,
-    //                                p_outcoming_data->instantaneous_power));
+    p_outcoming_data->invalid_inboard_shift_count_rear      = p_page_data->invalid_inboard_shift_count_rear;
+    p_outcoming_data->invalid_outboard_shift_count_rear     = p_page_data->invalid_outboard_shift_count_rear;
+    p_outcoming_data->invalid_inboard_shift_count_front     = p_page_data->invalid_inboard_shift_count_front;
+    p_outcoming_data->invalid_outboard_shift_count_front    = p_page_data->invalid_outboard_shift_count_front; 
+    p_outcoming_data->shift_failure_count_rear              = p_page_data->shift_failure_count_rear;
+    p_outcoming_data->shift_failure_count_front             = p_page_data->shift_failure_count_front;
 
     page1_data_log(p_page_data);
 }
@@ -126,13 +127,18 @@ void ant_shift_page_1_decode(uint8_t const          * p_page_buffer,
     ant_shift_page1_data_layout_t const * p_incoming_data =
         (ant_shift_page1_data_layout_t *)p_page_buffer;
 
-    p_page_data->update_event_count          = p_incoming_data->update_event_count;
+    p_page_data->update_event_count     = p_incoming_data->update_event_count;
     p_page_data->current_gear_rear      = p_incoming_data->current_gear_rear;
     p_page_data->current_gear_front     = p_incoming_data->current_gear_front;
     p_page_data->total_gear_rear        = p_incoming_data->total_gear_rear;
     p_page_data->total_gear_front       = p_incoming_data->total_gear_front;
-    // p_page_data->accumulated_power     = uint16_decode(p_incoming_data->accumulated_power);
-    // p_page_data->instantaneous_power   = uint16_decode(p_incoming_data->instantaneous_power);
+
+    p_page_data->invalid_inboard_shift_count_rear       = p_incoming_data->invalid_inboard_shift_count_rear;
+    p_page_data->invalid_outboard_shift_count_rear      = p_incoming_data->invalid_outboard_shift_count_rear;
+    p_page_data->invalid_inboard_shift_count_front      = p_incoming_data->invalid_inboard_shift_count_front;
+    p_page_data->invalid_outboard_shift_count_front     = p_incoming_data->invalid_outboard_shift_count_front;
+    p_page_data->shift_failure_count_rear               = p_incoming_data->shift_failure_count_rear;
+    p_page_data->shift_failure_count_front               = p_incoming_data->shift_failure_count_front;
 
     page1_data_log(p_page_data);
 }
