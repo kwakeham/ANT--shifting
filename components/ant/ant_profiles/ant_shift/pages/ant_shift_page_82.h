@@ -1,13 +1,13 @@
 /**
- * Copyright (c) 2019 - 2022, Titan Lab Inc.
+* Copyright (c) 2019 - 2022, Titan Lab Inc.
  *
  */
-#ifndef ANT_SHIFT_PAGE_1_H__
-#define ANT_SHIFT_PAGE_1_H__
+#ifndef ANT_SHIFT_PAGE_82_H__
+#define ANT_SHIFT_PAGE_82_H__
 
 /** @file
  *
- * @defgroup ant_sdk_profiles_shift_page1 shift profile page 1
+ * @defgroup ant_sdk_profiles_shift_page82 Shift profile page 82
  * @{
  * @ingroup ant_sdk_profiles_shift_pages
  */
@@ -60,7 +60,7 @@ typedef struct
     }
 
 
-/**@brief Function for encoding page 1.
+/**@brief Function for encoding page 16.
  *
  * @param[in]  p_page_data      Pointer to the page data.
  * @param[out] p_page_buffer    Pointer to the data buffer.
@@ -68,7 +68,7 @@ typedef struct
 void ant_shift_page_1_encode(uint8_t                      * p_page_buffer,
                              ant_shift_page1_data_t const * p_page_data);
 
-/**@brief Function for decoding page 1.
+/**@brief Function for decoding page 16.
  *
  * @param[in]  p_page_buffer    Pointer to the data buffer.
  * @param[out] p_page_data      Pointer to the page data.

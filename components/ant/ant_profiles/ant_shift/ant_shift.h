@@ -159,20 +159,26 @@ static const ant_shift_sens_config_t  CONCAT_2(NAME, _profile_shift_sens_config)
 
 
 
-/**@brief Bicycle Power page number type. */
+/**@brief Shift page number type. */
 typedef enum
 {
     ANT_SHIFT_PAGE_1  = 1,  ///< Shift System Status.
+    ANT_SHIFT_PAGE_80 = 78, //Multi-component System Manufacturer’s Information (0x4E)
+    ANT_SHIFT_PAGE_80 = 79, //Multi-component System Product Information (0x4F)
     ANT_SHIFT_PAGE_80 = ANT_COMMON_PAGE_80,
-    ANT_SHIFT_PAGE_81 = ANT_COMMON_PAGE_81
+    ANT_SHIFT_PAGE_81 = ANT_COMMON_PAGE_81,
+    ANT_SHIFT_PAGE_81 = 82, //Battery Status (0x52)
 } ant_shift_page_t;
 
 /**@brief SHIFT profile event type. */
 typedef enum
 {
     ANT_SHIFT_PAGE_1_UPDATED  = ANT_SHIFT_PAGE_1,  ///< Data page 1 and speed have been updated (Display) or sent (Sensor).
+    ANT_SHIFT_PAGE_78_UPDATED = ANT_SHIFT_PAGE_78, ///< Data page 78 (muticomponent mfg info) has been updated (Display) or sent (Sensor).
+    ANT_SHIFT_PAGE_79_UPDATED = ANT_SHIFT_PAGE_79, ///< Data page 79 (multi component prod info) has been updated (Display) or sent (Sensor).
     ANT_SHIFT_PAGE_80_UPDATED = ANT_SHIFT_PAGE_80, ///< Data page 80 has been updated (Display) or sent (Sensor).
     ANT_SHIFT_PAGE_81_UPDATED = ANT_SHIFT_PAGE_81, ///< Data page 81 has been updated (Display) or sent (Sensor).
+    ANT_SHIFT_PAGE_82_UPDATED = ANT_SHIFT_PAGE_82, ///< Data page (battery info) 82 has been updated (Display) or sent (Sensor).
 } ant_shift_evt_t;
 
 // Forward declaration of the ant_shift_profile_t type.
