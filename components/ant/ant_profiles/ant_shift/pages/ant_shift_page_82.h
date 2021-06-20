@@ -20,15 +20,16 @@ extern "C" {
 typedef struct
 {
     uint8_t page82_reserved;    ///< Reserved: 0xFF, to be used in future
-    uint8_t number_batteries                    : 4;
-    uint8_t battery_identifier                  : 4;
-    uint8_t battery_operating_time_lsb;
-    uint8_t battery_operating_time;
-    uint8_t battery_operating_time_msb;
-    uint8_t battery_fractional_voltage;
-    uint8_t battery_coarse_voltage              : 4;
-    uint8_t battery_status                      : 3;
-    bool battery_time_resolution              : 1;
+    struct
+    {
+        uint8_t number                    : 4;
+        uint8_t identifier                  : 4;
+        uint32_t operating_time;
+        uint8_t fractional_voltage;
+        uint8_t coarse_voltage              : 4;
+        uint8_t status                      : 3;
+        bool time_resolution              : 1;
+    }battery;
 
 } ant_shift_page82_data_t;
 

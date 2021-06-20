@@ -23,8 +23,6 @@ typedef struct
     uint8_t  page82_reserved;    ///< Reserved: 0xFF, to be used in future
     uint8_t number_batteries                    : 4;
     uint8_t battery_identifier                  : 4;
-
-
     uint8_t battery_operating_time_lsb;
     uint8_t battery_operating_time;
     uint8_t battery_operating_time_msb;
@@ -39,7 +37,7 @@ typedef struct
 
 static void page82_data_log(ant_shift_page82_data_t const * p_page_data)
 {
-    NRF_LOG_INFO("num batteries: %u, battery ident: %u", p_page_data->number_batteries,p_page_data->battery_identifier);
+    NRF_LOG_INFO("num batteries: %u, battery ident: %u", p_page_data->battery.number,p_page_data->battery.identifier);
     // NRF_LOG_INFO("gear f/r: %u // %u", p_page_data->current_gear_front, p_page_data->current_gear_rear);
     // NRF_LOG_INFO("total f/r: %u // %u", p_page_data->total_gear_front, p_page_data->total_gear_rear);
     // NRF_LOG_INFO("Invalid rear in/out: %u // %u, front: %u // %u", p_page_data->invalid_inboard_shift_count_rear,
@@ -70,8 +68,8 @@ void ant_shift_page_82_encode(uint8_t                      * p_page_buffer,
     ant_shift_page82_data_layout_t * p_outcoming_data =
         (ant_shift_page82_data_layout_t *)p_page_buffer;
 
-    p_outcoming_data->battery_identifier   = p_page_data->battery_identifier;
-    p_outcoming_data->number_batteries   = p_page_data->number_batteries;
+    p_outcoming_data->battery_identifier   = p_page_data->battery.identifier;
+    p_outcoming_data->number_batteries   = p_page_data->battery.number;
 
     // p_outcoming_data->current_gear_rear     = p_page_data->current_gear_rear;
     // p_outcoming_data->current_gear_front    = p_page_data->current_gear_front;
@@ -95,8 +93,8 @@ void ant_shift_page_82_decode(uint8_t const          * p_page_buffer,
     ant_shift_page82_data_layout_t const * p_incoming_data =
         (ant_shift_page82_data_layout_t *)p_page_buffer;
 
-    p_page_data->battery_identifier     = p_incoming_data->battery_identifier;
-    p_page_data->number_batteries     = p_incoming_data->number_batteries;
+    p_page_data->battery.identifier     = p_incoming_data->battery_identifier;
+    p_page_data->battery.number     = p_incoming_data->number_batteries;
     // p_page_data->current_gear_rear      = p_incoming_data->current_gear_rear;
     // p_page_data->current_gear_front     = p_incoming_data->current_gear_front;
     // p_page_data->total_gear_rear        = p_incoming_data->total_gear_rear;
