@@ -37,8 +37,11 @@ typedef struct
 
 static void page82_data_log(ant_shift_page82_data_t const * p_page_data)
 {
-    NRF_LOG_INFO("num batteries: %u, battery ident: %u", p_page_data->battery.number,p_page_data->battery.identifier);
-    NRF_LOG_INFO("operating time: %u, resolution: %u", p_page_data->battery.operating_time,p_page_data->battery.time_resolution);
+    NRF_LOG_INFO("num batteries:            %u, battery ident: %u", p_page_data->battery.number,p_page_data->battery.identifier);
+    NRF_LOG_INFO("operating time:           %u, resolution:    %u", p_page_data->battery.operating_time,p_page_data->battery.time_resolution);
+    float battery_voltage = (p_page_data->battery.voltage)/256.f;
+    NRF_LOG_INFO("operating time:          "NRF_LOG_FLOAT_MARKER, NRF_LOG_FLOAT(battery_voltage));
+    NRF_LOG_INFO("Battery status:           %u", (unsigned int)p_page_data->battery.status);
 }
 
 
@@ -66,6 +69,9 @@ void ant_shift_page_82_encode(uint8_t                      * p_page_buffer,
         p_outcoming_data->battery_time_resolution = 1; //set to 1 for 2 second operating time
     }
 
+    p_outcoming_data->battery_coarse_voltage        = (p_page_data->battery.voltage)>>8;
+    p_outcoming_data->battery_fractional_voltage    = (p_page_data->battery.voltage);
+    p_outcoming_data->battery_status                = p_page_data->battery.status;
 
     page82_data_log(p_page_data);
 }
@@ -92,6 +98,10 @@ void ant_shift_page_82_decode(uint8_t const          * p_page_buffer,
     {
         p_page_data->battery.operating_time = p_page_data->battery.operating_time * 16;
     }
+
+    p_page_data->battery.voltage = (p_incoming_data->battery_coarse_voltage)<<8|(p_incoming_data->battery_fractional_voltage);
+
+    p_page_data->battery.status = p_incoming_data->battery_status;
 
     page82_data_log(p_page_data);
 }
