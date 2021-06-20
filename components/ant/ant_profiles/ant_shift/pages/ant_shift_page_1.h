@@ -18,6 +18,7 @@
 extern "C" {
 #endif
 
+
 typedef struct
 {
     uint8_t  update_event_count;    ///< Event counter increments with each shift event.
@@ -58,7 +59,6 @@ typedef struct
         .shift_failure_count_rear = 0,                     \
         .shift_failure_count_front = 0,                    \
     }
-
 
 /**@brief Function for encoding page 1.
  *

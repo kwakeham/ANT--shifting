@@ -17,46 +17,37 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-
 typedef struct
 {
     uint8_t  update_event_count;    ///< Event counter increments with each shift event.
-    uint8_t  page1_reserved;    ///< Reserved: 0xFF, to be used in future
-    uint8_t current_gear_rear                   : 5;
-    uint8_t current_gear_front                  : 3;
+    uint8_t  page82_reserved;    ///< Reserved: 0xFF, to be used in future
+    uint8_t number_batteries                    : 4;
+    uint8_t battery_identifier                  : 4;
 
-    uint8_t total_gear_rear                     : 5;
-    uint8_t total_gear_front                    : 3;
-
-    uint8_t invalid_inboard_shift_count_rear    : 4;
-    uint8_t invalid_outboard_shift_count_rear   : 4;
-
-    uint8_t invalid_inboard_shift_count_front   : 4;
-    uint8_t invalid_outboard_shift_count_front  : 4;
-
-    uint8_t shift_failure_count_rear   : 4;
-    uint8_t shift_failure_count_front  : 4;
+    uint8_t battery_operating_time_lsb;
+    uint8_t battery_operating_time;
+    uint8_t battery_operating_time_msb;
+    uint8_t battery_fractional_voltage;
+    uint8_t battery_descriptive_field  : 4;
 
 } ant_shift_page1_data_t;
 
 
 /**@brief Initialize page 1.
  */
-#define DEFAULT_ANT_SHIFT_PAGE1()                               \
-    (ant_shift_page1_data_t)                                    \
-    {                                                           \
-        .update_event_count                      = 0,           \
-        .page1_reserved                          = 0xFF,        \
-        .current_gear_rear                  = 0,           \
-        .current_gear_front                 = 0,           \
-        .total_gear_rear                    = 0,           \
-        .total_gear_front                   = 0,           \
-        .invalid_inboard_shift_count_rear   = 0,           \
-        .invalid_outboard_shift_count_rear  = 0,           \
-        .invalid_inboard_shift_count_front  = 0,           \
-        .invalid_outboard_shift_count_front = 0,           \
-        .shift_failure_count_rear = 0,                     \
-        .shift_failure_count_front = 0,                    \
+#define DEFAULT_ANT_SHIFT_PAGE1()                              \
+    (ant_shift_page1_data_t)                                   \
+    {                                                          \
+        .update_event_count                     = 0,           \
+        .page82_reserved                        = 0xFF,        \
+        .number_batteries                       = 1,           \
+        .battery_identifier                     = 0,           \
+        .battery_operating_time_lsb             = 0,           \
+        .battery_operating_time                 = 0,           \
+        .battery_operating_time_msb             = 0,           \
+        .battery_fractional_voltage             = 0,           \
+        .battery_descriptive_field              = 0,           \
+
     }
 
 

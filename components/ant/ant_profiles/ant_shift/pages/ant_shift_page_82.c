@@ -7,35 +7,29 @@
 
 #include "ant_shift_page_1.h"
 
-#define NRF_LOG_MODULE_NAME ant_shift_page_16
-#if ANT_SHIFT_PAGE_1_LOG_ENABLED
-#define NRF_LOG_LEVEL       ANT_SHIFT_PAGE_1_LOG_LEVEL
-#define NRF_LOG_INFO_COLOR  ANT_SHIFT_PAGE_1_INFO_COLOR
-#else // ANT_SHIFT_PAGE_1_LOG_ENABLED
+#define NRF_LOG_MODULE_NAME ant_shift_page_82
+#if ANT_SHIFT_PAGE_82_LOG_ENABLED
+#define NRF_LOG_LEVEL       ANT_SHIFT_PAGE_82_LOG_LEVEL
+#define NRF_LOG_INFO_COLOR  ANT_SHIFT_PAGE_82_INFO_COLOR
+#else // ANT_SHIFT_PAGE_82_LOG_ENABLED
 #define NRF_LOG_LEVEL       0
-#endif // ANT_SHIFT_PAGE_1_LOG_ENABLED
+#endif // ANT_SHIFT_PAGE_82_LOG_ENABLED
 #include "nrf_log.h"
 NRF_LOG_MODULE_REGISTER();
 
 /**@brief bicycle power page 16 data layout structure. */
 typedef struct
 {
-    uint8_t update_event_count;
-    uint8_t reserved;
-    uint8_t current_gear_rear                   : 5;
-    uint8_t current_gear_front                  : 3;
+    uint8_t  update_event_count;    ///< Event counter increments with each shift event.
+    uint8_t  page82_reserved;    ///< Reserved: 0xFF, to be used in future
+    uint8_t number_batteries                    : 4;
+    uint8_t battery_identifier                  : 4;
 
-    uint8_t total_gear_rear                     : 5;
-    uint8_t total_gear_front                    : 3;
-
-    uint8_t invalid_inboard_shift_count_rear    : 4;
-    uint8_t invalid_outboard_shift_count_rear   : 4;
-
-    uint8_t invalid_inboard_shift_count_front   : 4;
-    uint8_t invalid_outboard_shift_count_front  : 4;
-
-    uint8_t shift_failure_count_rear   : 4;
-    uint8_t shift_failure_count_front  : 4;
+    uint8_t battery_operating_time_lsb;
+    uint8_t battery_operating_time;
+    uint8_t battery_operating_time_msb;
+    uint8_t battery_fractional_voltage;
+    uint8_t battery_descriptive_field  : 4;
 
 }ant_shift_page1_data_layout_t;
 
