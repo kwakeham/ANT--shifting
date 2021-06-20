@@ -1,48 +1,13 @@
 /**
- * Copyright (c) 2015 - 2020, Nordic Semiconductor ASA
- *
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without modification,
- * are permitted provided that the following conditions are met:
- *
- * 1. Redistributions of source code must retain the above copyright notice, this
- *    list of conditions and the following disclaimer.
- *
- * 2. Redistributions in binary form, except as embedded into a Nordic
- *    Semiconductor ASA integrated circuit in a product or a software update for
- *    such product, must reproduce the above copyright notice, this list of
- *    conditions and the following disclaimer in the documentation and/or other
- *    materials provided with the distribution.
- *
- * 3. Neither the name of Nordic Semiconductor ASA nor the names of its
- *    contributors may be used to endorse or promote products derived from this
- *    software without specific prior written permission.
- *
- * 4. This software, with or without modification, must only be used with a
- *    Nordic Semiconductor ASA integrated circuit.
- *
- * 5. Any software provided in binary form under this license must not be reverse
- *    engineered, decompiled, modified and/or disassembled.
- *
- * THIS SOFTWARE IS PROVIDED BY NORDIC SEMICONDUCTOR ASA "AS IS" AND ANY EXPRESS
- * OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
- * OF MERCHANTABILITY, NONINFRINGEMENT, AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED. IN NO EVENT SHALL NORDIC SEMICONDUCTOR ASA OR CONTRIBUTORS BE
- * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
- * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE
- * GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
- * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
- * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT
- * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ * Copyright (c) 2019 - 2022, Titan Lab Inc.
  *
  */
 /**
  * @file
- * @defgroup ant_shift Bicycle Power profile
+ * @defgroup ant_shift Bicycle Shift profile
  * @{
  * @ingroup ant_sdk_profiles
- * @brief This module implements the Bicycle Power profile.
+ * @brief This module implements the Bicycle Shift profile.
  *
  */
 
@@ -62,11 +27,11 @@
 #define SHIFT_MSG_PERIOD             8192u               ///< Message period, decimal 8192 (4.000 Hz).
 
 #define SHIFT_EXT_ASSIGN             0x00                ///< ANT ext assign (see Ext. Assign Channel Parameters in ant_parameters.h: @ref ant_parameters).
-#define SHIFT_DISP_CHANNEL_TYPE      CHANNEL_TYPE_SLAVE  ///< Display Bicycle Power channel type.
-#define SHIFT_SENS_CHANNEL_TYPE      CHANNEL_TYPE_MASTER ///< Sensor Bicycle Power channel type.
+#define SHIFT_DISP_CHANNEL_TYPE      CHANNEL_TYPE_SLAVE  ///< Display Bicycle Shift channel type.
+#define SHIFT_SENS_CHANNEL_TYPE      CHANNEL_TYPE_MASTER ///< Sensor Bicycle Shift channel type.
 
 
-/**@brief Initialize an ANT channel configuration structure for the Bicycle Power profile (Display).
+/**@brief Initialize an ANT channel configuration structure for the Bicycle Shift profile (Display).
  *
  * @param[in]  NAME                 Name of related instance.
  * @param[in]  CHANNEL_NUMBER       Number of the channel assigned to the profile instance.
@@ -93,7 +58,7 @@ static const ant_channel_config_t   CONCAT_2(NAME, _channel_shift_disp_config) =
     }
 #define SHIFT_DISP_CHANNEL_CONFIG(NAME) &CONCAT_2(NAME, _channel_shift_disp_config)
 
-/**@brief Initialize an ANT channel configuration structure for the Bicycle Power profile (Sensor).
+/**@brief Initialize an ANT channel configuration structure for the Bicycle Shift profile (Sensor).
  *
  * @param[in]  NAME                 Name of related instance.
  * @param[in]  CHANNEL_NUMBER       Number of the channel assigned to the profile instance.
@@ -163,11 +128,11 @@ static const ant_shift_sens_config_t  CONCAT_2(NAME, _profile_shift_sens_config)
 typedef enum
 {
     ANT_SHIFT_PAGE_1  = 1,  ///< Shift System Status.
-    ANT_SHIFT_PAGE_80 = 78, //Multi-component System Manufacturer’s Information (0x4E)
-    ANT_SHIFT_PAGE_80 = 79, //Multi-component System Product Information (0x4F)
+    ANT_SHIFT_PAGE_78 = 78, //Multi-component System Manufacturer’s Information (0x4E)
+    ANT_SHIFT_PAGE_79 = 79, //Multi-component System Product Information (0x4F)
     ANT_SHIFT_PAGE_80 = ANT_COMMON_PAGE_80,
     ANT_SHIFT_PAGE_81 = ANT_COMMON_PAGE_81,
-    ANT_SHIFT_PAGE_81 = 82, //Battery Status (0x52)
+    ANT_SHIFT_PAGE_82 = 82, //Battery Status (0x52)
 } ant_shift_page_t;
 
 /**@brief SHIFT profile event type. */
@@ -194,21 +159,21 @@ typedef void (* ant_shift_evt_handler_t) (ant_shift_profile_t *, ant_shift_evt_t
 extern "C" {
 #endif
 
-/**@brief Bicycle Power Sensor configuration structure. */
+/**@brief Bicycle Shift Sensor configuration structure. */
 typedef struct
 {
     ant_shift_sens_cb_t     * p_cb;          ///< Pointer to the data buffer for internal use.
     ant_shift_evt_handler_t   evt_handler;   ///< Event handler to be called for handling events in the SHIFT profile.
 } ant_shift_sens_config_t;
 
-/**@brief Bicycle Power Display configuration structure. */
+/**@brief Bicycle Shift Display configuration structure. */
 typedef struct
 {
     ant_shift_disp_cb_t   * p_cb;            ///< Pointer to the data buffer for internal use.
     ant_shift_evt_handler_t evt_handler;     ///< Event handler to be called for handling events in the SHIFT profile.
 } ant_shift_disp_config_t;
 
-/**@brief Bicycle Power profile structure. */
+/**@brief Bicycle Shift profile structure. */
 struct ant_shift_profile_s
 {
     uint8_t                  channel_number; ///< Channel number assigned to the profile.
@@ -251,11 +216,11 @@ struct ant_shift_profile_s
 #define SHIFT_PROFILE_serial_number               page_81.serial_number
 /** @} */
 
-/**@brief Function for initializing the ANT Bicycle Power Display profile instance.
+/**@brief Function for initializing the ANT Bicycle Shift Display profile instance.
  *
  * @param[in]  p_profile        Pointer to the profile instance.
  * @param[in]  p_channel_config Pointer to the ANT channel configuration structure.
- * @param[in]  p_disp_config    Pointer to the Bicycle Power Display configuration structure.
+ * @param[in]  p_disp_config    Pointer to the Bicycle Shift Display configuration structure.
  *
  * @retval     NRF_SUCCESS      If initialization was successful. Otherwise, an error code is returned.
  */
@@ -263,11 +228,11 @@ ret_code_t ant_shift_disp_init(ant_shift_profile_t           * p_profile,
                               ant_channel_config_t const   * p_channel_config,
                               ant_shift_disp_config_t const * p_disp_config);
 
-/**@brief Function for initializing the ANT Bicycle Power Sensor profile instance.
+/**@brief Function for initializing the ANT Bicycle Shift Sensor profile instance.
  *
  * @param[in]  p_profile        Pointer to the profile instance.
  * @param[in]  p_channel_config Pointer to the ANT channel configuration structure.
- * @param[in]  p_sens_config    Pointer to the Bicycle Power Sensor configuration structure.
+ * @param[in]  p_sens_config    Pointer to the Bicycle Shift Sensor configuration structure.
  *
  * @retval     NRF_SUCCESS      If initialization was successful. Otherwise, an error code is returned.
  */
@@ -311,7 +276,7 @@ void ant_shift_calib_response(ant_shift_profile_t * p_profile);
 
 /**@brief Function for handling the Sensor ANT events.
  *
- * @details This function handles all events from the ANT stack that are of interest to the Bicycle Power Display profile.
+ * @details This function handles all events from the ANT stack that are of interest to the Bicycle Shift Display profile.
  *
  * @param[in]   p_ant_evt     Event received from the ANT stack.
  * @param[in]   p_context       Pointer to the profile instance.
@@ -320,7 +285,7 @@ void ant_shift_sens_evt_handler(ant_evt_t * p_ant_evt, void * p_context);
 
 /**@brief Function for handling the Display ANT events.
  *
- * @details This function handles all events from the ANT stack that are of interest to the Bicycle Power Display profile.
+ * @details This function handles all events from the ANT stack that are of interest to the Bicycle Shift Display profile.
  *
  * @param[in]   p_ant_evt     Event received from the ANT stack.
  * @param[in]   p_context       Pointer to the profile instance.
@@ -331,7 +296,7 @@ void ant_shift_disp_evt_handler(ant_evt_t * p_ant_evt, void * p_context);
  * @{
  */
 
-/**@brief Function for initializing the calibration request process from the Bicycle Power Display side.
+/**@brief Function for initializing the calibration request process from the Bicycle Shift Display side.
  *
  * @details This function requests a transfer to the Sensor and starts watching for the calibration response.
  * If a calibration response has already been requested, the function ignores the new request and returns NRF_SUCCESS.
