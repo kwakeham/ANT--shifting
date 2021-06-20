@@ -17,7 +17,7 @@
 #include "nrf_log.h"
 NRF_LOG_MODULE_REGISTER();
 
-/**@brief bicycle power page 16 data layout structure. */
+/**@brief bicycle shift page 1 data layout structure. */
 typedef struct
 {
     uint8_t update_event_count;

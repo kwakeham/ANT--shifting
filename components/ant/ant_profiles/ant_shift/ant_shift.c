@@ -166,11 +166,6 @@ static void sens_message_encode(ant_shift_profile_t * p_profile, uint8_t * p_mes
             ant_shift_page_1_encode(p_shift_message_payload->page_payload, &(p_profile->page_1));
             break;
 
-        // case ANT_SHIFT_PAGE_16:
-        //     ant_shift_page_16_encode(p_shift_message_payload->page_payload, &(p_profile->page_16));
-        //     ant_shift_cadence_encode(p_shift_message_payload->page_payload, &(p_profile->common));
-        //     break;
-
         // case ANT_SHIFT_PAGE_17:
         //     ant_shift_page_17_encode(p_shift_message_payload->page_payload, &(p_profile->page_17));
         //     ant_shift_cadence_encode(p_shift_message_payload->page_payload, &(p_profile->common));
@@ -187,6 +182,10 @@ static void sens_message_encode(ant_shift_profile_t * p_profile, uint8_t * p_mes
 
         case ANT_COMMON_PAGE_81:
             ant_common_page_81_encode(p_shift_message_payload->page_payload, &(p_profile->page_81));
+            break;
+
+        case ANT_SHIFT_PAGE_82:
+            ant_shift_page_82_encode(p_shift_message_payload->page_payload, &(p_profile->page_82));
             break;
 
         default:
@@ -244,6 +243,10 @@ static void disp_message_decode(ant_shift_profile_t * p_profile, uint8_t * p_mes
 
         case ANT_COMMON_PAGE_81:
             ant_common_page_81_decode(p_shift_message_payload->page_payload, &(p_profile->page_81));
+            break;
+        
+        case ANT_SHIFT_PAGE_82:
+            ant_shift_page_82_decode(p_shift_message_payload->page_payload, &(p_profile->page_82));
             break;
 
         default:

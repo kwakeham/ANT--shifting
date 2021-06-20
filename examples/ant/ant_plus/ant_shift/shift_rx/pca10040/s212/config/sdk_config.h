@@ -216,7 +216,7 @@
 // <e> ANT_SHIFT_PAGE_1_LOG_ENABLED - Enables logging of SHIFT page 1 in the module.
 //==========================================================
 #ifndef ANT_SHIFT_PAGE_1_LOG_ENABLED
-#define ANT_SHIFT_PAGE_1_LOG_ENABLED 1
+#define ANT_SHIFT_PAGE_1_LOG_ENABLED 0
 #endif
 // <o> ANT_SHIFT_PAGE_1_LOG_LEVEL  - Default Severity level
  
@@ -248,12 +248,12 @@
 
 // </e>
 
-// <e> ANT_SHIFT_PAGE_16_LOG_ENABLED - Enables logging of SHIFT page 16 in the module.
+// <e> ANT_SHIFT_PAGE_82_LOG_ENABLED - Enables logging of SHIFT page 16 in the module.
 //==========================================================
-#ifndef ANT_SHIFT_PAGE_16_LOG_ENABLED
-#define ANT_SHIFT_PAGE_16_LOG_ENABLED 1
+#ifndef ANT_SHIFT_PAGE_82_LOG_ENABLED
+#define ANT_SHIFT_PAGE_82_LOG_ENABLED 1
 #endif
-// <o> ANT_SHIFT_PAGE_16_LOG_LEVEL  - Default Severity level
+// <o> ANT_SHIFT_PAGE_82_LOG_LEVEL  - Default Severity level
  
 // <0=> Off 
 // <1=> Error 
@@ -261,11 +261,11 @@
 // <3=> Info 
 // <4=> Debug 
 
-#ifndef ANT_SHIFT_PAGE_16_LOG_LEVEL
-#define ANT_SHIFT_PAGE_16_LOG_LEVEL 3
+#ifndef ANT_SHIFT_PAGE_82_LOG_LEVEL
+#define ANT_SHIFT_PAGE_82_LOG_LEVEL 3
 #endif
 
-// <o> ANT_SHIFT_PAGE_16_INFO_COLOR  - ANSI escape code prefix.
+// <o> ANT_SHIFT_PAGE_82_INFO_COLOR  - ANSI escape code prefix.
  
 // <0=> Default 
 // <1=> Black 
@@ -277,8 +277,8 @@
 // <7=> Cyan 
 // <8=> White 
 
-#ifndef ANT_SHIFT_PAGE_16_INFO_COLOR
-#define ANT_SHIFT_PAGE_16_INFO_COLOR 0
+#ifndef ANT_SHIFT_PAGE_82_INFO_COLOR
+#define ANT_SHIFT_PAGE_82_INFO_COLOR 0
 #endif
 
 // </e>
