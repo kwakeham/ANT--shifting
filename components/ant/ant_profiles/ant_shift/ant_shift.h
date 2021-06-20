@@ -192,23 +192,24 @@ struct ant_shift_profile_s
 
 /** @name Defines for accessing ant_shift_profile_t member variables
    @{ */
-#define SHIFT_PROFILE_calibration_id              page_1.calibration_id
-#define SHIFT_PROFILE_auto_zero_status            page_1.auto_zero_status
-#define SHIFT_PROFILE_general_calib_data          page_1.data.general_calib
-#define SHIFT_PROFILE_custom_calib_data           page_1.data.custom_calib
-#define SHIFT_PROFILE_instantaneous_cadence       common.instantaneous_cadence
-#define SHIFT_PROFILE_pedal_power                 page_16.pedal_power.items
-#define SHIFT_PROFILE_power_update_event_count    page_16.update_event_count
-#define SHIFT_PROFILE_accumulated_power           page_16.accumulated_power
-#define SHIFT_PROFILE_instantaneous_power         page_16.instantaneous_power
-#define SHIFT_PROFILE_wheel_update_event_count    page_17.update_event_count
-#define SHIFT_PROFILE_wheel_tick                  page_17.tick
-#define SHIFT_PROFILE_wheel_period                page_17.period
-#define SHIFT_PROFILE_wheel_accumulated_torque    page_17.accumulated_torque
-#define SHIFT_PROFILE_crank_update_event_count    page_18.update_event_count
-#define SHIFT_PROFILE_crank_tick                  page_18.tick
-#define SHIFT_PROFILE_crank_period                page_18.period
-#define SHIFT_PROFILE_crank_accumulated_torque    page_18.accumulated_torque
+#define SHIFT_PROFILE_current_gear_rear                     page_1.current.gear_rear
+#define SHIFT_PROFILE_current_gear_front                    page_1.current.gear_front
+#define SHIFT_PROFILE_current_total_rear                    page_1.total.gear_rear 
+#define SHIFT_PROFILE_current_total_front                   page_1.total.gear_front        
+#define SHIFT_PROFILE_invalid_inboard_shift_count_rear      page_1.invalid.rear.inboard_shift_count
+#define SHIFT_PROFILE_invalid_outboard_shift_count_rear     page_1.invalid.rear.outboard_shift_count
+#define SHIFT_PROFILE_invalid_inboard_shift_count_front     page_1.invalid.front.inboard_shift_count
+#define SHIFT_PROFILE_invalid_outboard_shift_count_front    page_1.invalid.front.outboard_shift_count
+#define SHIFT_PROFILE_shift_failure_count_rear              page_1.shift_failure_count.rear
+#define SHIFT_PROFILE_shift_failure_count_front             page_1.shift_failure_count.front
+
+#define SHIFT_PROFILE_number_batteries                      page_82.battery.number
+#define SHIFT_PROFILE_battery_identifier                    page_82.battery.identifier
+#define SHIFT_PROFILE_battery_operating_time                page_82.battery.operating_time
+#define SHIFT_PROFILE_battery_voltage                       page_82.battery.voltage
+#define SHIFT_PROFILE_battery_status                        page_82.battery.status
+#define SHIFT_PROFILE_time_resolution                       page_82.battery.time_resolution
+
 #define SHIFT_PROFILE_manuf_id                    page_80.manuf_id
 #define SHIFT_PROFILE_hw_revision                 page_80.hw_revision
 #define SHIFT_PROFILE_manufacturer_id             page_80.manufacturer_id
