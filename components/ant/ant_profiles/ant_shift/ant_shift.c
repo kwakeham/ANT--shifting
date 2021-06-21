@@ -73,10 +73,8 @@ ret_code_t ant_shift_disp_init(ant_shift_profile_t           * p_profile,
     ASSERT(p_disp_config->p_cb != NULL);
 
     p_profile->evt_handler   = p_disp_config->evt_handler;
-    // p_profile->_cb.p_disp_cb = p_disp_config->p_cb;
-
-    // p_profile->_cb.p_disp_cb ->calib_timeout = 0;
-    // p_profile->_cb.p_disp_cb ->calib_stat    = SHIFT_DISP_CALIB_NONE;
+    p_profile->_cb.p_disp_cb = p_disp_config->p_cb;
+    ant_request_controller_init(&(p_profile->_cb.p_disp_cb->req_controller));
 
     return ant_shift_init(p_profile, p_channel_config);
 }
@@ -103,6 +101,18 @@ ret_code_t ant_shift_sens_init(ant_shift_profile_t           * p_profile,
     return ant_shift_init(p_profile, p_channel_config);
 }
 
+ret_code_t ant_shift_page_request(ant_shift_profile_t * p_profile, ant_common_page70_data_t * p_page_70)
+{
+    ASSERT(p_profile != NULL);
+    ASSERT(p_page_70 != NULL);
+
+    uint32_t err_code = ant_request_controller_request(&(p_profile->_cb.p_disp_cb->req_controller),
+                                                         p_profile->channel_number, p_page_70);
+    NRF_LOG_INFO("");
+
+    return err_code;
+}
+
 
 
 /**@brief Function for getting next page number to send.
@@ -116,19 +126,11 @@ static ant_shift_page_t next_page_number_get(ant_shift_profile_t * p_profile)
     ant_shift_sens_cb_t * p_shift_cb = p_profile->_cb.p_sens_cb;
     ant_shift_page_t      page_number;
 
-    // if (p_shift_cb->calib_stat == SHIFT_SENS_CALIB_READY)
-    // {
-    //     page_number           = ANT_SHIFT_PAGE_1;
-    //     p_shift_cb->calib_stat = SHIFT_SENS_CALIB_NONE; // mark event as processed
-    // }
-    // else if ((p_profile->SHIFT_PROFILE_auto_zero_status != ANT_SHIFT_AUTO_ZERO_NOT_SUPPORTED)
-    //          && (p_shift_cb->message_counter == AUTO_ZERO_SUPPORT_INTERVAL))
-    // {
-    //     page_number                            = ANT_SHIFT_PAGE_1;
-    //     p_profile->SHIFT_PROFILE_calibration_id = ANT_SHIFT_CALIB_ID_AUTO_SUPPORT;
-    //     p_shift_cb->message_counter++;
-    // }
-    if (p_shift_cb->message_counter >= COMMON_PAGE_81_INTERVAL)
+    if (ant_request_controller_pending_get(&(p_shift_cb->req_controller), (uint8_t *)&page_number))
+    {
+        // No implementation needed
+    }
+    else if (p_shift_cb->message_counter >= COMMON_PAGE_81_INTERVAL)
     {
         page_number                = ANT_SHIFT_PAGE_81;
         p_shift_cb->message_counter = 0;
@@ -408,6 +410,20 @@ void ant_shift_disp_evt_handler(ant_evt_t * p_ant_event, void * p_context)
 
     if (p_ant_event->channel == p_profile->channel_number)
     {
+        ant_shift_disp_cb_t * p_shift_cb = p_profile->_cb.p_disp_cb;
+
+        switch (ant_request_controller_disp_evt_handler(&(p_shift_cb->req_controller), p_ant_event))
+        {
+            case ANT_REQUEST_CONTROLLER_SUCCESS:
+                p_profile->evt_handler(p_profile, ANT_SHIFT_PAGE_REQUEST_SUCCESS);
+                break;
+            case ANT_REQUEST_CONTROLLER_FAILED:
+                p_profile->evt_handler(p_profile, ANT_SHIFT_PAGE_REQUEST_FAILED);
+                break;
+            default:
+                break;
+        }
+
         switch (p_ant_event->event)
         {
             case EVENT_RX:

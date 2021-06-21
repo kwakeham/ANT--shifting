@@ -20,6 +20,7 @@
 #include "ant_parameters.h"
 #include "nrf_sdh_ant.h"
 #include "ant_channel_config.h"
+#include "ant_request_controller.h"
 #include "ant_shift_pages.h"
 #include "sdk_errors.h"
 
@@ -145,6 +146,8 @@ typedef enum
     ANT_SHIFT_PAGE_80_UPDATED = ANT_SHIFT_PAGE_80, ///< Data page 80 has been updated (Display) or sent (Sensor).
     ANT_SHIFT_PAGE_81_UPDATED = ANT_SHIFT_PAGE_81, ///< Data page 81 has been updated (Display) or sent (Sensor).
     ANT_SHIFT_PAGE_82_UPDATED = ANT_SHIFT_PAGE_82, ///< Data page (battery info) 82 has been updated (Display) or sent (Sensor).
+    ANT_SHIFT_PAGE_REQUEST_SUCCESS,                   ///< Data page request reached the destination.
+    ANT_SHIFT_PAGE_REQUEST_FAILED,                    ///< Data page request did not reach the destination.
 } ant_shift_evt_t;
 
 // Forward declaration of the ant_shift_profile_t type.

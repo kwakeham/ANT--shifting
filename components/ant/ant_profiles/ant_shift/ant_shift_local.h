@@ -1,5 +1,5 @@
 /**
-* Copyright (c) 2019 - 2021, Titan Lab Inc.
+* Copyright (c) 2019 - 202, Titan Lab Inc.
  *
  */
 #ifndef ANT_SHIFT_LOCAL_H__
@@ -22,12 +22,13 @@ extern "C" {
 typedef struct
 {
     uint8_t           message_counter;
+    ant_request_controller_t req_controller;
 } ant_shift_sens_cb_t;
 
 /**@brief Bicycle Shift Sensor RX control block. */
 typedef struct
 {
-
+    ant_request_controller_t req_controller;
 } ant_shift_disp_cb_t;
 
 /**

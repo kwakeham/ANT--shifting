@@ -52,6 +52,7 @@ SRC_FILES += \
   $(SDK_ROOT)/components/ant/ant_profiles/ant_common/pages/ant_common_page_80.c \
   $(SDK_ROOT)/components/ant/ant_profiles/ant_common/pages/ant_common_page_81.c \
   $(SDK_ROOT)/components/ant/ant_key_manager/ant_key_manager.c \
+  $(SDK_ROOT)/components/ant/ant_profiles/ant_common/ant_request_controller/ant_request_controller.c \
   $(SDK_ROOT)/components/ant/ant_state_indicator/ant_state_indicator.c \
   $(SDK_ROOT)/components/libraries/bsp/bsp.c \
   $(SDK_ROOT)/components/libraries/bsp/bsp_btn_ant.c \
@@ -80,6 +81,7 @@ INC_FOLDERS += \
   $(SDK_ROOT)/integration/nrfx \
   $(SDK_ROOT)/components/softdevice/s212/headers/nrf52 \
   $(SDK_ROOT)/components/libraries/scheduler \
+  $(SDK_ROOT)/components/ant/ant_profiles/ant_common/ant_request_controller \
   ../config \
   $(SDK_ROOT)/components/libraries/experimental_section_vars \
   $(SDK_ROOT)/modules/nrfx/mdk \
