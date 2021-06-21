@@ -187,8 +187,9 @@ struct ant_shift_profile_s
     ant_common_page80_data_t page_80;        ///< Page 80.
     ant_common_page81_data_t page_81;        ///< Page 81.
     ant_shift_common_data_t   common;         ///< SHIFT common data.
-    ant_shift_page82_data_t  page_82;         ///< Page 1. Battery
-    ant_shift_page78_data_t  page_78;         ///< Page 1. Battery
+    ant_shift_page82_data_t  page_82;         ///< Page 82 Battery
+    ant_shift_page78_data_t  page_78;         ///< Page 78 Multi-component System Manufacturer’s Information
+    ant_shift_page79_data_t  page_79;         ///< Page 79 Multi-component System Product Information
 };
 
 /** @name Defines for accessing ant_shift_profile_t member variables

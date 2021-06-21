@@ -55,6 +55,7 @@ static ret_code_t ant_shift_init(ant_shift_profile_t         * p_profile,
     p_profile->page_81 = DEFAULT_ANT_COMMON_page81();
     p_profile->page_82 = DEFAULT_ANT_SHIFT_PAGE82();
     p_profile->page_78 = DEFAULT_ANT_SHIFT_PAGE78();
+    p_profile->page_79 = DEFAULT_ANT_SHIFT_PAGE79();
 
     NRF_LOG_INFO("ANT SHIFT channel %u init", p_profile->channel_number);
     return ant_channel_init(p_channel_config);
@@ -168,15 +169,13 @@ static void sens_message_encode(ant_shift_profile_t * p_profile, uint8_t * p_mes
             ant_shift_page_1_encode(p_shift_message_payload->page_payload, &(p_profile->page_1));
             break;
 
-        // case ANT_SHIFT_PAGE_17:
-        //     ant_shift_page_17_encode(p_shift_message_payload->page_payload, &(p_profile->page_17));
-        //     ant_shift_cadence_encode(p_shift_message_payload->page_payload, &(p_profile->common));
-        //     break;
+        case ANT_SHIFT_PAGE_78:
+            ant_shift_page_78_encode(p_shift_message_payload->page_payload, &(p_profile->page_78));
+            break;
 
-        // case ANT_SHIFT_PAGE_18:
-        //     ant_shift_page_18_encode(p_shift_message_payload->page_payload, &(p_profile->page_18));
-        //     ant_shift_cadence_encode(p_shift_message_payload->page_payload, &(p_profile->common));
-        //     break;
+        case ANT_SHIFT_PAGE_79:
+            ant_shift_page_79_encode(p_shift_message_payload->page_payload, &(p_profile->page_79));
+            break;
 
         case ANT_COMMON_PAGE_80:
             ant_common_page_80_encode(p_shift_message_payload->page_payload, &(p_profile->page_80));
@@ -236,12 +235,14 @@ static void disp_message_decode(ant_shift_profile_t * p_profile, uint8_t * p_mes
     {
         case ANT_SHIFT_PAGE_1:
             ant_shift_page_1_decode(p_shift_message_payload->page_payload, &(p_profile->page_1));
-            // p_profile->_cb.p_disp_cb->calib_stat = SHIFT_DISP_CALIB_NONE;
             break;
 
         case ANT_SHIFT_PAGE_78:
             ant_shift_page_78_decode(p_shift_message_payload->page_payload, &(p_profile->page_78));
-            // p_profile->_cb.p_disp_cb->calib_stat = SHIFT_DISP_CALIB_NONE;
+            break;
+
+        case ANT_SHIFT_PAGE_79:
+            ant_shift_page_79_decode(p_shift_message_payload->page_payload, &(p_profile->page_79));
             break;
 
         case ANT_COMMON_PAGE_80:

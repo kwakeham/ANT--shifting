@@ -36,9 +36,9 @@ typedef struct
 static void page78_data_log(ant_shift_page78_data_t const * p_page_data)
 {
     NRF_LOG_INFO("num components:            %u, component ident: %u", p_page_data->component.number,p_page_data->component.identifier);
-    NRF_LOG_INFO("num components:            %u", p_page_data->component.hw_revision);
-    NRF_LOG_INFO("num components:            %u", p_page_data->component.mfg_id);
-    NRF_LOG_INFO("num components:            %u", p_page_data->component.model_number);
+    NRF_LOG_INFO("hw revision:               %u", p_page_data->component.hw_revision);
+    NRF_LOG_INFO("mfg id :                   %u", p_page_data->component.mfg_id);
+    NRF_LOG_INFO("model number:              %u", p_page_data->component.model_number);
 }
 
 
