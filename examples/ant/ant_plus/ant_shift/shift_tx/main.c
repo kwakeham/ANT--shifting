@@ -100,9 +100,7 @@ SHIFT_SENS_CHANNEL_CONFIG_DEF(m_ant_shift,
                              CHAN_ID_DEV_NUM,
                              ANTPLUS_NETWORK_NUM);
 SHIFT_SENS_PROFILE_CONFIG_DEF(m_ant_shift,
-                            (ant_shift_torque_t)(SENSOR_TYPE),
-                            ant_shift_calib_handler,
-                            ant_shift_evt_handler);
+                             ant_shift_evt_handler);
 
 static ant_shift_profile_t m_ant_shift;
 
@@ -305,8 +303,6 @@ static void profile_setup(void)
     m_ant_shift.page_81 = ANT_COMMON_page81(SHIFT_SW_REVISION_MAJOR,
                                            SHIFT_SW_REVISION_MINOR,
                                            SHIFT_SERIAL_NUMBER);
-
-    m_ant_shift.SHIFT_PROFILE_auto_zero_status = ANT_SHIFT_AUTO_ZERO_OFF;
 
     err_code = ant_shift_sens_open(&m_ant_shift);
     APP_ERROR_CHECK(err_code);

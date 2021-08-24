@@ -111,14 +111,10 @@ static const ant_shift_disp_config_t  CONCAT_2(NAME, _profile_shift_disp_config)
  * @param[in]  EVT_HANDLER          Event handler to be called for handling events in the SHIFT profile.
  */
 #define SHIFT_SENS_PROFILE_CONFIG_DEF(NAME,                                          \
-                                     TORQUE_USED,                                   \
-                                     CALIB_HANDLER,                                 \
                                      EVT_HANDLER)                                   \
 static ant_shift_sens_cb_t            CONCAT_2(NAME, _shift_sens_cb);                 \
 static const ant_shift_sens_config_t  CONCAT_2(NAME, _profile_shift_sens_config) =    \
     {                                                                               \
-        .torque_use         = (TORQUE_USED),                                        \
-        .calib_handler      = (CALIB_HANDLER),                                      \
         .p_cb               = &CONCAT_2(NAME, _shift_sens_cb),                       \
         .evt_handler        = (EVT_HANDLER),                                        \
     }

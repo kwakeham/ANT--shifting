@@ -11,7 +11,9 @@
 		"files.associations": {
 			"ant_shift.h": "c",
 			"nrf_pwr_mgmt.h": "c",
-			"sensorsim.h": "c"
+			"sensorsim.h": "c",
+			"ant_shift_pages.h": "c",
+			"ant_shift_page_1.h": "c"
 		}
 	}
 }
