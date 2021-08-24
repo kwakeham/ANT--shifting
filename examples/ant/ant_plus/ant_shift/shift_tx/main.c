@@ -150,16 +150,17 @@ void ant_shift_evt_handler(ant_shift_profile_t * p_profile, ant_shift_evt_t even
     {
         case ANT_SHIFT_PAGE_1_UPDATED:
             /* fall through */
-        case ANT_SHIFT_PAGE_16_UPDATED:
+        case ANT_SHIFT_PAGE_78_UPDATED:
             /* fall through */
-        case ANT_SHIFT_PAGE_17_UPDATED:
-            /* fall through */
-        case ANT_SHIFT_PAGE_18_UPDATED:
+        case ANT_SHIFT_PAGE_79_UPDATED:
             /* fall through */
         case ANT_SHIFT_PAGE_80_UPDATED:
             /* fall through */
         case ANT_SHIFT_PAGE_81_UPDATED:
-            ant_shift_simulator_one_iteration(&m_ant_shift_simulator, event);
+            /* fall through */
+        case ANT_SHIFT_PAGE_82_UPDATED:
+            /* fall through */
+            // ant_shift_simulator_one_iteration(&m_ant_shift_simulator, event);
             break;
 
         default:
@@ -168,41 +169,41 @@ void ant_shift_evt_handler(ant_shift_profile_t * p_profile, ant_shift_evt_t even
 }
 /** @snippet [ANT SHIFT simulator call] */
 
-/**@brief Function for handling ANT SHIFT events.
- */
-/** @snippet [ANT SHIFT calibration] */
-void ant_shift_calib_handler(ant_shift_profile_t * p_profile, ant_shift_page1_data_t * p_page1)
-{
-    switch (p_page1->calibration_id)
-    {
-        case ANT_SHIFT_CALIB_ID_MANUAL:
-            m_ant_shift.SHIFT_PROFILE_calibration_id     = ANT_SHIFT_CALIB_ID_MANUAL_SUCCESS;
-            m_ant_shift.SHIFT_PROFILE_general_calib_data = CALIBRATION_DATA;
-            break;
+// /**@brief Function for handling ANT SHIFT events.
+//  */
+// /** @snippet [ANT SHIFT calibration] */
+// void ant_shift_calib_handler(ant_shift_profile_t * p_profile, ant_shift_page1_data_t * p_page1)
+// {
+//     switch (p_page1->calibration_id)
+//     {
+//         case ANT_SHIFT_CALIB_ID_MANUAL:
+//             m_ant_shift.SHIFT_PROFILE_calibration_id     = ANT_SHIFT_CALIB_ID_MANUAL_SUCCESS;
+//             m_ant_shift.SHIFT_PROFILE_general_calib_data = CALIBRATION_DATA;
+//             break;
 
-        case ANT_SHIFT_CALIB_ID_AUTO:
-            m_ant_shift.SHIFT_PROFILE_calibration_id     = ANT_SHIFT_CALIB_ID_MANUAL_SUCCESS;
-            m_ant_shift.SHIFT_PROFILE_auto_zero_status   = p_page1->auto_zero_status;
-            m_ant_shift.SHIFT_PROFILE_general_calib_data = CALIBRATION_DATA;
-            break;
+//         case ANT_SHIFT_CALIB_ID_AUTO:
+//             m_ant_shift.SHIFT_PROFILE_calibration_id     = ANT_SHIFT_CALIB_ID_MANUAL_SUCCESS;
+//             m_ant_shift.SHIFT_PROFILE_auto_zero_status   = p_page1->auto_zero_status;
+//             m_ant_shift.SHIFT_PROFILE_general_calib_data = CALIBRATION_DATA;
+//             break;
 
-        case ANT_SHIFT_CALIB_ID_CUSTOM_REQ:
-            m_ant_shift.SHIFT_PROFILE_calibration_id = ANT_SHIFT_CALIB_ID_CUSTOM_REQ_SUCCESS;
-            memcpy(m_ant_shift.SHIFT_PROFILE_custom_calib_data, p_page1->data.custom_calib,
-                   sizeof (m_ant_shift.SHIFT_PROFILE_custom_calib_data));
-            break;
+//         case ANT_SHIFT_CALIB_ID_CUSTOM_REQ:
+//             m_ant_shift.SHIFT_PROFILE_calibration_id = ANT_SHIFT_CALIB_ID_CUSTOM_REQ_SUCCESS;
+//             memcpy(m_ant_shift.SHIFT_PROFILE_custom_calib_data, p_page1->data.custom_calib,
+//                    sizeof (m_ant_shift.SHIFT_PROFILE_custom_calib_data));
+//             break;
 
-        case ANT_SHIFT_CALIB_ID_CUSTOM_UPDATE:
-            m_ant_shift.SHIFT_PROFILE_calibration_id = ANT_SHIFT_CALIB_ID_CUSTOM_UPDATE_SUCCESS;
-            memcpy(m_ant_shift.SHIFT_PROFILE_custom_calib_data, p_page1->data.custom_calib,
-                   sizeof (m_ant_shift.SHIFT_PROFILE_custom_calib_data));
-            break;
+//         case ANT_SHIFT_CALIB_ID_CUSTOM_UPDATE:
+//             m_ant_shift.SHIFT_PROFILE_calibration_id = ANT_SHIFT_CALIB_ID_CUSTOM_UPDATE_SUCCESS;
+//             memcpy(m_ant_shift.SHIFT_PROFILE_custom_calib_data, p_page1->data.custom_calib,
+//                    sizeof (m_ant_shift.SHIFT_PROFILE_custom_calib_data));
+//             break;
 
-        default:
-            break;
-    }
-}
-/** @snippet [ANT SHIFT calibration] */
+//         default:
+//             break;
+//     }
+// }
+// /** @snippet [ANT SHIFT calibration] */
 
 /**
  * @brief Function for setup all thinks not directly associated with ANT stack/protocol.

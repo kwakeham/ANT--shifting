@@ -65,7 +65,10 @@ SRC_FILES += \
   $(COMPONENT_DIR)/components/ant/ant_profiles/ant_shift/ant_shift.c \
   $(COMPONENT_DIR)/components/ant/ant_profiles/ant_shift/pages/ant_shift_common_data.c \
   $(COMPONENT_DIR)/components/ant/ant_profiles/ant_shift/pages/ant_shift_page_1.c \
-  # $(COMPONENT_DIR)/components/ant/ant_profiles/ant_shift/simulator/ant_shift_simulator.c \
+  $(COMPONENT_DIR)/components/ant/ant_profiles/ant_shift/pages/ant_shift_page_78.c \
+  $(COMPONENT_DIR)/components/ant/ant_profiles/ant_shift/pages/ant_shift_page_79.c \
+  $(COMPONENT_DIR)/components/ant/ant_profiles/ant_shift/pages/ant_shift_page_82.c \
+  $(COMPONENT_DIR)/components/ant/ant_profiles/ant_shift/simulator/ant_shift_simulator.c \
 
 # Include folders common to all targets
 INC_FOLDERS += \
@@ -77,6 +80,7 @@ INC_FOLDERS += \
   $(SDK_ROOT)/integration/nrfx \
   $(SDK_ROOT)/components/softdevice/s212/headers/nrf52 \
   $(SDK_ROOT)/components/libraries/scheduler \
+  $(SDK_ROOT)/components/ant/ant_profiles/ant_common/ant_request_controller \
   ../config \
   $(SDK_ROOT)/components/libraries/experimental_section_vars \
   $(SDK_ROOT)/modules/nrfx/mdk \
