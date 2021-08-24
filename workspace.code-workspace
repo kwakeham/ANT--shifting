@@ -1,0 +1,17 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "..\\nRF5_SDK_17.0.2_d674dde"
+		}
+	],
+	"settings": {
+		"files.associations": {
+			"ant_shift.h": "c",
+			"nrf_pwr_mgmt.h": "c",
+			"sensorsim.h": "c"
+		}
+	}
+}

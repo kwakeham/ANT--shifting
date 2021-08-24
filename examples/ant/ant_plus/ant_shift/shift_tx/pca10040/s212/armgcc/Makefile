@@ -118,6 +118,7 @@ INC_FOLDERS += \
   $(COMPONENT_DIR)/components/ant/ant_profiles/ant_shift \
   $(COMPONENT_DIR)/components/ant/ant_profiles/ant_shift/utils \
   $(COMPONENT_DIR)/components/ant/ant_profiles/ant_shift/pages \
+  $(COMPONENT_DIR)/components/ant/ant_profiles/ant_shift/simulator \
 
 # Libraries common to all targets
 LIB_FILES += \
