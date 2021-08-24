@@ -246,7 +246,6 @@ void simulator_setup(void)
     const ant_shift_simulator_cfg_t simulator_cfg =
     {
         .p_profile   = &m_ant_shift,
-        .sensor_type = (ant_shift_torque_t)(SENSOR_TYPE),
     };
     /** @snippet [ANT SHIFT simulator init] */
 

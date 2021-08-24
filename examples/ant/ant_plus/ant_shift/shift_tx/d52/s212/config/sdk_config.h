@@ -493,6 +493,13 @@
 #define ANT_KEY_MANAGER_ENABLED 1
 #endif
 
+// <q> ANT_REQUEST_CONTROLLER_ENABLED  - ant_request_controller - ANT+ request controller
+ 
+
+#ifndef ANT_REQUEST_CONTROLLER_ENABLED
+#define ANT_REQUEST_CONTROLLER_ENABLED 1
+#endif
+
 // <e> ANT_STATE_INDICATOR_ENABLED - ant_state_indicator - ANT state indicator using BSP
 //==========================================================
 #ifndef ANT_STATE_INDICATOR_ENABLED

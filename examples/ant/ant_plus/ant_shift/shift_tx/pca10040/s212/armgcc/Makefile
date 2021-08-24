@@ -7,7 +7,7 @@ PROJ_DIR := ../../..
 COMPONENT_DIR :=../../../../../../../..
 
 $(OUTPUT_DIRECTORY)/nrf52832_xxaa.out: \
-  LINKER_SCRIPT  := ant_shift_rx_gcc_nrf52.ld
+  LINKER_SCRIPT  := ant_shift_tx_gcc_nrf52.ld
 
 # Source files common to all targets
 SRC_FILES += \
@@ -69,6 +69,7 @@ SRC_FILES += \
   $(COMPONENT_DIR)/components/ant/ant_profiles/ant_shift/pages/ant_shift_page_79.c \
   $(COMPONENT_DIR)/components/ant/ant_profiles/ant_shift/pages/ant_shift_page_82.c \
   $(COMPONENT_DIR)/components/ant/ant_profiles/ant_shift/simulator/ant_shift_simulator.c \
+  $(SDK_ROOT)/components/ant/ant_profiles/ant_common/ant_request_controller/ant_request_controller.c \
 
 # Include folders common to all targets
 INC_FOLDERS += \
