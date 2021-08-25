@@ -59,11 +59,6 @@
 #define SHIFT_CHANNEL_NUM 0
 #endif
 
-// <o> CALIBRATION_DATA - Calibration data. 
-#ifndef CALIBRATION_DATA
-#define CALIBRATION_DATA 21930
-#endif
-
 // <o> CHAN_ID_DEV_NUM - Channel ID: Device Number. 
 #ifndef CHAN_ID_DEV_NUM
 #define CHAN_ID_DEV_NUM 1
@@ -71,7 +66,7 @@
 
 // <o> CHAN_ID_TRANS_TYPE - Channel ID: Transmission type. 
 #ifndef CHAN_ID_TRANS_TYPE
-#define CHAN_ID_TRANS_TYPE 5
+#define CHAN_ID_TRANS_TYPE 0
 #endif
 
 // <h> MANUFACTURER_IDENTIFICATION_COMMON_PAGE 
