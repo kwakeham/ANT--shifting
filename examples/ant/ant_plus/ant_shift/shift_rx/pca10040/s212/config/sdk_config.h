@@ -103,7 +103,7 @@
 // <h> nRF_ANT 
 
 //==========================================================
-// <e> ANT_SHIFT_ENABLED - ant_shift - Bicycle Power Profile
+// <e> ANT_SHIFT_ENABLED - ant_shift - Shift Profile
 //==========================================================
 #ifndef ANT_SHIFT_ENABLED
 #define ANT_SHIFT_ENABLED 1
@@ -174,41 +174,6 @@
 
 #ifndef ANT_SHIFT_COMMON_INFO_COLOR
 #define ANT_SHIFT_COMMON_INFO_COLOR 0
-#endif
-
-// </e>
-
-// <e> ANT_SHIFT_PAGE_TORQUE_LOG_ENABLED - Enables logging of SHIFT torque page in the module.
-//==========================================================
-#ifndef ANT_SHIFT_PAGE_TORQUE_LOG_ENABLED
-#define ANT_SHIFT_PAGE_TORQUE_LOG_ENABLED 1
-#endif
-// <o> ANT_SHIFT_PAGE_TORQUE_LOG_LEVEL  - Default Severity level
- 
-// <0=> Off 
-// <1=> Error 
-// <2=> Warning 
-// <3=> Info 
-// <4=> Debug 
-
-#ifndef ANT_SHIFT_PAGE_TORQUE_LOG_LEVEL
-#define ANT_SHIFT_PAGE_TORQUE_LOG_LEVEL 3
-#endif
-
-// <o> ANT_SHIFT_PAGE_TORQUE_INFO_COLOR  - ANSI escape code prefix.
- 
-// <0=> Default 
-// <1=> Black 
-// <2=> Red 
-// <3=> Green 
-// <4=> Yellow 
-// <5=> Blue 
-// <6=> Magenta 
-// <7=> Cyan 
-// <8=> White 
-
-#ifndef ANT_SHIFT_PAGE_TORQUE_INFO_COLOR
-#define ANT_SHIFT_PAGE_TORQUE_INFO_COLOR 0
 #endif
 
 // </e>

@@ -30,7 +30,7 @@ NRF_LOG_MODULE_REGISTER();
 #define COMMON_PAGE_81_INTERVAL    120 // Minimum: Interleave every 121 messages
 #define AUTO_ZERO_SUPPORT_INTERVAL 120 // Minimum: Interleave every 121 messages
 
-/**@brief Bicycle power message data layout structure. */
+/**@brief Shift power message data layout structure. */
 typedef struct
 {
     uint8_t page_number;
@@ -38,7 +38,7 @@ typedef struct
 } ant_shift_message_layout_t;
 
 
-/**@brief Function for initializing the ANT Bicycle Power Profile instance.
+/**@brief Function for initializing the ANT Shift Power Profile instance.
  *
  * @param[in]  p_profile        Pointer to the profile instance.
  * @param[in]  p_channel_config Pointer to the ANT channel configuration structure.
@@ -92,11 +92,12 @@ ret_code_t ant_shift_sens_init(ant_shift_profile_t           * p_profile,
     // ASSERT(p_sens_config->calib_handler != NULL);
 
     p_profile->evt_handler   = p_sens_config->evt_handler;
-    // p_profile->_cb.p_sens_cb = p_sens_config->p_cb;
+    p_profile->_cb.p_sens_cb = p_sens_config->p_cb;
 
     // p_profile->_cb.p_sens_cb->calib_handler   = p_sens_config->calib_handler;
     // p_profile->_cb.p_sens_cb->calib_stat      = SHIFT_SENS_CALIB_NONE;
-    // p_profile->_cb.p_sens_cb->message_counter = 0;
+    p_profile->_cb.p_sens_cb->message_counter = 0;
+    ant_request_controller_init(&(p_profile->_cb.p_disp_cb->req_controller));
 
     return ant_shift_init(p_profile, p_channel_config);
 }
@@ -126,11 +127,13 @@ static ant_shift_page_t next_page_number_get(ant_shift_profile_t * p_profile)
     ant_shift_sens_cb_t * p_shift_cb = p_profile->_cb.p_sens_cb;
     ant_shift_page_t      page_number;
 
-    if (ant_request_controller_pending_get(&(p_shift_cb->req_controller), (uint8_t *)&page_number))
-    {
-        // No implementation needed
-    }
-    else if (p_shift_cb->message_counter >= COMMON_PAGE_81_INTERVAL)
+    // if (ant_request_controller_pending_get(&(p_shift_cb->req_controller), (uint8_t *)&page_number))
+    // {
+    //     // No implementation needed yet
+    //     // This will be used for buttons
+    // }
+    // else
+    if (p_shift_cb->message_counter >= COMMON_PAGE_81_INTERVAL)
     {
         page_number                = ANT_SHIFT_PAGE_81;
         p_shift_cb->message_counter = 0;
@@ -152,7 +155,7 @@ static ant_shift_page_t next_page_number_get(ant_shift_profile_t * p_profile)
 }
 
 
-/**@brief Function for encoding Bicycle Power Sensor message.
+/**@brief Function for encoding Shift Power Sensor message.
  *
  * @note Assume to be call each time when Tx window will occur.
  */
@@ -163,7 +166,7 @@ static void sens_message_encode(ant_shift_profile_t * p_profile, uint8_t * p_mes
 
     p_shift_message_payload->page_number = next_page_number_get(p_profile);
 
-    NRF_LOG_INFO("SHIFT tx page: %u", p_shift_message_payload->page_number);
+    NRF_LOG_INFO("SHIFT tx page: %u, count: %u", p_shift_message_payload->page_number, p_profile->_cb.p_sens_cb->message_counter);
 
     switch (p_shift_message_payload->page_number)
     {
@@ -200,7 +203,7 @@ static void sens_message_encode(ant_shift_profile_t * p_profile, uint8_t * p_mes
 }
 
 
-/**@brief Function for decoding messages received by Bicycle Power sensor message.
+/**@brief Function for decoding messages received by Shift Power sensor message.
  *
  * @note Assume to be call each time when Rx window will occur.
  */
@@ -222,7 +225,7 @@ static void sens_message_decode(ant_shift_profile_t * p_profile, uint8_t * p_mes
 }
 
 
-/**@brief Function for decoding messages received by Bicycle Power display message.
+/**@brief Function for decoding messages received by Shift Power display message.
  *
  * @note Assume to be call each time when Rx window will occur.
  */
