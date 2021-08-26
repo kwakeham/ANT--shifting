@@ -40,11 +40,22 @@ typedef struct
     {                                                          \
         .component.number                      = 1,           \
         .component.identifier                  = 0,           \
-        .component.hw_revision                 = 0,           \
+        .component.hw_revision                 = 1,           \
         .component.mfg_id                      = 0,           \
         .component.model_number                = 0,           \
     }
 
+/**@brief Initialize page 80.
+ */
+#define ANT_SHIFT_page78(comp_number, comp_ident, comp_hw_rev, comp_mfg_id, comp_mod_num)  \
+    (ant_shift_page78_data_t)                      \
+    {                                               \
+        .component.number                      = (comp_number),           \
+        .component.identifier                  = (comp_ident),           \
+        .component.hw_revision                 = (comp_hw_rev),           \
+        .component.mfg_id                      = (comp_mfg_id),           \
+        .component.model_number                = (comp_mod_num),           \
+    }
 
 /**@brief Function for encoding page 16.
  *

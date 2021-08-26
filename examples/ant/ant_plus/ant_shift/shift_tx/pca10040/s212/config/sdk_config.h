@@ -286,7 +286,7 @@
 // <e> ANT_SHIFT_PAGE_78_LOG_ENABLED - Enables logging of SHIFT page 17 in the module.
 //==========================================================
 #ifndef ANT_SHIFT_PAGE_78_LOG_ENABLED
-#define ANT_SHIFT_PAGE_78_LOG_ENABLED 0
+#define ANT_SHIFT_PAGE_78_LOG_ENABLED 1
 #endif
 // <o> ANT_SHIFT_PAGE_78_LOG_LEVEL  - Default Severity level
  

@@ -26,10 +26,16 @@ NRF_LOG_MODULE_REGISTER();
 // for torque sensor Minimum: Interleave every 9th message
 #define SHIFT_PAGE_1_INTERVAL      5   // Preferred: Interleave every 5th message
 #define SHIFT_PAGE_1_INTERVAL_OFS  2   // Permissible offset
-#define COMMON_PAGE_80_INTERVAL    119 // Minimum: Interleave every 121 messages
-#define COMMON_PAGE_81_INTERVAL    120 // Minimum: Interleave every 121 messages
-#define AUTO_ZERO_SUPPORT_INTERVAL 120 // Minimum: Interleave every 121 messages
-
+#define SHIFT_PAGE_78_INTERVAL    64 // Minimum: Interleave every 64 messages
+#define SHIFT_PAGE_78_INTERVAL_OFS    8 // Minimum: Interleave every 64 messages
+#define SHIFT_PAGE_79_INTERVAL    64 // Minimum: Interleave every 65 messages
+#define SHIFT_PAGE_79_INTERVAL_OFS    16 // Minimum: Interleave every 65 messages
+#define COMMON_PAGE_80_INTERVAL    64 // Minimum: Interleave every 119 messages
+#define COMMON_PAGE_80_INTERVAL_OFS    24 // Minimum: Interleave every 119 messages
+#define COMMON_PAGE_81_INTERVAL    64 // Minimum: Interleave every 121 messages
+#define COMMON_PAGE_81_INTERVAL_OFS    32 // Minimum: Interleave every 121 messages
+#define SHIFT_PAGE_82_INTERVAL    64 // Minimum: Interleave every 65 messages
+#define SHIFT_PAGE_82_INTERVAL_OFS    40 // Minimum: Interleave every 65 messages
 /**@brief Shift power message data layout structure. */
 typedef struct
 {
@@ -74,7 +80,7 @@ ret_code_t ant_shift_disp_init(ant_shift_profile_t           * p_profile,
 
     p_profile->evt_handler   = p_disp_config->evt_handler;
     p_profile->_cb.p_disp_cb = p_disp_config->p_cb;
-    ant_request_controller_init(&(p_profile->_cb.p_disp_cb->req_controller));
+    ant_request_controller_init(&(p_profile->_cb.p_disp_cb->req_controller)); //TODO: Do I need this?
 
     return ant_shift_init(p_profile, p_channel_config);
 }
@@ -127,26 +133,37 @@ static ant_shift_page_t next_page_number_get(ant_shift_profile_t * p_profile)
     ant_shift_sens_cb_t * p_shift_cb = p_profile->_cb.p_sens_cb;
     ant_shift_page_t      page_number;
 
-    // if (ant_request_controller_pending_get(&(p_shift_cb->req_controller), (uint8_t *)&page_number))
-    // {
-    //     // No implementation needed yet
-    //     // This will be used for buttons
-    // }
-    // else
-    if (p_shift_cb->message_counter >= COMMON_PAGE_81_INTERVAL)
+    if (ant_request_controller_pending_get(&(p_shift_cb->req_controller), (uint8_t *)&page_number))
+    {
+        // No implementation needed yet
+        // This will be used for buttons
+    }
+    else if (p_shift_cb->message_counter >= COMMON_PAGE_81_INTERVAL)
     {
         page_number                = ANT_SHIFT_PAGE_81;
         p_shift_cb->message_counter = 0;
     }
     else
     {
-        if (p_shift_cb->message_counter == COMMON_PAGE_80_INTERVAL)
+        if ((p_shift_cb->message_counter + SHIFT_PAGE_78_INTERVAL_OFS) % SHIFT_PAGE_78_INTERVAL == 0)
+        {
+            page_number = ANT_SHIFT_PAGE_78;
+        }
+        else if ((p_shift_cb->message_counter + SHIFT_PAGE_79_INTERVAL_OFS) % SHIFT_PAGE_79_INTERVAL == 0)
+        {
+            page_number = ANT_SHIFT_PAGE_79;
+        }
+        else if ((p_shift_cb->message_counter + SHIFT_PAGE_82_INTERVAL_OFS) % SHIFT_PAGE_82_INTERVAL == 0)
+        {
+            page_number = ANT_SHIFT_PAGE_82;
+        }
+        else if ((p_shift_cb->message_counter + COMMON_PAGE_80_INTERVAL_OFS) % COMMON_PAGE_80_INTERVAL == 0)
         {
             page_number = ANT_SHIFT_PAGE_80;
         }
         else
         {
-                page_number = ANT_SHIFT_PAGE_1;
+            page_number = ANT_SHIFT_PAGE_1;
         }
         p_shift_cb->message_counter++;
     }
